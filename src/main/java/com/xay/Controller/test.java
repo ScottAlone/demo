@@ -1,7 +1,9 @@
 package com.xay.Controller;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -11,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableAutoConfiguration
 public class test {
-    @RequestMapping("/")
-    String home() {
-        return "Hello World!";
+    @RequestMapping("/greet")
+    String hello(@RequestParam("name") String name){
+        return "Hello " + name ;
     }
 }
