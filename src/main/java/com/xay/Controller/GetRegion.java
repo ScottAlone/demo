@@ -19,19 +19,24 @@ public class GetRegion {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    /**
+     * 查询省和直辖市
+     * @return List
+     */
     @RequestMapping(value = "/getCity", method = RequestMethod.GET)
     public List<Map<String, Object>> getCity(){
-        String sql = "select  city_id, name, first_letter from city where parent_id=0";
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-        list.forEach(m -> m.entrySet().forEach(System.out::println));
-        return list;
+        String sql = "SELECT  city_id, name, first_letter FROM city WHERE parent_id=0";
+        return jdbcTemplate.queryForList(sql);
     }
 
+    /**
+     * 查询市辖区
+     * @param parentId
+     * @return List
+     */
     @RequestMapping(value = "/getCounty", method = RequestMethod.GET)
-    public List<Map<String, Object>> getCounty(@RequestParam("parentId") int id){
-        String sql = "select city_id, name, first_letter from city where parent_id=" + id;
-        List<Map<String, Object>> list =  jdbcTemplate.queryForList(sql);
-        list.forEach(m -> m.entrySet().forEach(System.out::println));
-        return list;
+    public List<Map<String, Object>> getCounty(@RequestParam("parentId") int parentId){
+        String sql = "SELECT city_id, name, first_letter FROM city WHERE parent_id=" + parentId;
+        return jdbcTemplate.queryForList(sql);
     }
 }
