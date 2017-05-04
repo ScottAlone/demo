@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.js"></script>
+</head>
+<body>
+    <label for="username">用户名：</label><input id="username" type="text">
+    <label for="password">密码：</label> <input id="password" type="password">
+    <button id="login">登陆</button>
+    <button id="register">注册</button>
+    <button id="update">更新</button>
+</body>
+<script>
+    $("#login").click(function () {
+        $.ajax({
+            url: "/login",
+            type: 'POST',
+        data: JSON.stringify({
+            type: 1,
+            username: $("#username").val(),
+            password: $("#password").val()
+        }),
+            contentType: "application/json",
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    alert("登陆成功！");
+                }else alert(data.message);
+            }
+        });
+    });
+
+    $("#register").click(function () {
+        window.location = "Register.html";
+    });
+
+    $("#update").click(function () {
+        window.location = "Update.html";
+    });
+
+    $("#city").click(function () {
+        $.ajax({
+            url: "/getCity",
+            type: 'GET', //GET
+            context: document.body,
+            success: function(data, statusText, xhr){
+    //                city.city_id = o.city_id;
+    //                city.first_letter = o.first_letter;
+    //                city.name = o.name;
+            }
+        });
+    });
+</script>
+</html>

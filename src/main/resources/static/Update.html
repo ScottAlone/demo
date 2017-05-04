@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.js"></script>
+</head>
+<body>
+    <label for="name">昵称：</label><input id="name" type="text">
+    <label for="username">用户名：</label><input id="username" type="text">
+    <label for="old_pwd">旧密码：</label> <input id="old_pwd" type="password">
+    <label for="new_pwd">新密码：</label> <input id="new_pwd" type="password">
+    <button id="update">确认</button>
+</body>
+<script>
+    $("#update").click(function () {
+        alert($("#username").val());
+        alert($("#old_pwd").val());
+        alert($("#new_pwd").val());
+        $.ajax({
+            url: "/accounts",
+            type: 'PATCH',
+            data: JSON.stringify({
+                type: 1,
+                name: $("#name").val(),
+                username: $("#username").val(),
+                password: $("#old_pwd").val(),
+                newPassword: $("#new_pwd").val()
+            }),
+            contentType: "application/json",
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    alert("修改成功！");
+                }else alert(data.message);
+            }
+        });
+    });
+</script>
+</html>

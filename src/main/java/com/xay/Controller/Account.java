@@ -72,7 +72,7 @@ public class Account {
     }
 
     /**
-     * 用户登陆
+     * 用户修改
      * @param account
      * @return BaseResult
      */
@@ -82,19 +82,24 @@ public class Account {
         String name = account.getName();
         String username = account.getUsername();
         String password = account.getPassword();
+        String newPassword = account.getNewPassword();
         String sql;
 
-        if (queryForAccount(username, type).size() == 1){
-            if (name == null){
-                name = queryForAccount(username, type).get(0).get("name").toString();
+        List<Map<String, Object>> list = queryForAccount(username, type);
+        if (list.size() == 1){
+            if (list.get(0).get("password").equals(password)){
+                if (name == null){
+                    name = queryForAccount(username, type).get(0).get("name").toString();
+                }
+                if (type == 0){
+                    sql = "UPDATE guides SET name=?, password=?, guides.update_time=CURRENT_TIMESTAMP WHERE username=?";
+                }else if (type == 1){
+                    sql = "UPDATE customers SET name=?, password=?, customers.update_time=CURRENT_TIMESTAMP WHERE username=?";
+                }else throw new IllegalArgumentException("非法的用户类型");
+                jdbcTemplate.update(sql, name, newPassword, username);
+                return new BaseResult();
             }
-            if (type == 0){
-                sql = "UPDATE guides SET name=?, password=?, guides.update_time=CURRENT_TIMESTAMP WHERE username=?";
-            }else if (type == 1){
-                sql = "UPDATE customers SET name=?, password=?, customers.update_time=CURRENT_TIMESTAMP WHERE username=?";
-            }else throw new IllegalArgumentException("非法的用户类型");
-            jdbcTemplate.update(sql, name, password, username);
-            return new BaseResult();
+            else return new BaseResult(500, "密码错误");
         }else return new BaseResult(500, "用户不存在");
     }
 }

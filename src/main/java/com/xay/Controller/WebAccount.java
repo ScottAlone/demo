@@ -14,9 +14,18 @@ public class WebAccount implements Serializable {
     private String name;
     private String username;
     private String password;
+    private String newPassword;
     private int type;
     MessageDigest md;
     BASE64Encoder base;
+
+    public WebAccount(String name, String username, String password, String newPassword, int type) throws NoSuchAlgorithmException{
+        setType(type);
+        setName(name);
+        setUsername(username);
+        setPassword(password);
+        setNewPassword(newPassword);
+    }
 
     public WebAccount(String name, String username, String password, int type) throws NoSuchAlgorithmException{
         setType(type);
@@ -58,6 +67,16 @@ public class WebAccount implements Serializable {
         md = MessageDigest.getInstance("MD5");
         base = new BASE64Encoder();
         this.password = base.encode(md.digest(password.getBytes()));
+    }
+
+    public void setNewPassword(String newPassword) throws NoSuchAlgorithmException {
+        md = MessageDigest.getInstance("MD5");
+        base = new BASE64Encoder();
+        this.newPassword = base.encode(md.digest(newPassword.getBytes()));
+    }
+
+    public String getNewPassword() {
+        return newPassword;
     }
 
     public int getType() {
