@@ -1,6 +1,6 @@
 package com.xay.MySQL.DO;
 
-import com.xay.Controller.WebAccount;
+import com.xay.Domain.WebAccount;
 
 import java.sql.Timestamp;
 

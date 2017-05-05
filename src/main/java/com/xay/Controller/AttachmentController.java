@@ -3,10 +3,7 @@ package com.xay.Controller;
 import com.xay.Domain.BaseResult;
 import com.xay.Service.AttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -17,7 +14,7 @@ import java.io.IOException;
 @RestController
 public class AttachmentController {
     @Autowired
-    AttachmentService attachmentService;
+    private AttachmentService attachmentService;
 
     /**
      * 上传附件
@@ -40,7 +37,7 @@ public class AttachmentController {
      */
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public BaseResult download(@RequestParam("customerId")Integer customerId,
-                               @RequestParam("path")String path) throws IOException {
+                               @RequestParam("path")String path) throws Exception {
         return attachmentService.download(customerId, path);
     }
 

@@ -15,7 +15,7 @@ public interface AttachmentService {
      * @param path
      * @return
      */
-    BaseResult download(Integer customerId, String path) throws IOException;
+    BaseResult download(Integer customerId, String path) throws Exception;
 
     /**
      * 附件上传

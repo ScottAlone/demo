@@ -4,6 +4,7 @@ import com.xay.Domain.BaseResult;
 import com.xay.MySQL.DO.AttachmentDO;
 import com.xay.MySQL.Mapper.AttachmentMapper;
 import com.xay.Service.AttachmentService;
+import com.xay.Util.SerializableUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,61 +18,47 @@ import java.io.*;
 @Service
 public class AttachmentServiceImpl implements AttachmentService {
     @Autowired
-    AttachmentMapper attachmentMapper;
+    private AttachmentMapper attachmentMapper;
 
     @Override
     public BaseResult upload(Integer i) throws IOException{
-        Integer customerId = 12;
+        Integer customerId = 19;
         File file = new File("C:\\Users\\Administrator\\Desktop\\1.jpg");
         String fileType = file.getName().substring(file.getName().lastIndexOf("."));
         AttachmentDO attachmentDO = attachmentMapper.getAttachmentNameByCustomerId(customerId);
         String attachName = RandomStringUtils.randomAlphanumeric(50);
-        InputStream in = new BufferedInputStream(new FileInputStream(file));
         String finalPath = attachName + fileType;
         if (attachmentDO == null){
-            attachmentMapper.insertAttachment(new AttachmentDO(attachName, 1, "wa"));
-//            jdbcTemplate.execute(finalSql, (PreparedStatementCallback<Object>) ps -> {
-//                ps.setString(1, finalPath);
-//                ps.setInt(2, 11);
-//                ps.setString(3, "ww");
-//                ps.setBinaryStream(4, in);
-//                ps.execute();
-//                return null;
-//            });
+            attachmentMapper.insertAttachment(new AttachmentDO(finalPath, 1, "wa", SerializableUtil.fileToBytes(file)));
         }else {
-            attachName = attachmentDO.getAttachmentName();
-            attachmentMapper.updateAttachment(new AttachmentDO(attachName, 1, "wa"));
-//            jdbcTemplate.execute(finalSql, (PreparedStatementCallback<Object>) ps -> {
-//                ps.setString(1, finalPath);
-//                ps.setInt(2, 11);
-//                ps.setString(3, "ww");
-//                ps.setBinaryStream(4, in);
-//                ps.setString(5, map.get("attachment_name").toString());
-//                ps.execute();
-//                return null;
-//            });
+            attachmentDO = attachmentMapper.getAttachmentByAttachmentName(attachmentDO.getAttachment_name());
+            if (attachmentDO == null){
+                attachmentMapper.insertAttachment(new AttachmentDO(finalPath, 1, "wa", SerializableUtil.fileToBytes(file)));
+            }else {
+                attachName = attachmentDO.getAttachment_name();
+                finalPath = attachName;
+                attachmentMapper.updateAttachment(new AttachmentDO(finalPath, 1, "wa", SerializableUtil.fileToBytes(file)));
+            }
         }
-        in.close();
-        attachmentMapper.updateAttachmentInCustomer(attachName, customerId);
+        attachmentMapper.updateAttachmentInCustomer(finalPath, customerId);
         return new BaseResult();
     }
 
     @Override
-    public BaseResult download(Integer customerId, String path) throws IOException{
+    public BaseResult download(Integer customerId, String path) throws Exception{
         AttachmentDO attachmentDO = attachmentMapper.getAttachmentNameByCustomerId(customerId);
         if (attachmentDO == null){
             return new BaseResult(500, "没有附件");
         }else {
-            attachmentDO = attachmentMapper.getAttachmentByAttachmentName(attachmentDO.getAttachmentName());
-//            String filename = map.get("attachment_name").toString();
-//            sql = "SELECT file FROM attachment WHERE attachment_name=?";
-//            map = jdbcTemplate.queryForList(sql, map.get("attachment_name")).get(0);
-//            byte[] b = (byte[])map.get("file");
-//            File f = new File(path + "\\" + filename);
-//            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(f));
-//            bos.write(b);
-//            bos.flush();
-//            bos.close();
+            attachmentDO = attachmentMapper.getAttachmentByAttachmentName(attachmentDO.getAttachment_name());
+            File f = new File(path + "\\" + attachmentDO.getAttachment_name());
+            if (!f.exists()){
+                f.createNewFile();
+            }
+            byte[] files = attachmentDO.getFile();
+            FileOutputStream outStream = new FileOutputStream(f);
+            outStream.write(files);
+            outStream.close();
         }
         return new BaseResult();
     }

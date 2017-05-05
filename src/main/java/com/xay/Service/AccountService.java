@@ -1,7 +1,9 @@
 package com.xay.Service;
 
 import com.xay.Domain.BaseResult;
-import com.xay.Controller.WebAccount;
+import com.xay.Domain.WebAccount;
+
+import java.security.NoSuchAlgorithmException;
 
 
 /**
@@ -21,12 +23,5 @@ public interface AccountService {
      * @param account
      * @return
      */
-    BaseResult<Object> login(WebAccount account);
-
-    /**
-     * 用户登陆
-     * @param account
-     * @return
-     */
-    BaseResult<Object> update(WebAccount account);
+    BaseResult<Object> update(WebAccount account) throws NoSuchAlgorithmException;
 }

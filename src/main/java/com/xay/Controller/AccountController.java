@@ -1,6 +1,7 @@
 package com.xay.Controller;
 
 import com.xay.Domain.BaseResult;
+import com.xay.Domain.WebAccount;
 import com.xay.MySQL.Mapper.AccountMapper;
 import com.xay.Security.AuthenticationRequest;
 import com.xay.Service.AccountService;
@@ -11,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author ZhangTianren
@@ -39,7 +42,7 @@ public class AccountController {
     }
 
     /**
-     * 用户登陆
+     * 客户登陆
      * @param authenticationRequest
      * @return
      * @throws AuthenticationException
@@ -59,6 +62,12 @@ public class AccountController {
         }else return new BaseResult(500, "用户类型错误");
     }
 
+    /**
+     * 导游登陆
+     * @param authenticationRequest
+     * @return
+     * @throws AuthenticationException
+     */
     @RequestMapping(value = "/sessions/guide", method = RequestMethod.POST)
     public BaseResult authGuide(@RequestBody AuthenticationRequest authenticationRequest) throws AuthenticationException {
         // Perform the security
@@ -80,7 +89,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "/accounts", method = RequestMethod.PATCH)
-    public BaseResult update(@RequestBody WebAccount account) {
+    public BaseResult update(@RequestBody WebAccount account) throws NoSuchAlgorithmException{
         return accountService.update(account);
     }
 }

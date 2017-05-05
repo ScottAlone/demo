@@ -1,4 +1,4 @@
-package com.xay.Controller;
+package com.xay.Domain;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -15,6 +15,8 @@ public class WebAccount implements Serializable {
     private String password;
     private String newPassword;
     private Integer type;
+    private String rawPassword;
+    private String rawNewPassword;
 
     public WebAccount(String name, String username, String password, String newPassword, Integer type) throws NoSuchAlgorithmException{
         setType(type);
@@ -40,6 +42,22 @@ public class WebAccount implements Serializable {
 
     }
 
+    public String getRawPassword() {
+        return rawPassword;
+    }
+
+    public void setRawPassword(String rawPassword) {
+        this.rawPassword = rawPassword;
+    }
+
+    public String getRawNewPassword() {
+        return rawNewPassword;
+    }
+
+    public void setRawNewPassword(String rawNewPassword) {
+        this.rawNewPassword = rawNewPassword;
+    }
+
     public String getName() {
         return name;
     }
@@ -62,10 +80,12 @@ public class WebAccount implements Serializable {
     }
 
     public void setPassword(String password) throws NoSuchAlgorithmException{
+        setRawPassword(password);
         this.password = password;
     }
 
     public void setNewPassword(String newPassword) throws NoSuchAlgorithmException {
+        setRawNewPassword(newPassword);
         this.newPassword = newPassword;
     }
 

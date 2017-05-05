@@ -1,16 +1,15 @@
 package com.xay.Service.impl;
 
 import com.xay.Domain.BaseResult;
-import com.xay.Controller.WebAccount;
+import com.xay.Domain.WebAccount;
 import com.xay.MySQL.DO.AccountDO;
 import com.xay.MySQL.Mapper.AccountMapper;
-import com.xay.Security.UserDetailImpl;
 import com.xay.Service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author ZhangTianren
@@ -20,9 +19,6 @@ import org.springframework.stereotype.Service;
 public class AccountServiceImpl implements AccountService{
     @Autowired
     private AccountMapper accountMapper;
-
-    @Autowired
-    private UserDetailImpl userDetail;
 
     @Override
     public BaseResult<Object> register(WebAccount account) {
@@ -44,19 +40,15 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public BaseResult<Object> login(WebAccount account) {
-        return null;
-    }
-
-    @Override
-    public BaseResult<Object> update(WebAccount account) {
+    public BaseResult<Object> update(WebAccount account) throws NoSuchAlgorithmException{
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (account.getType() == 0){
             AccountDO accountDO = accountMapper.getGuideByUsername(account.getUsername());
             if (accountDO == null){
                 return new BaseResult<>(500, "用户不存在");
             }
-            UserDetails user = userDetail.loadUserByUsername(account.getUsername());
-            if (accountDO.getPassword().equals(account.getPassword())){
+            if (passwordEncoder.matches(account.getRawPassword(), accountDO.getPassword())){
+                account.setPassword(account.getRawNewPassword());
                 accountMapper.updateGuide(new AccountDO(account));
             }else return new BaseResult<>(500, "密码错误");
         }else if (account.getType() == 1){
@@ -64,7 +56,8 @@ public class AccountServiceImpl implements AccountService{
             if (accountMapper.getCustomerByUsername(account.getUsername()) == null){
                 return new BaseResult<>(500, "用户不存在");
             }
-            if (accountDO.getPassword().equals(account.getPassword())){
+            if (passwordEncoder.matches(account.getRawPassword(), accountDO.getPassword())){
+                account.setPassword(account.getRawNewPassword());
                 accountMapper.updateCustomer(new AccountDO(account));
             }else return new BaseResult<>(500, "密码错误");
         }

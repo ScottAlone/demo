@@ -3,14 +3,12 @@ package com.xay.MySQL.Mapper;
 import com.xay.MySQL.DO.AccountDO;
 import org.apache.ibatis.annotations.*;
 
-
 /**
  * @author ZhangTianren
  * @version v0.1 2017/5/5.
  */
 @Mapper
 public interface AccountMapper {
-
     /**
      * 新建客户
      */
