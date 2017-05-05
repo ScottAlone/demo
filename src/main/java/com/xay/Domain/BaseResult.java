@@ -1,4 +1,4 @@
-package com.xay.Controller;
+package com.xay.Domain;
 
 import java.io.Serializable;
 

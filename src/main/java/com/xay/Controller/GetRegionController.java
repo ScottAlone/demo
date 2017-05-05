@@ -1,5 +1,7 @@
 package com.xay.Controller;
 
+import com.xay.MySQL.Mapper.GetRegionMapper;
+import com.xay.Service.GetRegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,28 +17,26 @@ import java.util.Map;
  * @version v0.1 2017/5/3.
  */
 @RestController
-public class GetRegion {
+public class GetRegionController {
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    GetRegionService getRegionService;
 
     /**
      * 查询省和直辖市
-     * @return List
+     * @return
      */
     @RequestMapping(value = "/getCity", method = RequestMethod.GET)
     public List<Map<String, Object>> getCity(){
-        String sql = "SELECT  city_id, name, first_letter FROM city WHERE parent_id=0";
-        return jdbcTemplate.queryForList(sql);
+        return getRegionService.getCity();
     }
 
     /**
      * 查询市辖区
      * @param parentId
-     * @return List
+     * @return
      */
     @RequestMapping(value = "/getCounty", method = RequestMethod.GET)
-    public List<Map<String, Object>> getCounty(@RequestParam("parentId") int parentId){
-        String sql = "SELECT city_id, name, first_letter FROM city WHERE parent_id=" + parentId;
-        return jdbcTemplate.queryForList(sql);
+    public List<Map<String, Object>> getCounty(@RequestParam("parentId") Integer parentId){
+        return getRegionService.getCounty(parentId);
     }
 }

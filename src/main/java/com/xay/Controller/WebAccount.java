@@ -1,9 +1,8 @@
 package com.xay.Controller;
 
-import sun.misc.BASE64Encoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serializable;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -15,11 +14,9 @@ public class WebAccount implements Serializable {
     private String username;
     private String password;
     private String newPassword;
-    private int type;
-    MessageDigest md;
-    BASE64Encoder base;
+    private Integer type;
 
-    public WebAccount(String name, String username, String password, String newPassword, int type) throws NoSuchAlgorithmException{
+    public WebAccount(String name, String username, String password, String newPassword, Integer type) throws NoSuchAlgorithmException{
         setType(type);
         setName(name);
         setUsername(username);
@@ -27,13 +24,13 @@ public class WebAccount implements Serializable {
         setNewPassword(newPassword);
     }
 
-    public WebAccount(String name, String username, String password, int type) throws NoSuchAlgorithmException{
+    public WebAccount(String name, String username, String password, Integer type) throws NoSuchAlgorithmException{
         setType(type);
         setName(name);
         setUsername(username);
         setPassword(password);
     }
-    public WebAccount(String username, String password, int type) throws NoSuchAlgorithmException{
+    public WebAccount(String username, String password, Integer type) throws NoSuchAlgorithmException{
         setType(type);
         setUsername(username);
         setPassword(password);
@@ -60,30 +57,28 @@ public class WebAccount implements Serializable {
     }
 
     public String getPassword() {
-        return password;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(password);
     }
 
     public void setPassword(String password) throws NoSuchAlgorithmException{
-        md = MessageDigest.getInstance("MD5");
-        base = new BASE64Encoder();
-        this.password = base.encode(md.digest(password.getBytes()));
+        this.password = password;
     }
 
     public void setNewPassword(String newPassword) throws NoSuchAlgorithmException {
-        md = MessageDigest.getInstance("MD5");
-        base = new BASE64Encoder();
-        this.newPassword = base.encode(md.digest(newPassword.getBytes()));
+        this.newPassword = newPassword;
     }
 
     public String getNewPassword() {
-        return newPassword;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(newPassword);
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

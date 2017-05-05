@@ -14,9 +14,6 @@
 </body>
 <script>
     $("#update").click(function () {
-        alert($("#username").val());
-        alert($("#old_pwd").val());
-        alert($("#new_pwd").val());
         $.ajax({
             url: "/accounts",
             type: 'PATCH',

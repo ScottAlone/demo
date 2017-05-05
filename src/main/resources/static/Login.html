@@ -6,6 +6,8 @@
     <script src="js/jquery.js"></script>
 </head>
 <body>
+    <input type="radio" name="type" value=0 checked> Guide
+    <input type="radio" name="type" value=1> Customer
     <label for="username">用户名：</label><input id="username" type="text">
     <label for="password">密码：</label> <input id="password" type="password">
     <button id="login">登陆</button>
@@ -15,7 +17,7 @@
 <script>
     $("#login").click(function () {
         $.ajax({
-            url: "/login",
+            url: "/sessions/guide",
             type: 'POST',
         data: JSON.stringify({
             type: 1,

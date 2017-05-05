@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @version v0.1 2017/5/2.
  */
 @Configuration
-public class DefaultView{
+public class DefaultViewController {
     @Bean
     public WebMvcConfigurerAdapter forwardToIndex() {
         return new WebMvcConfigurerAdapter() {
