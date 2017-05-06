@@ -7,20 +7,24 @@
 </head>
 <body>
 
-    <input type="radio" name="type" value=0> Guide
-    <input type="radio" name="type" value=1> Customer
+<input type="radio" name="type" onclick="change(0)" checked> Guide
+<input type="radio" name="type" onclick="change(1)"> Customer
     <label for="name">昵称：</label><input id="name" type="text">
     <label for="username">用户名：</label><input id="username" type="text">
     <label for="password">密码：</label> <input id="password" type="password">
     <button id="register">确认</button>
 </body>
 <script>
+    var loginType = 0;
+    function change(i) {
+        loginType = i;
+    }
     $("#register").click(function () {
         $.ajax({
             url: "/accounts",
             type: 'POST',
             data: JSON.stringify({
-                type: $("input[name='type'][checked]").val(),
+                type: loginType,
                 name: $("#name").val(),
                 username: $("#username").val(),
                 password: $("#password").val()

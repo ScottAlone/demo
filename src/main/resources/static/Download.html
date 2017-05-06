@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.js"></script>
+</head>
+<body>
+    <input id="up" type="file">
+    <button id="submit">提交</button>
+    <div id="result"></div>
+    <button id="down">下载</button>
+</body>
+<script>
+    let myFile;
+    let fileType;
+    let uploaded = false;
+    function readFile(){
+        uploaded = false;
+        let file = this.files[0]
+        fileType = file.name.split(".")[1];
+        if (file.size/1024 >= 1024){
+            alert("文件大小应在1M以内");
+            return false;
+        }
+        if(!/image\/\w+/.test(file.type)){
+            alert("文件必须为图片！");
+            return false;
+        }
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e){
+            result.innerHTML = '<img src="'+ this.result +'" alt=""/>'
+            myFile = this.result;
+            uploaded = true;
+        };
+    }
+
+    let input = document.getElementById("up");
+    input.addEventListener('change', readFile, false);
+
+    let result = document.getElementById("result");
+
+    $("#submit").click(function () {
+        if (!uploaded){
+            alert("未正确上传");
+            return false;
+        }
+        let d = new FormData();
+        d.append("customerId", 19);
+        d.append("cityId", 19);
+        d.append("tags", "wa");
+        d.append("file", myFile);
+        d.append("fileType", fileType);
+        let xhr = new XMLHttpRequest();
+        xhr.open("post", "/upload", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    console.log("upload complete");
+                    console.log("response: " + xhr.responseText);
+                }
+            }
+        };
+        xhr.send(d);
+    });
+
+    $("#down").click(function () {
+        $.ajax({
+            url: "/download?customerId=19",
+            type: 'GET',
+            context: document.body,
+            contentType: "application/json",
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    window.URL = window.URL || window.webkitURL;
+                    let xhr = new XMLHttpRequest();
+                    xhr.open("get", data.message, true);
+                    xhr.responseType = "blob";
+                    xhr.onload = function() {
+                        if (this.status == 200) {
+                            let blob = this.response;
+                            let downloadUrl = window.URL.createObjectURL(blob);
+                            let anchor = document.createElement("a");
+                            anchor.href = downloadUrl;
+                            anchor.download = data.message;
+                            anchor.click();
+                        }else alert("请求异常");
+                    };
+                    xhr.send();
+                }else alert(data.message);
+            },
+        });
+    });
+</script>
+</html>

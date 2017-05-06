@@ -1,5 +1,6 @@
 package com.xay.Service;
 
+import com.xay.Domain.AttachmentDomain;
 import com.xay.Domain.BaseResult;
 
 import java.io.IOException;
@@ -12,15 +13,15 @@ public interface AttachmentService {
     /**
      * 附件下载
      * @param customerId
-     * @param path
      * @return
      */
-    BaseResult download(Integer customerId, String path) throws Exception;
+    BaseResult download(Integer customerId) throws Exception;
 
     /**
      * 附件上传
-     * @param i
+     * @param attachmentDomain
      * @return
+     * @throws IOException
      */
-    BaseResult upload(Integer i) throws IOException;
+    BaseResult upload(AttachmentDomain attachmentDomain) throws IOException;
 }
