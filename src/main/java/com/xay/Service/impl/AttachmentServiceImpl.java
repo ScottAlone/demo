@@ -5,7 +5,6 @@ import com.xay.Domain.BaseResult;
 import com.xay.MySQL.DO.AttachmentDO;
 import com.xay.MySQL.Mapper.AttachmentMapper;
 import com.xay.Service.AttachmentService;
-import com.xay.Util.SerializableUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,22 +25,17 @@ public class AttachmentServiceImpl implements AttachmentService {
         AttachmentDO attachmentDO = attachmentMapper.getAttachmentNameByCustomerId(attachmentDomain.getCustomerId());
         String attachName = RandomStringUtils.randomAlphanumeric(50);
         String finalPath = attachName + "." + attachmentDomain.getFileType();
-        File file = new File("C:\\Users\\Administrator\\Desktop\\demo\\src\\main\\resources\\static\\" + finalPath);
         byte[] files = attachmentDomain.getFile();
-        FileOutputStream outStream = new FileOutputStream(file);
-        outStream.write(files);
-        outStream.close();
         if (attachmentDO == null){
-            attachmentMapper.insertAttachment(new AttachmentDO(finalPath, attachmentDomain.getCityId(), attachmentDomain.getTags(), SerializableUtil.fileToBytes(file)));
+            attachmentMapper.insertAttachment(new AttachmentDO(finalPath, attachmentDomain.getCityId(), attachmentDomain.getTags(), files));
         }else {
             attachmentDO = attachmentMapper.getAttachmentByAttachmentName(attachmentDO.getAttachment_name());
             if (attachmentDO == null){
-                attachmentMapper.insertAttachment(new AttachmentDO(finalPath, attachmentDomain.getCityId(), attachmentDomain.getTags(), SerializableUtil.fileToBytes(file)));
+                attachmentMapper.insertAttachment(new AttachmentDO(finalPath, attachmentDomain.getCityId(), attachmentDomain.getTags(), files));
             }else {
                 attachName = attachmentDO.getAttachment_name();
                 finalPath = attachName;
-                attachmentMapper.updateAttachment(new AttachmentDO(finalPath, attachmentDomain.getCityId(), attachmentDomain.getTags(), SerializableUtil.fileToBytes(file)));
-                file.renameTo(new File("C:\\Users\\Administrator\\Desktop\\demo\\src\\main\\resources\\static\\" + finalPath));
+                attachmentMapper.updateAttachment(new AttachmentDO(finalPath, attachmentDomain.getCityId(), attachmentDomain.getTags(), files));
             }
         }
         attachmentMapper.updateAttachmentInCustomer(finalPath, attachmentDomain.getCityId());
@@ -55,16 +49,14 @@ public class AttachmentServiceImpl implements AttachmentService {
             return new BaseResult(500, "没有附件");
         }else {
             attachmentDO = attachmentMapper.getAttachmentByAttachmentName(attachmentDO.getAttachment_name());
-            File f = new File("C:\\Users\\Administrator\\Desktop\\demo\\src\\main\\resources\\static\\" + attachmentDO.getAttachment_name());
-            if (!f.exists()){
-                f.createNewFile();
+            if (attachmentDO == null){
+                return new BaseResult(500, "没有附件");
+            }else {
+                attachmentDO = attachmentMapper.getAttachmentByAttachmentName(attachmentDO.getAttachment_name());
+                byte[] files = attachmentDO.getFile();
+                String fileName = attachmentDO.getAttachment_name();
+                return new BaseResult(200, fileName, files);
             }
-            byte[] files = attachmentDO.getFile();
-            FileOutputStream outStream = new FileOutputStream(f);
-            outStream.write(files);
-            outStream.close();
-            String fileName = attachmentDO.getAttachment_name();
-            return new BaseResult(200, fileName);
         }
     }
 }

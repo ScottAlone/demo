@@ -57,9 +57,8 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4) {
                 if (xhr.status == 200) {
-                    console.log("upload complete");
-                    console.log("response: " + xhr.responseText);
-                }
+                    alert("上传成功");
+                }else alert("上传失败");
             }
         };
         xhr.send(d);
@@ -73,21 +72,7 @@
             contentType: "application/json",
             success: function(data, statusText, xhr){
                 if (data.code == 200){
-                    window.URL = window.URL || window.webkitURL;
-                    let xhr = new XMLHttpRequest();
-                    xhr.open("get", data.message, true);
-                    xhr.responseType = "blob";
-                    xhr.onload = function() {
-                        if (this.status == 200) {
-                            let blob = this.response;
-                            let downloadUrl = window.URL.createObjectURL(blob);
-                            let anchor = document.createElement("a");
-                            anchor.href = downloadUrl;
-                            anchor.download = data.message;
-                            anchor.click();
-                        }else alert("请求异常");
-                    };
-                    xhr.send();
+                    result.innerHTML = '<img src="data:image/jpg;base64,'+ data.data +'" alt=""/>'
                 }else alert(data.message);
             },
         });
