@@ -26,7 +26,7 @@ p {
 .navbar .nav > li > a{padding: 15px 20px;}
 .navbar .btn-navbar{margin-top: 10px;}
 .carousel{margin-bottom: 5px;}
-.carousel .container{position: relative; z-index: 9;}
+.carousel .container{position: relative; z-index: 99;}
 .carousel-control{height: 80px; margin-top: 0; font-size: 120px; text-shadow: 0 1px 1px rgba(0,0,0,.4); background-color: transparent; border: 0; z-index: 10;}
 .carousel .item{height: 760px;}
 .carousel img{position: absolute; top: 0; left: 0; min-width: 1350px; height: 760px;}

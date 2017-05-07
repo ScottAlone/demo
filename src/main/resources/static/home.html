@@ -4,48 +4,48 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Itinerary</title>
 </head>
-<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css"/>
-<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
-<link rel="stylesheet" type="text/css" href="css/common.css"/>
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <link href="styles/bootstrap.css" rel="stylesheet">
+    <link href="styles/font-awesome.css" rel="stylesheet">
+    <link href="styles/common.css" rel="stylesheet">
+    <link href="styles/animate.css" rel="stylesheet">
+    <link href="styles/style.css" rel="stylesheet">
 <body>
 <div id="myCarousel" class="carousel slide">
     <div class="carousel-inner">
         <div class="item active">
             <img src="img/examples/slide1.jpg" alt="">
             <div class="container">
-                <div class="carousel-caption">
-                    <h1>We can help if you</h1>
+                <div class="carousel-caption  animated fadeInDown">
+                    <h1><strong>We can help if you</strong></h1>
                     <br>
                     <p class="lead">● have to search for so many travelling tips via the Internet just to make a satisfying plan which is consistent with your own tastes.</p><br>
                     <p class="lead">● need a private tour guide, but don't know where to find one.</p><br>
                     <p class="lead">● wish to enjoy firsthand ethnic flavor, but fail to get valid information.</p><br>
                 </div>
+                
             </div>
         </div>
         <div class="item">
             <img src="img/examples/slide2.jpg" alt="">
             <div class="container">
-                <div class="carousel-caption">
-                    <h1>Why choose Itinerary</h1>
+                <div class="carousel-caption2 animated fadeInDown">
+                    <h1><strong>Why choose Itinerary</strong></h1>
                     <br>
-                    <br>
-                    <p class="lead">● Unique  plans</p><br>
-                    <p class="lead">● Time-efficient & Cost-effective</p><br>
-                    <p class="lead">● Characteristic activities & Authentic cuisine</p><br>
-					<p class="lead">● Professional</p><br>
+                    <p class="lead">● Unique  plans</p>
+                    <p class="lead">● Time-efficient & Cost-effective</p>
+                    <p class="lead">● Characteristic activities & Authentic cuisine</p>
+					<p class="lead">● Professional</p>
                 </div>
             </div>
         </div>
         <div class="item">
             <img src="img/examples/slide3.jpg" alt="">
             <div class="container">
-                <div class="carousel-caption">
-                    <h1>JOIN US !!!</h1>
-                    <br><br><br>
+                <div class="carousel-caption2 animated fadeInDown">
+                    <h1><strong>JOIN US !!!</strong></h1>
+                    <br>
                     <p class="lead">● You can use our resourses either as Visitors OR Guides.</p><br>
-                    <p class="lead">● <strong>Start it! --> GO FOR REGISTER</strong></p><br>
+                    <p class="lead">● <strong>Start it!  GO FOR REGISTER</strong></p><br>
                 </div>
             </div>
         </div>
@@ -55,29 +55,75 @@
 </div>
 
 
-<div class="container-login">
-    <form>
-        <h2>LOG IN</h2>
-        <div class="input-prepend">
-			<div class="btn-group">
-                <button data-toggle="dropdown" class="btn btn-info dropdown-toggle" style="width:80px">Visitor <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <li><a>Visitor</a></li>
-                  <li><a>Guide</a></li>
-                </ul>
-              </div>
-              <input type="text" class="input-block-level" style="width:220px" placeholder="Username">
+
+</div>
+
+<div class="login-container">
+	<div class="ibox-content middle-box text-center loginscreen animated fadeInDown">
+        <div id="login" style="display: inline">
+            <h2><strong>LOG IN</strong></h2>
+            <p>You could log in either as a visitor or as a guide.
+            </p>
+            <form class="m-t" role="form">
+                <div class="input-group m-b">
+                    <div class="input-group-btn">
+                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">VISITOR <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">VISITOR</a></li>
+                            <li><a href="#">GUIDE</a></li>
+                        </ul>
+                    </div>
+                <input class="form-control" placeholder="Username" type="text"></div>
+                <div class="form-group">
+                    <input class="form-control" placeholder="Password" required="" type="password">
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+
+                <a href="#"><small>Forgot password?</small></a>
+                <p class="text-muted text-center"><small>Do not have an account?</small></p>
+                <a class="btn btn-sm btn-white btn-block" onclick="register()">Create an account</a>
+            </form>
+        </div>
+        <div id="register" style="display: none">
+            <h2><strong>REGISTER</strong></h2>
+            <p>You could register either as a visitor or as a guide.
+            </p>
+            <form class="m-t" role="form" action="login.html">
+                <div class="input-group m-b">
+                    <div class="input-group-btn">
+                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">VISITOR <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">VISITOR</a></li>
+                            <li><a href="#">GUIDE</a></li>
+                        </ul>
+                    </div>
+                <input class="form-control" placeholder="Username" type="text"></div>
+                <div class="form-group">
+                    <input class="form-control" placeholder="Email" required="" type="email">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" placeholder="Password" required="" type="password">
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" name="" value=""/>&nbsp&nbsp Agree the terms and policy </div>
+                
+                <button type="submit" class="btn btn-primary block full-width m-b">Register</button>
+
+                <p class="text-muted text-center"><small>Already have an account?</small></p>
+                <a class="btn btn-sm btn-white btn-block" onclick="login()">Login</a>
+            </form>
         </div>
 
-        
-        <input type="password" class="input-block-level" placeholder="Password">
-        <label class="checkbox">
-            <input type="checkbox" value="remember-me"> remember me
-        </label>
-        <button class="btn btn-large btn-success" type="submit">log in</button>
-        <button class="btn btn-large btn-warning" type="submit">register</button>
-    </form>
+	</div>
 </div>
+
+
+
 <footer>Software Management 2017 ZTR & XAY</footer>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+
 </body>
 </html>

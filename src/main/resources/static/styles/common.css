@@ -1,0 +1,13 @@
+.slide img{min-width: 1350px; height: 760px;}
+.login-container {
+  position: absolute;
+  right: 10%;
+  bottom: 0px;
+  top: 100px;
+  left: 70%;
+  z-index: 10;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: #7B7B7B;
+  text-align: center;
+}
