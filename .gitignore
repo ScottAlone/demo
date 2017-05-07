@@ -17,7 +17,6 @@
 *.iws
 *.iml
 *.ipr
-*.jpg
 
 ### NetBeans ###
 nbproject/private/
@@ -26,3 +25,5 @@ nbbuild/
 /dist/
 nbdist/
 .nb-gradle/
+src/main/resources/static/files/
+src/main/webapp/

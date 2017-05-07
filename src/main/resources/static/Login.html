@@ -10,7 +10,7 @@
     <input type="radio" name="type" onclick="change(1)"> Customer
     <label for="username">用户名：</label><input id="username" type="text">
     <label for="password">密码：</label> <input id="password" type="password">
-    <button id="login">登陆</button>
+    <button id="loginButton">登陆</button>
     <button id="register">注册</button>
     <button id="update">更新</button>
 </body>
@@ -19,7 +19,7 @@
     function change(i) {
         loginType = i;
     }
-    $("#login").click(function () {
+    $("#loginButton").click(function () {
         $.ajax({
             url: "/sessions/" + (loginType === 0?"guide":"customer"),
             type: 'POST',
