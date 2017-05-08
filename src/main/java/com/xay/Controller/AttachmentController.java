@@ -36,7 +36,7 @@ public class AttachmentController {
         String[] t = f.split(",");
         BASE64Decoder decoder = new BASE64Decoder();
         byte[] file = decoder.decodeBuffer(t[1]);
-        AttachmentDomain attachmentDomain = new AttachmentDomain(Integer.valueOf(customerId), Integer.valueOf(cityId), tags, file, fileType);
+        AttachmentDomain attachmentDomain = new AttachmentDomain(Integer.valueOf(customerId), file, fileType);
         return attachmentService.upload(attachmentDomain);
     }
 

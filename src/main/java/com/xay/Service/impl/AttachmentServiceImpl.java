@@ -27,18 +27,18 @@ public class AttachmentServiceImpl implements AttachmentService {
         String finalPath = attachName + "." + attachmentDomain.getFileType();
         byte[] files = attachmentDomain.getFile();
         if (attachmentDO == null){
-            attachmentMapper.insertAttachment(new AttachmentDO(finalPath, attachmentDomain.getCityId(), attachmentDomain.getTags(), files));
+            attachmentMapper.insertAttachment(new AttachmentDO(finalPath, files));
         }else {
             attachmentDO = attachmentMapper.getAttachmentByAttachmentName(attachmentDO.getAttachment_name());
             if (attachmentDO == null){
-                attachmentMapper.insertAttachment(new AttachmentDO(finalPath, attachmentDomain.getCityId(), attachmentDomain.getTags(), files));
+                attachmentMapper.insertAttachment(new AttachmentDO(finalPath, files));
             }else {
                 attachName = attachmentDO.getAttachment_name();
                 finalPath = attachName;
-                attachmentMapper.updateAttachment(new AttachmentDO(finalPath, attachmentDomain.getCityId(), attachmentDomain.getTags(), files));
+                attachmentMapper.updateAttachment(new AttachmentDO(finalPath, files));
             }
         }
-        attachmentMapper.updateAttachmentInCustomer(finalPath, attachmentDomain.getCityId());
+        attachmentMapper.updateAttachmentInCustomer(finalPath, attachmentDomain.getCustomerId());
         return new BaseResult();
     }
 

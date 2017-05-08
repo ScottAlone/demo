@@ -2,8 +2,8 @@ package com.xay.MySQL.DO;
 
 import com.xay.Domain.JourneyDomain;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
+
 
 /**
  * @author ZhangTianren
@@ -12,8 +12,8 @@ import java.util.Date;
 public class JourneyDO {
     private Integer journey_id;
     private String journey_name;
-    private Timestamp create_time;
-    private Timestamp update_time;
+    private Date create_time;
+    private Date update_time;
     private String phone_num;
     private Integer city_id;
     private String members;
@@ -25,6 +25,8 @@ public class JourneyDO {
     private String tags;
     private String others;
     private Integer customer_id;
+    private String due_date;
+    private Integer price;
 
     public JourneyDO(JourneyDomain journeyDomain){
         this.journey_id = journeyDomain.getJourneyId();
@@ -40,9 +42,11 @@ public class JourneyDO {
         this.tags = journeyDomain.getTags();
         this.others = journeyDomain.getOthers();
         this.customer_id = journeyDomain.getCustomerId();
+        this.due_date = journeyDomain.getDueDate();
+        this.price = journeyDomain.getPrice();
     }
 
-    public JourneyDO(Integer journey_id, String journey_name, Timestamp create_time, Timestamp update_time, String phone_num, Integer city_id, String members, Integer tour_type, Integer low_price, Integer high_price, String start_time, String end_time, String tags, String others, Integer customer_id) {
+    public JourneyDO(Integer journey_id, String journey_name, Date create_time, Date update_time, String phone_num, Integer city_id, String members, Integer tour_type, Integer low_price, Integer high_price, String start_time, String end_time, String tags, String others, Integer customer_id) {
         this.journey_id = journey_id;
         this.journey_name = journey_name;
         this.create_time = create_time;
@@ -88,7 +92,7 @@ public class JourneyDO {
         return create_time;
     }
 
-    public void setCreate_time(Timestamp create_time) {
+    public void setCreate_time(Date create_time) {
         this.create_time = create_time;
     }
 
@@ -96,7 +100,7 @@ public class JourneyDO {
         return update_time;
     }
 
-    public void setUpdate_time(Timestamp update_time) {
+    public void setUpdate_time(Date update_time) {
         this.update_time = update_time;
     }
 
@@ -188,24 +192,19 @@ public class JourneyDO {
         this.customer_id = customer_id;
     }
 
-    @Override
-    public String toString() {
-        return "JourneyDO{" +
-                "journey_id='" + getJourney_id() + '\'' +
-                ", journey_name='" + getJourney_name() + '\'' +
-                ", create_time='" + getCreate_time() + '\'' +
-                ", update_time='" + getUpdate_time() + '\'' +
-                ", phone_num='" + getPhone_num() + '\'' +
-                ", city_id='" + getCity_id() + '\'' +
-                ", members='" + getMembers() + '\'' +
-                ", tour_type='" + getTour_type() + '\'' +
-                ", low_price='" + getLow_price() + '\'' +
-                ", high_price='" + getHigh_price() + '\'' +
-                ", start_time='" + getStart_time() + '\'' +
-                ", end_time='" + getEnd_time() + '\'' +
-                ", tags='" + getTour_type() + '\'' +
-                ", others='" + getOthers() + '\'' +
-                ", customer_id='" + getCustomer_id() + '\'' +
-                '}';
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setDue_date(String due_date) {
+        this.due_date = due_date;
+    }
+
+    public String getDue_date() {
+        return due_date;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }

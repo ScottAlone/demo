@@ -18,10 +18,10 @@ import org.springframework.stereotype.Service;
 public class JourneyServiceImpl implements JourneyService{
 
     @Autowired
-    AccountMapper accountMapper;
+    private AccountMapper accountMapper;
 
     @Autowired
-    JourneyMapper journeyMapper;
+    private JourneyMapper journeyMapper;
 
     @Override
     public BaseResult postJourney(JourneyDomain journeyDomain) {
@@ -34,9 +34,12 @@ public class JourneyServiceImpl implements JourneyService{
     }
 
     @Override
-    public JourneyDomain[] getJourneyByCustomerId(Integer customerId){
-        JourneyDO[] journeyDOS = journeyMapper.getJourneyByCustomerId(customerId);
+    public JourneyDomain[] getJourneyByCustomerId(Integer guideId){
+        JourneyDO[] journeyDOS = journeyMapper.getJourneyByCustomerId(guideId);
         JourneyDomain[] journeyDomains = new JourneyDomain[journeyDOS.length];
+        if (journeyDomains.length == 0){
+            return null;
+        }
         for (int i = 0; i < journeyDOS.length; i++){
             journeyDomains[i] = new JourneyDomain(journeyDOS[i]);
         }
@@ -49,7 +52,7 @@ public class JourneyServiceImpl implements JourneyService{
         if (journeyDO != null) {
             return new JourneyDomain(journeyDO);
         }
-        return new JourneyDomain();
+        return null;
     }
 
     @Override

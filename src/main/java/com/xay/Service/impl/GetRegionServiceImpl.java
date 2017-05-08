@@ -15,7 +15,7 @@ import java.util.Map;
 @Service
 public class GetRegionServiceImpl implements GetRegionService{
     @Autowired
-    GetRegionMapper getRegionMapper;
+    private GetRegionMapper getRegionMapper;
 
     @Override
     public List<Map<String, Object>> getCity() {

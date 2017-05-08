@@ -22,7 +22,7 @@ public interface AttachmentMapper {
      * @param attachmentDO
      * @return
      */
-    @Insert("INSERT INTO attachment(attachment_name, city_id, tags, file) VALUES(#{attachment_name}, #{city_id}, #{tags}, #{file,jdbcType=BLOB})")
+    @Insert("INSERT INTO attachment(attachment_name, file) VALUES(#{attachment_name}, #{file,jdbcType=BLOB})")
     int insertAttachment(AttachmentDO attachmentDO);
 
     /**
@@ -30,7 +30,7 @@ public interface AttachmentMapper {
      * @param attachmentDO
      * @return
      */
-    @Update("UPDATE attachment SET attachment_name=#{attachment_name}, city_id=#{city_id}, tags=#{tags}, file=#{file,jdbcType=BLOB} WHERE attachment_name=#{attachment_name}")
+    @Update("UPDATE attachment SET attachment_name=#{attachment_name}, file=#{file,jdbcType=BLOB} WHERE attachment_name=#{attachment_name}")
     int updateAttachment(AttachmentDO attachmentDO);
 
     /**

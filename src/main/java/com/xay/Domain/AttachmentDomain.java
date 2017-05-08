@@ -6,15 +6,11 @@ package com.xay.Domain;
  */
 public class AttachmentDomain {
     private Integer customerId;
-    private Integer cityId;
-    private String tags;
     private byte[] file;
     private String fileType;
 
-    public AttachmentDomain(Integer customerId, Integer cityId, String tags, byte[] file, String fileType){
+    public AttachmentDomain(Integer customerId, byte[] file, String fileType){
         this.customerId = customerId;
-        this.cityId = cityId;
-        this.tags = tags;
         this.file = file;
         this.fileType = fileType;
     }
@@ -29,22 +25,6 @@ public class AttachmentDomain {
 
     public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
-    }
-
-    public Integer getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
     }
 
     public byte[] getFile() {

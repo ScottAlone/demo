@@ -2,7 +2,6 @@ package com.xay.Controller;
 
 import com.xay.Domain.BaseResult;
 import com.xay.Domain.JourneyDomain;
-import com.xay.MySQL.DO.JourneyDO;
 import com.xay.Service.JourneyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
