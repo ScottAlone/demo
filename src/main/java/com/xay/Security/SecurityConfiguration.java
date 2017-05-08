@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login.html")
                 .permitAll();
-
+        http.headers().frameOptions().sameOrigin();
         // disable page caching
         http.headers().cacheControl();
     }
