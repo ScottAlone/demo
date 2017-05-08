@@ -11,3 +11,12 @@
   color: #7B7B7B;
   text-align: center;
 }
+.profile-img {
+  width:100px;
+  height:100px;
+  border-radius:100px;
+}
+.menu-center {
+    text-align: center;
+    color: white;
+}
