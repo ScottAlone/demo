@@ -23,8 +23,8 @@ public interface JourneyMapper {
      * @param journeyDO
      * @return
      */
-    @Insert("INSERT INTO journey(journey_name, phone_num, city_id, members, tour_type, low_price, high_price, start_time, end_time, tags, others, customer_id) " +
-            "VALUES(#{journey_name}, #{phone_num}, #{city_id}, #{members}, #{tour_type}, #{low_price}, #{high_price}, #{start_time}, #{end_time}, #{tags}, #{others}, #{customer_id})")
+    @Insert("INSERT INTO journey(journey_name, phone_num, city_id, members, tour_type, low_price, high_price, start_time, end_time, tags, others, customer_id, due_date, price) " +
+            "VALUES(#{journey_name}, #{phone_num}, #{city_id}, #{members}, #{tour_type}, #{low_price}, #{high_price}, #{start_time}, #{end_time}, #{tags}, #{others}, #{customer_id}, #{due_date}, #{price})")
     int postJourney(JourneyDO journeyDO);
 
     /**

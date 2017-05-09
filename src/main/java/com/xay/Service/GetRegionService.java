@@ -1,7 +1,6 @@
 package com.xay.Service;
 
-import java.util.List;
-import java.util.Map;
+import com.xay.Domain.BaseResult;
 
 /**
  * @author ZhangTianren
@@ -12,12 +11,27 @@ public interface GetRegionService {
      *查询省和直辖市
      * @return
      */
-    List<Map<String, Object>> getCity();
+    BaseResult<Object> getCity();
 
     /**
      * 查询市辖区
      * @param parentId
      * @return
      */
-    List<Map<String, Object>> getCounty(Integer parentId);
+    BaseResult<Object> getCounty(Integer parentId);
+
+    /**
+     *根据首字母获取城市
+     * @param firstLetter
+     * @return
+     */
+    BaseResult<Object> getCityByFL(String firstLetter);
+
+    /**
+     * 根据省市id和下级辖区首字母获取下级辖区
+     * @param parentName
+     * @param firstLetter
+     * @return
+     */
+    BaseResult<Object> getCountyByFL(String parentName, String firstLetter);
 }

@@ -63,7 +63,7 @@ public interface AccountMapper {
      * @return
      */
     @Select("SELECT * FROM customers WHERE guide_id=#{guide_id}")
-    AccountDO getGuiderByUserId(@Param("guide_id") Integer guideId);
+    AccountDO getGuideByUserId(@Param("guide_id") Integer guideId);
 
     /**
      * 根据ID查询客户

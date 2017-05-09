@@ -19,22 +19,22 @@ public class JourneyController {
     JourneyService journeyService;
 
     @RequestMapping(value = "journeys", method = RequestMethod.POST)
-    public BaseResult postJourney(@RequestBody JourneyDomain journeyDomain){
+    public BaseResult<Object> postJourney(@RequestBody JourneyDomain journeyDomain){
         return journeyService.postJourney(journeyDomain);
     }
 
     @RequestMapping(value = "journeys", method = RequestMethod.GET)
-    public JourneyDomain[] getJourneyByCustomerId(Integer customerId){
+    public BaseResult<Object> getJourneyByCustomerId(Integer customerId){
         return journeyService.getJourneyByCustomerId(customerId);
     }
 
     @RequestMapping(value = "journeys/journey", method = RequestMethod.GET)
-    public JourneyDomain getJourney(Integer journeyId){
+    public BaseResult<Object> getJourney(Integer journeyId){
         return journeyService.getJourneyByJourneyId(journeyId);
     }
 
     @RequestMapping(value = "journeys/journey", method = RequestMethod.PATCH)
-    public BaseResult updateJourney(@RequestBody JourneyDomain journeyDomain){
+    public BaseResult<Object> updateJourney(@RequestBody JourneyDomain journeyDomain){
         return journeyService.updateJourney(journeyDomain);
     }
 }

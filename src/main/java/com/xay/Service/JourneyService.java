@@ -8,8 +8,8 @@ import com.xay.Domain.JourneyDomain;
  * @version v0.1 2017/5/8.
  */
 public interface JourneyService {
-    JourneyDomain[] getJourneyByCustomerId(Integer customerId);
-    BaseResult postJourney(JourneyDomain journeyDomain);
-    JourneyDomain getJourneyByJourneyId(Integer journeyId);
-    BaseResult updateJourney(JourneyDomain journeyDomain);
+    BaseResult<Object> getJourneyByCustomerId(Integer customerId);
+    BaseResult<Object> postJourney(JourneyDomain journeyDomain);
+    BaseResult<Object> getJourneyByJourneyId(Integer journeyId);
+    BaseResult<Object> updateJourney(JourneyDomain journeyDomain);
 }

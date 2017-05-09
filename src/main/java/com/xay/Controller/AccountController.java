@@ -37,7 +37,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "/accounts", method = RequestMethod.POST)
-    public BaseResult register(@RequestBody WebAccount account){
+    public BaseResult<Object> register(@RequestBody WebAccount account){
         return accountService.register(account);
     }
 
@@ -48,7 +48,7 @@ public class AccountController {
      * @throws AuthenticationException
      */
     @RequestMapping(value = "/sessions/customer", method = RequestMethod.POST)
-    public BaseResult authCustomer(@RequestBody AuthenticationRequest authenticationRequest) throws AuthenticationException {
+    public BaseResult<Object> authCustomer(@RequestBody AuthenticationRequest authenticationRequest) throws AuthenticationException {
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -58,8 +58,8 @@ public class AccountController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         if (accountMapper.getCustomerByUsername(authenticationRequest.getUsername()) != null){
-            return new BaseResult();
-        }else return new BaseResult(500, "用户类型错误");
+            return new BaseResult<>();
+        }else return new BaseResult<>(500, "用户类型错误");
     }
 
     /**
@@ -69,7 +69,7 @@ public class AccountController {
      * @throws AuthenticationException
      */
     @RequestMapping(value = "/sessions/guide", method = RequestMethod.POST)
-    public BaseResult authGuide(@RequestBody AuthenticationRequest authenticationRequest) throws AuthenticationException {
+    public BaseResult<Object> authGuide(@RequestBody AuthenticationRequest authenticationRequest) throws AuthenticationException {
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -79,8 +79,8 @@ public class AccountController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         if (accountMapper.getGuideByUsername(authenticationRequest.getUsername()) != null){
-            return new BaseResult();
-        }else return new BaseResult(500, "用户类型错误");
+            return new BaseResult<>();
+        }else return new BaseResult<>(500, "用户类型错误");
     }
 
     /**
@@ -89,7 +89,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "/accounts", method = RequestMethod.PATCH)
-    public BaseResult update(@RequestBody WebAccount account) throws NoSuchAlgorithmException{
+    public BaseResult<Object> update(@RequestBody WebAccount account) throws NoSuchAlgorithmException{
         return accountService.update(account);
     }
 }

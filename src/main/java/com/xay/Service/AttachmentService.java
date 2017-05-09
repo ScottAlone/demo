@@ -15,7 +15,7 @@ public interface AttachmentService {
      * @param customerId
      * @return
      */
-    BaseResult download(Integer customerId) throws Exception;
+    BaseResult<Object> download(Integer customerId) throws Exception;
 
     /**
      * 附件上传
@@ -23,5 +23,5 @@ public interface AttachmentService {
      * @return
      * @throws IOException
      */
-    BaseResult upload(AttachmentDomain attachmentDomain) throws IOException;
+    BaseResult<Object> upload(AttachmentDomain attachmentDomain) throws IOException;
 }

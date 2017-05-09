@@ -1,6 +1,5 @@
 package com.xay.Service;
 
-
 import com.xay.Domain.BaseResult;
 import com.xay.Domain.OrderDomain;
 
@@ -9,10 +8,10 @@ import com.xay.Domain.OrderDomain;
  * @version v0.1 2017/5/8.
  */
 public interface OrderService {
-    BaseResult payOrder(OrderDomain orderDomain);
-    BaseResult deliverOrder(OrderDomain orderDomain);
-    BaseResult finishOrder(OrderDomain orderDomain);
-    BaseResult postOrder(OrderDomain orderDomain);
-    OrderDomain[] getOrders(Integer guideId);
-    OrderDomain getOrderById(Integer orderId);
+    BaseResult<Object> payOrder(OrderDomain orderDomain);
+    BaseResult<Object> deliverOrder(OrderDomain orderDomain);
+    BaseResult<Object> finishOrder(OrderDomain orderDomain);
+    BaseResult<Object> postOrder(OrderDomain orderDomain);
+    BaseResult<Object> getOrders(Integer guideId);
+    BaseResult<Object> getOrderById(Integer orderId);
 }

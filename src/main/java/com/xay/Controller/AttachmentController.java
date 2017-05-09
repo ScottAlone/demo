@@ -26,7 +26,7 @@ public class AttachmentController {
      * @throws IOException
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public BaseResult upload(HttpServletRequest request) throws IOException{
+    public BaseResult<Object> upload(HttpServletRequest request) throws IOException{
         request.setCharacterEncoding("UTF-8");
         String customerId = request.getParameter("customerId");
         String cityId = request.getParameter("cityId");
@@ -46,7 +46,7 @@ public class AttachmentController {
      * @return BaseResult
      */
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public BaseResult download(@RequestParam("customerId")Integer customerId) throws Exception {
+    public BaseResult<Object> download(@RequestParam("customerId")Integer customerId) throws Exception {
         return attachmentService.download(customerId);
     }
 }

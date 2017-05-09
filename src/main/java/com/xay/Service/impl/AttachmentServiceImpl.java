@@ -21,7 +21,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     private AttachmentMapper attachmentMapper;
 
     @Override
-    public BaseResult upload(AttachmentDomain attachmentDomain) throws IOException{
+    public BaseResult<Object> upload(AttachmentDomain attachmentDomain) throws IOException{
         AttachmentDO attachmentDO = attachmentMapper.getAttachmentNameByCustomerId(attachmentDomain.getCustomerId());
         String attachName = RandomStringUtils.randomAlphanumeric(50);
         String finalPath = attachName + "." + attachmentDomain.getFileType();
@@ -39,23 +39,23 @@ public class AttachmentServiceImpl implements AttachmentService {
             }
         }
         attachmentMapper.updateAttachmentInCustomer(finalPath, attachmentDomain.getCustomerId());
-        return new BaseResult();
+        return new BaseResult<>();
     }
 
     @Override
-    public BaseResult download(Integer customerId) throws Exception{
+    public BaseResult<Object> download(Integer customerId) throws Exception{
         AttachmentDO attachmentDO = attachmentMapper.getAttachmentNameByCustomerId(customerId);
         if (attachmentDO == null){
-            return new BaseResult(500, "没有附件");
+            return new BaseResult<>(500, "没有附件");
         }else {
             attachmentDO = attachmentMapper.getAttachmentByAttachmentName(attachmentDO.getAttachment_name());
             if (attachmentDO == null){
-                return new BaseResult(500, "没有附件");
+                return new BaseResult<>(500, "没有附件");
             }else {
                 attachmentDO = attachmentMapper.getAttachmentByAttachmentName(attachmentDO.getAttachment_name());
                 byte[] files = attachmentDO.getFile();
                 String fileName = attachmentDO.getAttachment_name();
-                return new BaseResult(200, fileName, files);
+                return new BaseResult<>(200, fileName, files);
             }
         }
     }

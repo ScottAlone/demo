@@ -1,12 +1,10 @@
 package com.xay.Service.impl;
 
+import com.xay.Domain.BaseResult;
 import com.xay.MySQL.Mapper.GetRegionMapper;
 import com.xay.Service.GetRegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author ZhangTianren
@@ -18,12 +16,22 @@ public class GetRegionServiceImpl implements GetRegionService{
     private GetRegionMapper getRegionMapper;
 
     @Override
-    public List<Map<String, Object>> getCity() {
-        return getRegionMapper.getCity();
+    public BaseResult<Object> getCity() {
+        return new BaseResult<>(getRegionMapper.getCity());
     }
 
     @Override
-    public List<Map<String, Object>> getCounty(Integer parentId) {
-        return getRegionMapper.getCounty(parentId);
+    public BaseResult<Object> getCounty(Integer parentId) {
+        return new BaseResult<>(getRegionMapper.getCounty(parentId));
+    }
+
+    @Override
+    public BaseResult<Object> getCityByFL(String firstLetter) {
+        return new BaseResult<>(getRegionMapper.getCityByFL(firstLetter));
+    }
+
+    @Override
+    public BaseResult<Object> getCountyByFL(String parentName, String firstLetter) {
+        return new BaseResult<>(getRegionMapper.getCountyByFL(parentName, firstLetter));
     }
 }
