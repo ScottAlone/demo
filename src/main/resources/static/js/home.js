@@ -1,10 +1,11 @@
 function changeToRegister() {
-    document.getElementById("login").style.display="none";
-    document.getElementById("register").style.display="inline";
+
+    $("#login").hide();
+    $("#register").show();
 }
 function changeToLogin() {
-	document.getElementById("login").style.display="inline";
-	document.getElementById("register").style.display="none";
+    $("#login").show();
+    $("#register").hide();
 }
 
 let loginType = 0;
