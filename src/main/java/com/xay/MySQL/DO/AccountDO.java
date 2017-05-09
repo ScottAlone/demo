@@ -1,6 +1,6 @@
 package com.xay.MySQL.DO;
 
-import com.xay.Domain.WebAccount;
+import com.xay.Domain.AccountDomain;
 
 import java.sql.Timestamp;
 
@@ -12,22 +12,30 @@ public class AccountDO extends BaseDO{
     private String name;
     private String username;
     private String password;
+    private byte[] file;
 
-    public AccountDO(WebAccount webAccount) {
-        setName(webAccount.getName());
-        setUsername(webAccount.getUsername());
-        setPassword(webAccount.getPassword());
+    public AccountDO(AccountDomain accountDomain) {
+        this.name = accountDomain.getName();
+        this.username = accountDomain.getUsername();
+        this.password = accountDomain.getPassword();
+        this.file = accountDomain.getFile();
     }
 
     public AccountDO() {
 
     }
 
-    public AccountDO(Integer id, Timestamp create_time, Timestamp update_time, String name, String username, String password) {
+    public AccountDO(Integer id, Timestamp create_time, Timestamp update_time, String name, String username, String password, byte[] file) {
         super(id, create_time, update_time);
         this.name = name;
         this.username = username;
         this.password = password;
+        this.file = file;
+    }
+
+    public AccountDO(String username, byte[] file) {
+        this.username = username;
+        this.file = file;
     }
 
     public String getName() {
@@ -54,12 +62,11 @@ public class AccountDO extends BaseDO{
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "AccountDO{" +
-                "name='" + getName() + '\'' +
-                ", username='" + getUsername() + '\'' +
-                ", password='" + getPassword() + '\'' +
-                '}';
+    public byte[] getFile() {
+        return file;
+    }
+
+    public void setFile(byte[] file) {
+        this.file = file;
     }
 }

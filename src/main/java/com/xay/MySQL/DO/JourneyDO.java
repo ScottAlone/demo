@@ -2,7 +2,7 @@ package com.xay.MySQL.DO;
 
 import com.xay.Domain.JourneyDomain;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 
 /**
@@ -12,8 +12,8 @@ import java.sql.Date;
 public class JourneyDO {
     private Integer journey_id;
     private String journey_name;
-    private Date create_time;
-    private Date update_time;
+    private Timestamp create_time;
+    private Timestamp update_time;
     private String phone_num;
     private Integer city_id;
     private String members;
@@ -24,7 +24,7 @@ public class JourneyDO {
     private String end_time;
     private String tags;
     private String others;
-    private Integer customer_id;
+    private String c_username;
     private String due_date;
     private Integer price;
 
@@ -41,12 +41,12 @@ public class JourneyDO {
         this.end_time = journeyDomain.getEndTime();
         this.tags = journeyDomain.getTags();
         this.others = journeyDomain.getOthers();
-        this.customer_id = journeyDomain.getCustomerId();
+        this.c_username = journeyDomain.getcUsername();
         this.due_date = journeyDomain.getDueDate();
         this.price = journeyDomain.getPrice();
     }
 
-    public JourneyDO(Integer journey_id, String journey_name, Date create_time, Date update_time, String phone_num, Integer city_id, String members, Integer tour_type, Integer low_price, Integer high_price, String start_time, String end_time, String tags, String others, Integer customer_id) {
+    public JourneyDO(Integer journey_id, String journey_name, Timestamp create_time, Timestamp update_time, String phone_num, Integer city_id, String members, Integer tour_type, Integer low_price, Integer high_price, String start_time, String end_time, String tags, String others, String c_username) {
         this.journey_id = journey_id;
         this.journey_name = journey_name;
         this.create_time = create_time;
@@ -61,7 +61,24 @@ public class JourneyDO {
         this.end_time = end_time;
         this.tags = tags;
         this.others = others;
-        this.customer_id = customer_id;
+        this.c_username = c_username;
+    }
+
+    public JourneyDO(Integer journey_id, String journey_name, String phone_num, Integer city_id, String members, Integer tour_type, Integer low_price, Integer high_price, String start_time, String end_time, String tags, String others, String due_date, Integer price) {
+        this.journey_id = journey_id;
+        this.journey_name = journey_name;
+        this.phone_num = phone_num;
+        this.city_id = city_id;
+        this.members = members;
+        this.tour_type = tour_type;
+        this.low_price = low_price;
+        this.high_price = high_price;
+        this.start_time = start_time;
+        this.end_time = end_time;
+        this.tags = tags;
+        this.others = others;
+        this.due_date = due_date;
+        this.price = price;
     }
 
     public JourneyDO(Integer journey_id){
@@ -88,19 +105,19 @@ public class JourneyDO {
         this.journey_name = journey_name;
     }
 
-    public Date getCreate_time() {
+    public Timestamp getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(Date create_time) {
+    public void setCreate_time(Timestamp create_time) {
         this.create_time = create_time;
     }
 
-    public Date getUpdate_time() {
+    public Timestamp getUpdate_time() {
         return update_time;
     }
 
-    public void setUpdate_time(Date update_time) {
+    public void setUpdate_time(Timestamp update_time) {
         this.update_time = update_time;
     }
 
@@ -184,24 +201,24 @@ public class JourneyDO {
         this.others = others;
     }
 
-    public Integer getCustomer_id() {
-        return customer_id;
+    public String getC_username() {
+        return c_username;
     }
 
-    public void setCustomer_id(Integer customer_id) {
-        this.customer_id = customer_id;
+    public void setC_username(String c_username) {
+        this.c_username = c_username;
     }
 
-    public Integer getPrice() {
-        return price;
+    public String getDue_date() {
+        return due_date;
     }
 
     public void setDue_date(String due_date) {
         this.due_date = due_date;
     }
 
-    public String getDue_date() {
-        return due_date;
+    public Integer getPrice() {
+        return price;
     }
 
     public void setPrice(Integer price) {

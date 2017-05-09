@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
  * @author ZhangTianren
  * @version v0.1 2017/5/4.
  */
-public class WebAccount implements Serializable {
+public class AccountDomain implements Serializable {
     private String name;
     private String username;
     private String password;
@@ -17,8 +17,9 @@ public class WebAccount implements Serializable {
     private Integer type;
     private String rawPassword;
     private String rawNewPassword;
+    private byte[] file;
 
-    public WebAccount(String name, String username, String password, String newPassword, Integer type) throws NoSuchAlgorithmException{
+    public AccountDomain(String name, String username, String password, String newPassword, Integer type) throws NoSuchAlgorithmException{
         setType(type);
         setName(name);
         setUsername(username);
@@ -26,19 +27,25 @@ public class WebAccount implements Serializable {
         setNewPassword(newPassword);
     }
 
-    public WebAccount(String name, String username, String password, Integer type) throws NoSuchAlgorithmException{
+    public AccountDomain(String name, String username, String password, Integer type) throws NoSuchAlgorithmException{
         setType(type);
         setName(name);
         setUsername(username);
         setPassword(password);
     }
-    public WebAccount(String username, String password, Integer type) throws NoSuchAlgorithmException{
+    public AccountDomain(String username, String password, Integer type) throws NoSuchAlgorithmException{
         setType(type);
         setUsername(username);
         setPassword(password);
     }
 
-    public WebAccount(){
+    public AccountDomain(String username, Integer type, byte[] file){
+        this.username = username;
+        this.type = type;
+        this.file = file;
+    }
+
+    public AccountDomain(){
 
     }
 
@@ -102,13 +109,21 @@ public class WebAccount implements Serializable {
         this.type = type;
     }
 
-    @Override
-    public String toString() {
-        return "{" +
-                "name='" + getName() + '\'' +
-                ", username='" + getUsername() + '\'' +
-                ", password='" + getPassword() + '\'' +
-                ", type='" + getType() + '\'' +
-                "}";
+    public byte[] getFile() {
+        return file;
     }
+
+    public void setFile(byte[] file) {
+        this.file = file;
+    }
+
+//    @Override
+//    public String toString() {
+//        return "{" +
+//                "name='" + getName() + '\'' +
+//                ", username='" + getUsername() + '\'' +
+//                ", password='" + getPassword() + '\'' +
+//                ", type='" + getType() + '\'' +
+//                "}";
+//    }
 }

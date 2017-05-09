@@ -5,20 +5,14 @@ package com.xay.MySQL.DO;
  * @version v0.1 2017/5/9.
  */
 public class CityDO {
-    private Integer city_id;
-    private Integer code;
+    private Integer id;
     private String name;
     private Integer parent_id;
-    private String first_letter;
-    private Integer level;
 
-    public CityDO(Integer city_id, Integer code, String name, Integer parent_id, String first_letter, Integer level) {
-        this.city_id = city_id;
-        this.code = code;
+    public CityDO(Integer id, Integer code, String name, Integer parent_id, String first_letter, Integer level) {
+        this.id = id;
         this.name = name;
         this.parent_id = parent_id;
-        this.first_letter = first_letter;
-        this.level = level;
     }
 
     public CityDO() {
@@ -26,19 +20,11 @@ public class CityDO {
     }
 
     public Integer getCity_id() {
-        return city_id;
+        return id;
     }
 
-    public void setCity_id(Integer city_id) {
-        this.city_id = city_id;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
+    public void setCity_id(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -57,19 +43,4 @@ public class CityDO {
         this.parent_id = parent_id;
     }
 
-    public String getFirst_letter() {
-        return first_letter;
-    }
-
-    public void setFirst_letter(String first_letter) {
-        this.first_letter = first_letter;
-    }
-
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
 }

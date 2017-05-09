@@ -24,14 +24,4 @@ public class GetRegionServiceImpl implements GetRegionService{
     public BaseResult<Object> getCounty(Integer parentId) {
         return new BaseResult<>(getRegionMapper.getCounty(parentId));
     }
-
-    @Override
-    public BaseResult<Object> getCityByFL(String firstLetter) {
-        return new BaseResult<>(getRegionMapper.getCityByFL(firstLetter));
-    }
-
-    @Override
-    public BaseResult<Object> getCountyByFL(String parentName, String firstLetter) {
-        return new BaseResult<>(getRegionMapper.getCountyByFL(parentName, firstLetter));
-    }
 }

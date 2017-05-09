@@ -3,7 +3,7 @@ package com.xay.Domain;
 import com.xay.MySQL.DO.JourneyDO;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @author ZhangTianren
@@ -12,8 +12,8 @@ import java.sql.Date;
 public class JourneyDomain implements Serializable {
     private Integer journeyId;
     private String journeyName;
-    private Date createTime;
-    private Date updateTime;
+    private Timestamp createTime;
+    private Timestamp updateTime;
     private String phoneNum;
     private Integer cityId;
     private String members;
@@ -24,7 +24,7 @@ public class JourneyDomain implements Serializable {
     private String endTime;
     private String tags;
     private String others;
-    private Integer customerId;
+    private String cUsername;
     private String dueDate;
     private Integer price;
 
@@ -43,12 +43,12 @@ public class JourneyDomain implements Serializable {
         this.endTime = journeyDO.getEnd_time();
         this.tags = journeyDO.getTags();
         this.others = journeyDO.getOthers();
-        this.customerId = journeyDO.getCustomer_id();
+        this.cUsername = journeyDO.getC_username();
         this.dueDate = journeyDO.getDue_date();
         this.price = journeyDO.getPrice();
     }
 
-    public JourneyDomain(String journeyName, String phoneNum, Integer cityId, String members, Integer tourType, Integer lowPrice, Integer highPrice, String startTime, String endTime, String tags, String others, Integer customerId) {
+    public JourneyDomain(String journeyName, String phoneNum, Integer cityId, String members, Integer tourType, Integer lowPrice, Integer highPrice, String startTime, String endTime, String tags, String others, String cUsername, String dueDate, Integer price) {
         this.journeyName = journeyName;
         this.phoneNum = phoneNum;
         this.cityId = cityId;
@@ -60,7 +60,9 @@ public class JourneyDomain implements Serializable {
         this.endTime = endTime;
         this.tags = tags;
         this.others = others;
-        this.customerId = customerId;
+        this.cUsername = cUsername;
+        this.dueDate = dueDate;
+        this.price = price;
     }
 
     public JourneyDomain(){
@@ -83,19 +85,19 @@ public class JourneyDomain implements Serializable {
         this.journeyName = journeyName;
     }
 
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public Timestamp getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
 
@@ -179,12 +181,12 @@ public class JourneyDomain implements Serializable {
         this.others = others;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public String getcUsername() {
+        return cUsername;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setcUsername(String cUsername) {
+        this.cUsername = cUsername;
     }
 
     public String getDueDate() {

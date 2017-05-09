@@ -10,43 +10,36 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface AttachmentMapper {
     /**
-     * 查询附件名
-     * @param customer_id
-     * @return
-     */
-    @Select("SELECT attachment_name FROM customers WHERE customer_id=#{customer_id}")
-    AttachmentDO getAttachmentNameByCustomerId(@Param("customer_id")int customer_id);
-
-    /**
-     * 插入附件
+     * 附件上传
      * @param attachmentDO
      * @return
      */
-    @Insert("INSERT INTO attachment(attachment_name, file) VALUES(#{attachment_name}, #{file,jdbcType=BLOB})")
+    @Insert("INSERT INTO attachment(attachment_name, owner_type, owner_id, file, file_type) " +
+            "VALUES(#{attachment_name}, #{owner_type}, #{owner_id}, #{file,jdbcType=BLOB}, 1)")
     int insertAttachment(AttachmentDO attachmentDO);
 
     /**
-     * 更新附件
-     * @param attachmentDO
+     * 所有附件获取
+     * @param owner_id
+     * @param owner_type
      * @return
      */
-    @Update("UPDATE attachment SET attachment_name=#{attachment_name}, file=#{file,jdbcType=BLOB} WHERE attachment_name=#{attachment_name}")
-    int updateAttachment(AttachmentDO attachmentDO);
+    @Select("SELECT * FROM attachment WHERE owner_type=#{owner_type} AND owner_id=#{owner_id} AND file_type=1")
+    AttachmentDO[] getAttachmentAll(@Param("owner_type")Integer owner_type, @Param("owner_id")Integer owner_id);
 
     /**
-     * 更新附件记录
-     * @param attachment_name
-     * @param customer_id
+     * 单个附件获取
+     * @param attachment_id
      * @return
      */
-    @Update("UPDATE customers SET attachment_name=#{attachment_name} WHERE customer_id=#{customer_id}")
-    int updateAttachmentInCustomer(@Param("attachment_name")String attachment_name, @Param("customer_id")Integer customer_id);
+    @Select("SELECT * FROM attachment WHERE attachment_id=#{attachment_id} AND file_type=1")
+    AttachmentDO getAttachmentByAttachmentId(@Param("attachment_id")Integer attachment_id);
 
     /**
-     * 查询附件
-     * @param attachment_name
+     * 附件删除
+     * @param attachment_id
      * @return
      */
-    @Select("SELECT attachment_name, file FROM attachment WHERE attachment_name=#{attachment_name}")
-    AttachmentDO getAttachmentByAttachmentName(@Param("attachment_name")String attachment_name);
+    @Delete("DELETE FROM attachment WHERE attachment_id=#{attachment_id} AND file_type=1")
+    int deleteAttachmentByAttachmentId(@Param("attachment_id")Integer attachment_id);
 }

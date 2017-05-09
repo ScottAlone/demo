@@ -58,18 +58,34 @@ public interface AccountMapper {
     AccountDO getCustomerByUsername(@Param("username") String userName);
 
     /**
-     * 根据ID查询导游
-     * @param guideId
+     * 导游头像上传
+     * @param accountDO
      * @return
      */
-    @Select("SELECT * FROM customers WHERE guide_id=#{guide_id}")
-    AccountDO getGuideByUserId(@Param("guide_id") Integer guideId);
+    @Update("UPDATE guides SET file=#{file,jdbcType=BLOB} WHERE username=#{username}")
+    int insertGuideImage(AccountDO accountDO);
 
     /**
-     * 根据ID查询客户
-     * @param customerId
+     * 客户头像上传
+     * @param accountDO
      * @return
      */
-    @Select("SELECT * FROM customers WHERE customer_id=#{customer_id}")
-    AccountDO getCustomerByUserId(@Param("customer_id") Integer customerId);
+    @Update("UPDATE customers SET file=#{file,jdbcType=BLOB} WHERE username=#{username}")
+    int insertCustomerImage(AccountDO accountDO);
+
+    /**
+     * 导游头像更新
+     * @param accountDO
+     * @return
+     */
+    @Update("UPDATE guides SET file=#{file,jdbcType=BLOB}, update_time=CURRENT_TIMESTAMP WHERE username=#{username}")
+    int updateGuideImg(AccountDO accountDO);
+
+    /**
+     * 客户头像更新
+     * @param accountDO
+     * @return
+     */
+    @Update("UPDATE customers SET file=#{file,jdbcType=BLOB}, update_time=CURRENT_TIMESTAMP WHERE username=#{username}")
+    int updateCustomerImg(AccountDO accountDO);
 }

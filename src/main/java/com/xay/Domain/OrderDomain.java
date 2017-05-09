@@ -2,7 +2,7 @@ package com.xay.Domain;
 
 import com.xay.MySQL.DO.OrderDO;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @author ZhangTianren
@@ -10,26 +10,26 @@ import java.sql.Date;
  */
 public class OrderDomain {
     private Integer orderId;
-    private Integer customerId;
-    private Integer guideId;
+    private String cUsername;
+    private String gUsername;
     private Integer price;
     private String status;
-    private Date createTime;
-    private Date payTime;
-    private Date deliverTime;
-    private Date dealTime;
+    private Timestamp createTime;
+    private Timestamp payTime;
+    private Timestamp deliverTime;
+    private Timestamp dealTime;
 
-    public OrderDomain(Integer customerId, Integer guideId, Integer price, String status, Date createTime, Date payTime, Date deliverTime, Date dealTime) {
-        this.customerId = customerId;
-        this.guideId = guideId;
+    public OrderDomain(String cUsername, String gUsername, Integer price, String status, Timestamp createTime, Timestamp payTime, Timestamp deliverTime, Timestamp dealTime) {
+        this.cUsername = cUsername;
+        this.gUsername = gUsername;
         this.price = price;
         this.status = status;
     }
 
     public OrderDomain(OrderDO orderDO){
         this.orderId = orderDO.getOrder_id();
-        this.customerId = orderDO.getCustomer_id();
-        this.guideId = orderDO.getGuide_id();
+        this.cUsername = orderDO.getC_username();
+        this.gUsername = orderDO.getG_username();
         this.price = orderDO.getPrice();
         this.status = orderDO.getStatus();
         this.createTime = orderDO.getCreate_time();
@@ -55,20 +55,20 @@ public class OrderDomain {
         this.orderId = orderId;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public String getcUsername() {
+        return cUsername;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setcUsername(String cUsername) {
+        this.cUsername = cUsername;
     }
 
-    public Integer getGuideId() {
-        return guideId;
+    public String getgUsername() {
+        return gUsername;
     }
 
-    public void setGuideId(Integer guideId) {
-        this.guideId = guideId;
+    public void setgUsername(String gUsername) {
+        this.gUsername = gUsername;
     }
 
     public Integer getPrice() {
@@ -87,35 +87,35 @@ public class OrderDomain {
         this.status = status;
     }
 
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
-    public Date getPayTime() {
+    public Timestamp getPayTime() {
         return payTime;
     }
 
-    public void setPayTime(Date payTime) {
+    public void setPayTime(Timestamp payTime) {
         this.payTime = payTime;
     }
 
-    public Date getDeliverTime() {
+    public Timestamp getDeliverTime() {
         return deliverTime;
     }
 
-    public void setDeliverTime(Date deliverTime) {
+    public void setDeliverTime(Timestamp deliverTime) {
         this.deliverTime = deliverTime;
     }
 
-    public Date getDealTime() {
+    public Timestamp getDealTime() {
         return dealTime;
     }
 
-    public void setDealTime(Date dealTime) {
+    public void setDealTime(Timestamp dealTime) {
         this.dealTime = dealTime;
     }
 }

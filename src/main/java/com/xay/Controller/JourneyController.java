@@ -4,10 +4,7 @@ import com.xay.Domain.BaseResult;
 import com.xay.Domain.JourneyDomain;
 import com.xay.Service.JourneyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author ZhangTianren
@@ -24,16 +21,16 @@ public class JourneyController {
     }
 
     @RequestMapping(value = "journeys", method = RequestMethod.GET)
-    public BaseResult<Object> getJourneyByCustomerId(Integer customerId){
-        return journeyService.getJourneyByCustomerId(customerId);
+    public BaseResult<Object> getJourneyByUsername(@RequestParam("username") String cUsername){
+        return journeyService.getJourneyByUsername(cUsername);
     }
 
-    @RequestMapping(value = "journeys/journey", method = RequestMethod.GET)
+    @RequestMapping(value = "journeys/id", method = RequestMethod.GET)
     public BaseResult<Object> getJourney(Integer journeyId){
         return journeyService.getJourneyByJourneyId(journeyId);
     }
 
-    @RequestMapping(value = "journeys/journey", method = RequestMethod.PATCH)
+    @RequestMapping(value = "journeys/id", method = RequestMethod.PATCH)
     public BaseResult<Object> updateJourney(@RequestBody JourneyDomain journeyDomain){
         return journeyService.updateJourney(journeyDomain);
     }

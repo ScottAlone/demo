@@ -24,10 +24,11 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public BaseResult<Object> postOrder(OrderDomain orderDomain) {
-        AccountDO customer = accountMapper.getCustomerByUserId(orderDomain.getCustomerId());
-        AccountDO guide = accountMapper.getGuideByUserId(orderDomain.getGuideId());
+        AccountDO customer = accountMapper.getCustomerByUsername(orderDomain.getcUsername());
+        AccountDO guide = accountMapper.getGuideByUsername(orderDomain.getgUsername());
         if (customer != null && guide != null){
             orderMapper.postOrder(new OrderDO(orderDomain));
+            return new BaseResult<>();
         }else if (customer == null){
             return new BaseResult<>(500, "客户不存在");
         }
@@ -35,8 +36,8 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public BaseResult<Object> getOrders(Integer customerId) {
-        OrderDO[] orderDOS = orderMapper.getOrders(customerId);
+    public BaseResult<Object> getOrdersByGuideName(String gUsername) {
+        OrderDO[] orderDOS = orderMapper.getOrdersByGuideName(gUsername);
         OrderDomain[] orderDomains = new OrderDomain[orderDOS.length];
         if (orderDomains.length == 0){
             return new BaseResult<>(500, "没有订单");
@@ -44,7 +45,21 @@ public class OrderServiceImpl implements OrderService{
         for (int i = 0; i < orderDOS.length; i++){
             orderDomains[i] = new OrderDomain(orderDOS[i]);
         }
-        orderMapper.getOrders(customerId);
+        orderMapper.getOrdersByGuideName(gUsername);
+        return new BaseResult<>(orderDomains);
+    }
+
+    @Override
+    public BaseResult<Object> getOrdersByCustomerName(String cUsername) {
+        OrderDO[] orderDOS = orderMapper.getOrdersByCustomerName(cUsername);
+        OrderDomain[] orderDomains = new OrderDomain[orderDOS.length];
+        if (orderDomains.length == 0){
+            return new BaseResult<>(500, "没有订单");
+        }
+        for (int i = 0; i < orderDOS.length; i++){
+            orderDomains[i] = new OrderDomain(orderDOS[i]);
+        }
+        orderMapper.getOrdersByCustomerName(cUsername);
         return new BaseResult<>(orderDomains);
     }
 

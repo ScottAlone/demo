@@ -10,18 +10,27 @@ import java.io.IOException;
  * @version v0.1 2017/5/5.
  */
 public interface AttachmentService {
-    /**
-     * 附件下载
-     * @param customerId
-     * @return
-     */
-    BaseResult<Object> download(Integer customerId) throws Exception;
+
 
     /**
-     * 附件上传
-     * @param attachmentDomain
+     * 所有附件获取
+     * @param ownerType
+     * @param ownerId
      * @return
-     * @throws IOException
      */
-    BaseResult<Object> upload(AttachmentDomain attachmentDomain) throws IOException;
+    BaseResult<Object> getAttachmentAll(Integer ownerType, Integer ownerId);
+
+    /**
+     * 单个附件获取
+     * @param attachmentId
+     * @return
+     */
+    BaseResult<Object> getAttachmentByAttachmentId(Integer attachmentId);
+
+    /**
+     * 删除附件
+     * @param attachmentId
+     * @return
+     */
+    BaseResult<Object> deleteAttachmentByAttachmentId(Integer attachmentId);
 }

@@ -4,10 +4,7 @@ import com.xay.Domain.BaseResult;
 import com.xay.Domain.OrderDomain;
 import com.xay.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author ZhangTianren
@@ -19,17 +16,22 @@ public class OrderController {
     OrderService orderService;
 
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
-    public BaseResult<Object> postJourney(@RequestBody OrderDomain orderDomain){
+    public BaseResult<Object> postOrder(@RequestBody OrderDomain orderDomain){
         return orderService.postOrder(orderDomain);
     }
 
-    @RequestMapping(value = "/orders", method = RequestMethod.GET)
-    public BaseResult<Object> getJourneyByCustomerId(Integer guideId){
-        return orderService.getOrders(guideId);
+    @RequestMapping(value = "/orders/guide", method = RequestMethod.GET)
+    public BaseResult<Object> getOrdersByGuideName(@RequestParam("gUsername") String gUsername){
+        return orderService.getOrdersByGuideName(gUsername);
     }
 
-    @RequestMapping(value = "/orders/order", method = RequestMethod.GET)
-    public BaseResult<Object> getJourney(Integer orderId){
+    @RequestMapping(value = "/orders/customer", method = RequestMethod.GET)
+    public BaseResult<Object> getOrdersByCustomerName(@RequestParam("cUsername") String cUsername){
+        return orderService.getOrdersByCustomerName(cUsername);
+    }
+
+    @RequestMapping(value = "/orders/id", method = RequestMethod.GET)
+    public BaseResult<Object> getOrder(@RequestParam("orderId")Integer orderId){
         return orderService.getOrderById(orderId);
     }
 

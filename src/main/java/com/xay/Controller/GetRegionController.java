@@ -35,24 +35,4 @@ public class GetRegionController {
     public BaseResult<Object> getCounty(@RequestParam("parentId") Integer parentId){
         return getRegionService.getCounty(parentId);
     }
-
-    /**
-     * 根据首字母查询省和直辖市
-     * @return
-     */
-    @RequestMapping(value = "/getCityByFL", method = RequestMethod.GET)
-    public BaseResult<Object> getCityByFL(@RequestParam("cityFL") String cityFL){
-        return getRegionService.getCityByFL(cityFL);
-    }
-
-    /**
-     * 根据首字母查询市辖区
-     * @param parentName
-     * @return
-     */
-    @RequestMapping(value = "/getCountyByFL", method = RequestMethod.GET)
-    public BaseResult<Object> getCountyByFL(@RequestParam("parentName") String parentName,
-                                          @RequestParam("countyFL") String countyFL){
-        return getRegionService.getCountyByFL(parentName, countyFL);
-    }
 }

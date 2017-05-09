@@ -10,20 +10,12 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface OrderMapper {
     /**
-     * 获取用户所有订单
-     * @param guideId
-     * @return
-     */
-    @Select("SELECT * FROM orders WHERE guide_id=#{guide_id}")
-    OrderDO[] getOrders(@Param("guide_id")Integer guideId);
-
-    /**
      * 新建订单
      * @param orderDO
      * @return
      */
-    @Insert("INSERT INTO orders(customer_id, guide_id, price, status) " +
-            "VALUES(#{customer_id}, #{guide_id}, #{price}, #{status})")
+    @Insert("INSERT INTO orders(c_username, g_username, price, status) " +
+            "VALUES(#{c_username}, #{g_username}, #{price}, #{status})")
     int postOrder(OrderDO orderDO);
 
     /**
@@ -49,6 +41,22 @@ public interface OrderMapper {
      */
     @Update("UPDATE orders SET status=#{status}, deal_time=CURRENT_TIMESTAMP WHERE order_id=#{order_id}")
     int finishOrder(OrderDO orderDO);
+
+    /**
+     * 获取导游所有订单
+     * @param g_username
+     * @return
+     */
+    @Select("SELECT * FROM orders WHERE g_username=#{g_username}")
+    OrderDO[] getOrdersByGuideName(@Param("g_username")String g_username);
+
+    /**
+     * 获取客户所有订单
+     * @param c_username
+     * @return
+     */
+    @Select("SELECT * FROM orders WHERE c_username=#{c_username}")
+    OrderDO[] getOrdersByCustomerName(@Param("c_username")String c_username);
 
     /**
      * 获取单个订单信息

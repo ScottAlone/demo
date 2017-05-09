@@ -2,40 +2,39 @@ package com.xay.MySQL.DO;
 
 import com.xay.Domain.OrderDomain;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @author ZhangTianren
  * @version v0.1 2017/5/8.
  */
 public class OrderDO {
-
     private Integer order_id;
-    private Integer customer_id;
-    private Integer guide_id;
+    private String c_username;
+    private String g_username;
     private Integer price;
     private String status;
-    private Date create_time;
-    private Date pay_time;
-    private Date deliver_time;
-    private Date deal_time;
+    private Timestamp create_time;
+    private Timestamp pay_time;
+    private Timestamp deliver_time;
+    private Timestamp deal_time;
 
     public OrderDO(OrderDomain orderDomain){
         this.create_time = orderDomain.getCreateTime();
-        this.customer_id = orderDomain.getCustomerId();
+        this.c_username = orderDomain.getcUsername();
         this.deal_time = orderDomain.getDealTime();
         this.deliver_time = orderDomain.getDeliverTime();
-        this.guide_id = orderDomain.getGuideId();
+        this.g_username = orderDomain.getgUsername();
         this.order_id = orderDomain.getOrderId();
         this.pay_time = orderDomain.getPayTime();
         this.price = orderDomain.getPrice();
         this.status = orderDomain.getStatus();
     }
 
-    public OrderDO(Integer order_id, Integer customer_id, Integer guide_id, Integer price, String status, Date create_time, Date pay_time, Date deliver_time, Date deal_time) {
+    public OrderDO(Integer order_id, String c_username, String g_username, Integer price, String status, Timestamp create_time, Timestamp pay_time, Timestamp deliver_time, Timestamp deal_time) {
         this.order_id = order_id;
-        this.customer_id = customer_id;
-        this.guide_id = guide_id;
+        this.c_username = c_username;
+        this.g_username = g_username;
         this.price = price;
         this.status = status;
         this.create_time = create_time;
@@ -44,8 +43,8 @@ public class OrderDO {
         this.deal_time = deal_time;
     }
 
-    public OrderDO(Integer customer_id, String status) {
-        this.customer_id = customer_id;
+    public OrderDO(String c_username, String status) {
+        this.c_username = c_username;
         this.status = status;
     }
 
@@ -61,20 +60,20 @@ public class OrderDO {
         this.order_id = order_id;
     }
 
-    public Integer getCustomer_id() {
-        return customer_id;
+    public String getC_username() {
+        return c_username;
     }
 
-    public void setCustomer_id(Integer customer_id) {
-        this.customer_id = customer_id;
+    public void setC_username(String c_username) {
+        this.c_username = c_username;
     }
 
-    public Integer getGuide_id() {
-        return guide_id;
+    public String getG_username() {
+        return g_username;
     }
 
-    public void setGuide_id(Integer guide_id) {
-        this.guide_id = guide_id;
+    public void setG_username(String g_username) {
+        this.g_username = g_username;
     }
 
     public Integer getPrice() {
@@ -93,35 +92,35 @@ public class OrderDO {
         this.status = status;
     }
 
-    public Date getCreate_time() {
+    public Timestamp getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(Date create_time) {
+    public void setCreate_time(Timestamp create_time) {
         this.create_time = create_time;
     }
 
-    public Date getPay_time() {
+    public Timestamp getPay_time() {
         return pay_time;
     }
 
-    public void setPay_time(Date pay_time) {
+    public void setPay_time(Timestamp pay_time) {
         this.pay_time = pay_time;
     }
 
-    public Date getDeliver_time() {
+    public Timestamp getDeliver_time() {
         return deliver_time;
     }
 
-    public void setDeliver_time(Date deliver_time) {
+    public void setDeliver_time(Timestamp deliver_time) {
         this.deliver_time = deliver_time;
     }
 
-    public Date getDeal_time() {
+    public Timestamp getDeal_time() {
         return deal_time;
     }
 
-    public void setDeal_time(Date deal_time) {
+    public void setDeal_time(Timestamp deal_time) {
         this.deal_time = deal_time;
     }
 }

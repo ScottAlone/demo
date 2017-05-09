@@ -2,14 +2,15 @@ package com.xay.Service.impl;
 
 import com.xay.Domain.AttachmentDomain;
 import com.xay.Domain.BaseResult;
+import com.xay.MySQL.DO.AccountDO;
 import com.xay.MySQL.DO.AttachmentDO;
+import com.xay.MySQL.Mapper.AccountMapper;
 import com.xay.MySQL.Mapper.AttachmentMapper;
 import com.xay.Service.AttachmentService;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.time.LocalDateTime;
 
 /**
  * @author ZhangTianren
@@ -21,42 +22,34 @@ public class AttachmentServiceImpl implements AttachmentService {
     private AttachmentMapper attachmentMapper;
 
     @Override
-    public BaseResult<Object> upload(AttachmentDomain attachmentDomain) throws IOException{
-        AttachmentDO attachmentDO = attachmentMapper.getAttachmentNameByCustomerId(attachmentDomain.getCustomerId());
-        String attachName = RandomStringUtils.randomAlphanumeric(50);
-        String finalPath = attachName + "." + attachmentDomain.getFileType();
-        byte[] files = attachmentDomain.getFile();
-        if (attachmentDO == null){
-            attachmentMapper.insertAttachment(new AttachmentDO(finalPath, files));
-        }else {
-            attachmentDO = attachmentMapper.getAttachmentByAttachmentName(attachmentDO.getAttachment_name());
-            if (attachmentDO == null){
-                attachmentMapper.insertAttachment(new AttachmentDO(finalPath, files));
-            }else {
-                attachName = attachmentDO.getAttachment_name();
-                finalPath = attachName;
-                attachmentMapper.updateAttachment(new AttachmentDO(finalPath, files));
-            }
+    public BaseResult<Object> getAttachmentAll(Integer ownerType, Integer ownerId){
+        AttachmentDO[] attachmentDOS = attachmentMapper.getAttachmentAll(ownerType, ownerId);
+        AttachmentDomain[] attachmentDomain = new AttachmentDomain[attachmentDOS.length];
+        if (attachmentDomain.length == 0){
+            return new BaseResult<>(500, "没有附件");
         }
-        attachmentMapper.updateAttachmentInCustomer(finalPath, attachmentDomain.getCustomerId());
-        return new BaseResult<>();
+        for (int i = 0; i < attachmentDOS.length; i++){
+            attachmentDomain[i] = new AttachmentDomain(attachmentDOS[i]);
+        }
+        return new BaseResult<>(attachmentDomain);
     }
 
     @Override
-    public BaseResult<Object> download(Integer customerId) throws Exception{
-        AttachmentDO attachmentDO = attachmentMapper.getAttachmentNameByCustomerId(customerId);
-        if (attachmentDO == null){
-            return new BaseResult<>(500, "没有附件");
-        }else {
-            attachmentDO = attachmentMapper.getAttachmentByAttachmentName(attachmentDO.getAttachment_name());
-            if (attachmentDO == null){
-                return new BaseResult<>(500, "没有附件");
-            }else {
-                attachmentDO = attachmentMapper.getAttachmentByAttachmentName(attachmentDO.getAttachment_name());
-                byte[] files = attachmentDO.getFile();
-                String fileName = attachmentDO.getAttachment_name();
-                return new BaseResult<>(200, fileName, files);
-            }
+    public BaseResult<Object> getAttachmentByAttachmentId(Integer attachmentId) {
+        AttachmentDO attachmentDO = attachmentMapper.getAttachmentByAttachmentId(attachmentId);
+        if (attachmentDO != null){
+            return new BaseResult<>(new AttachmentDomain(attachmentDO));
         }
+        return new BaseResult<>(500, "未找到该附件");
+    }
+
+    @Override
+    public BaseResult<Object> deleteAttachmentByAttachmentId(Integer attachmentId) {
+        AttachmentDO attachmentDO = attachmentMapper.getAttachmentByAttachmentId(attachmentId);
+        if (attachmentDO != null){
+            attachmentMapper.deleteAttachmentByAttachmentId(attachmentId);
+            return new BaseResult<>();
+        }
+        return new BaseResult<>(500, "未找到该附件");
     }
 }

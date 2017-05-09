@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.js"></script>
+</head>
+<body>
+    <label for="up">头像：</label> <input id="up" type="file" accept="image/*" name="file" />
+    <!--<label for="upAttach">附件：</label> <input id="upAttach" type="file" name="file" />-->
+    <button id="submit">提交</button>
+    <button id="delete">删除</button>
+    <button id="getImg">获取头像</button>
+    <!--<button id="getAllAttach">获取所有附件</button>-->
+    <!--<button id="getAttachById">获取附件</button>-->
+    <div id="result"></div>
+    <button id="down">下载</button>
+    <!--<form action="/upload" method="POST" enctype="multipart/form-data">-->
+        <!--文件：<input type="file" name="test"/>-->
+        <!--<input type="submit" />-->
+    <!--</form>-->
+    <!--<a href="/download" rel="external nofollow" >下载test</a>-->
+</body>
+<script>
+    let myFile;
+    let fileName;
+    let uploaded = false;
+    function readFile(){
+        uploaded = false;
+        let file = this.files[0];
+        fileName = file.name;
+        if (file.size/1024 >= 1024){
+            alert("文件大小应在1M以内");
+            return false;
+        }
+//        if(!/image\/\w+/.test(file.type)){
+//            alert("文件必须为图片！");
+//            return false;
+//        }
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e){
+            result.innerHTML = '<img src="'+ this.result +'" alt=""/>';
+            myFile = this.result;
+            uploaded = true;
+        };
+    }
+
+    let input = document.getElementById("up");
+    input.addEventListener('change', readFile, false);
+
+    let result = document.getElementById("result");
+
+    $("#submit").click(function () {
+        if (!uploaded){
+            alert("未正确上传");
+            return false;
+        }
+        let d = new FormData();
+        d.append("file", myFile);
+        d.append("username", "x");
+        d.append("type", 0);
+        let xhr = new XMLHttpRequest();
+        xhr.open("post", "/images", true);
+        xhr.responseType = "json";
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    let response = xhr.response;
+                    if (response.code == 200){
+                        alert("上传成功");
+                    }else alert(response.message + "，上传失败");
+                }else alert("上传失败");
+            }
+        };
+        xhr.send(d);
+    });
+
+    $("#delete").click(function () {
+        $.ajax({
+            url: "/attachments/id?attachmentId=" + 22,
+            type: 'DELETE',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    alert("删除成功");
+                }else alert(data.message);
+            }
+        });
+    });
+
+    $("#getImg").click(function () {
+        $.ajax({
+            url: "/images?ownerType=" + 0 + "&ownerId=" + 12,
+            type: 'GET',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    alert(data.data);
+                }else alert(data.message);
+            }
+        });
+    });
+
+    $("#getAllAttach").click(function () {
+        $.ajax({
+            url: "/attachments?ownerType=" + 0 + "&ownerId=" + 12,
+            type: 'GET',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    alert(data.data.length);
+                }else alert(data.message);
+            }
+        });
+    });
+
+    $("#getAttachById").click(function () {
+        $.ajax({
+            url: "/attachments/id?attachmentId=" + 23,
+            type: 'GET',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    alert(data.data);
+                }else alert(data.message);
+            }
+        });
+    });
+
+    $("#down").click(function () {
+        $.ajax({
+            url: "/attachments/id?attachmentId=" + 32,
+            type: 'GET',
+            context: document.body,
+            contentType: "application/json; charset=utf-8",
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    let fileName = data.data.attachName;
+                    let index = fileName.lastIndexOf(".");
+                    let fileType = fileName.substr(index + 1, fileName.length);
+                    let file = new Blob([window.atob(data.data.file)], {"type": "*\/" + fileType});
+                    result.innerHTML = '<img src="data:image/jpg;base64,'+ data.data.file +'" alt=""/>';
+
+                    let aLink = document.createElement('a');
+                    let evt = document.createEvent("HTMLEvents");
+                    evt.initEvent("click", false, false);
+                    aLink.download = fileName;
+                    aLink.href = URL.createObjectURL(file);
+                    aLink.dispatchEvent(evt);
+                }else alert(data.message);
+            },
+        });
+    });
+</script>
+</html>

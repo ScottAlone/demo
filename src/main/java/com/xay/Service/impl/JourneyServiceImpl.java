@@ -25,7 +25,7 @@ public class JourneyServiceImpl implements JourneyService{
 
     @Override
     public BaseResult<Object> postJourney(JourneyDomain journeyDomain) {
-        AccountDO accountDO = accountMapper.getCustomerByUserId(journeyDomain.getCustomerId());
+        AccountDO accountDO = accountMapper.getCustomerByUsername(journeyDomain.getcUsername());
         if (accountDO != null){
             journeyMapper.postJourney(new JourneyDO(journeyDomain));
             return new BaseResult<>();
@@ -34,8 +34,8 @@ public class JourneyServiceImpl implements JourneyService{
     }
 
     @Override
-    public BaseResult<Object> getJourneyByCustomerId(Integer guideId){
-        JourneyDO[] journeyDOS = journeyMapper.getJourneyByCustomerId(guideId);
+    public BaseResult<Object> getJourneyByUsername(String username){
+        JourneyDO[] journeyDOS = journeyMapper.getJourneyByUsername(username);
         JourneyDomain[] journeyDomains = new JourneyDomain[journeyDOS.length];
         if (journeyDomains.length == 0){
             return new BaseResult<>(500, "没有行程");
