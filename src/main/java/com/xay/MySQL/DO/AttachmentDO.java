@@ -3,7 +3,7 @@ package com.xay.MySQL.DO;
 
 import com.xay.Domain.AttachmentDomain;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @author ZhangTianren
@@ -12,33 +12,27 @@ import java.sql.Date;
 public class AttachmentDO {
     private Integer attachment_id;
     private String attachment_name;
-    private Date create_time;
-    private Date update_time;
-    private byte[] file;
-    private Integer owner_type;
-    private Integer owner_id;
-    private Integer file_type;
+    private Timestamp create_time;
+    private Timestamp update_time;
+    private String g_username;
 
-    public AttachmentDO(Integer attachment_id, String attachment_name, Date create_time, Date update_time, byte[] file, Integer owner_type, Integer owner_id, Integer file_type) {
+    public AttachmentDO(Integer attachment_id, String attachment_name, Timestamp create_time, Timestamp update_time, String g_username) {
         this.attachment_id = attachment_id;
         this.attachment_name = attachment_name;
         this.create_time = create_time;
         this.update_time = update_time;
-        this.file = file;
-        this.owner_type = owner_type;
-        this.owner_id = owner_id;
-        this.file_type = file_type;
+        this.g_username = g_username;
     }
 
     public AttachmentDO(AttachmentDomain attachmentDomain){
         this.attachment_id = attachmentDomain.getAttachId();
         this.attachment_name = attachmentDomain.getAttachName();
-        this.create_time = attachmentDomain.getCreateTime();
-        this.update_time = attachmentDomain.getUpdateTime();
-        this.file = attachmentDomain.getFile();
-        this.owner_type = attachmentDomain.getOwnerType();
-        this.owner_id = attachmentDomain.getOwnerId();
-        this.file_type = attachmentDomain.getFileType();
+        this.g_username = attachmentDomain.getgUsername();
+    }
+
+    public AttachmentDO(String attachment_name, String g_username) {
+        this.attachment_name = attachment_name;
+        this.g_username = g_username;
     }
 
     public AttachmentDO(){
@@ -61,51 +55,27 @@ public class AttachmentDO {
         this.attachment_name = attachment_name;
     }
 
-    public Date getCreate_time() {
+    public Timestamp getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(Date create_time) {
+    public void setCreate_time(Timestamp create_time) {
         this.create_time = create_time;
     }
 
-    public Date getUpdate_time() {
+    public Timestamp getUpdate_time() {
         return update_time;
     }
 
-    public void setUpdate_time(Date update_time) {
+    public void setUpdate_time(Timestamp update_time) {
         this.update_time = update_time;
     }
 
-    public byte[] getFile() {
-        return file;
+    public String getgUsername() {
+        return g_username;
     }
 
-    public void setFile(byte[] file) {
-        this.file = file;
-    }
-
-    public Integer getOwner_type() {
-        return owner_type;
-    }
-
-    public void setOwner_type(Integer owner_type) {
-        this.owner_type = owner_type;
-    }
-
-    public Integer getOwner_id() {
-        return owner_id;
-    }
-
-    public void setOwner_id(Integer owner_id) {
-        this.owner_id = owner_id;
-    }
-
-    public Integer getFile_type() {
-        return file_type;
-    }
-
-    public void setFile_type(Integer file_type) {
-        this.file_type = file_type;
+    public void setgUsername(String g_username) {
+        this.g_username = g_username;
     }
 }

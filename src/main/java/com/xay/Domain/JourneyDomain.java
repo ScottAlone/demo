@@ -3,7 +3,7 @@ package com.xay.Domain;
 import com.xay.MySQL.DO.JourneyDO;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 /**
  * @author ZhangTianren
@@ -12,8 +12,8 @@ import java.sql.Timestamp;
 public class JourneyDomain implements Serializable {
     private Integer journeyId;
     private String journeyName;
-    private Timestamp createTime;
-    private Timestamp updateTime;
+    private String createTime;
+    private String updateTime;
     private String phoneNum;
     private Integer cityId;
     private String members;
@@ -27,12 +27,14 @@ public class JourneyDomain implements Serializable {
     private String cUsername;
     private String dueDate;
     private Integer price;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
     public JourneyDomain(JourneyDO journeyDO){
         this.journeyId = journeyDO.getJourney_id();
         this.journeyName = journeyDO.getJourney_name();
-        this.createTime = journeyDO.getCreate_time();
-        this.updateTime = journeyDO.getUpdate_time();
+        this.createTime = simpleDateFormat.format(journeyDO.getCreate_time());
+        this.updateTime = simpleDateFormat.format(journeyDO.getUpdate_time());
         this.phoneNum = journeyDO.getPhone_num();
         this.cityId = journeyDO.getCity_id();
         this.members = journeyDO.getMembers();
@@ -85,19 +87,19 @@ public class JourneyDomain implements Serializable {
         this.journeyName = journeyName;
     }
 
-    public Timestamp getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Timestamp getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Timestamp updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
 

@@ -11,15 +11,21 @@
     <button id="submit">提交</button>
     <button id="delete">删除</button>
     <button id="getImg">获取头像</button>
-    <!--<button id="getAllAttach">获取所有附件</button>-->
-    <!--<button id="getAttachById">获取附件</button>-->
+    <button id="getAllAttach">获取所有附件</button>
+    <button id="getAttachById">获取附件</button>
     <div id="result"></div>
     <button id="down">下载</button>
-    <!--<form action="/upload" method="POST" enctype="multipart/form-data">-->
-        <!--文件：<input type="file" name="test"/>-->
-        <!--<input type="submit" />-->
-    <!--</form>-->
-    <!--<a href="/download" rel="external nofollow" >下载test</a>-->
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        文件：<input type="file" name="file"/>
+        用户名：<input type="text" name="gUsername"/>
+        <input type="submit" />
+    </form>
+    <button id="downAttach">下载</button>
+    <form action="/attachments/id" method="POST" enctype="multipart/form-data">
+        文件编号：<input type="text" name="attachmentId"/>
+        <input type="submit" />
+    </form>
+    <a href="/attachments/id" rel="external nofollow" >下载test</a>
 </body>
 <script>
     let myFile;
@@ -104,7 +110,7 @@
 
     $("#getAllAttach").click(function () {
         $.ajax({
-            url: "/attachments?ownerType=" + 0 + "&ownerId=" + 12,
+            url: "/attachments?gUsername=x",
             type: 'GET',
             context: document.body,
             success: function(data, statusText, xhr){
@@ -130,7 +136,7 @@
 
     $("#down").click(function () {
         $.ajax({
-            url: "/attachments/id?attachmentId=" + 32,
+            url: "/attachments/id?attachmentId=" + 46,
             type: 'GET',
             context: document.body,
             contentType: "application/json; charset=utf-8",

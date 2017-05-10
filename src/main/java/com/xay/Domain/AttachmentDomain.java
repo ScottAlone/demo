@@ -2,7 +2,7 @@ package com.xay.Domain;
 
 import com.xay.MySQL.DO.AttachmentDO;
 
-import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * @author ZhangTianren
@@ -10,38 +10,23 @@ import java.sql.Date;
  */
 public class AttachmentDomain {
     private Integer attachId;
-    private Date createTime;
-    private Date updateTime;
-    private byte[] file;
+    private String createTime;
+    private String updateTime;
     private String attachName;
-    private Integer ownerType;
-    private Integer ownerId;
-    private Integer fileType;
+    private String gUsername;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public AttachmentDomain(byte[] file, String attachName, Integer ownerType, Integer ownerId, Integer fileType) {
-        this.file = file;
+    public AttachmentDomain(String attachName, String gUsername) {
         this.attachName = attachName;
-        this.ownerType = ownerType;
-        this.ownerId = ownerId;
-        this.fileType = fileType;
-    }
-
-    public AttachmentDomain(Integer attachId, byte[] file, String attachName, Integer ownerType, Integer ownerId, Integer fileType) {
-        this.attachId = attachId;
-        this.file = file;
-        this.attachName = attachName;
-        this.ownerType = ownerType;
-        this.ownerId = ownerId;
-        this.fileType = fileType;
+        this.gUsername = gUsername;
     }
 
     public AttachmentDomain(AttachmentDO attachmentDO){
         this.attachId = attachmentDO.getAttachment_id();
-        this.file = attachmentDO.getFile();
         this.attachName = attachmentDO.getAttachment_name();
-        this.ownerType = attachmentDO.getOwner_type();
-        this.ownerId = attachmentDO.getOwner_id();
-        this.fileType = attachmentDO.getFile_type();
+        this.createTime = simpleDateFormat.format(attachmentDO.getCreate_time());
+        this.updateTime = simpleDateFormat.format(attachmentDO.getUpdate_time());
+        this.gUsername = attachmentDO.getgUsername();
     }
 
     public AttachmentDomain() {
@@ -56,28 +41,20 @@ public class AttachmentDomain {
         this.attachId = attachId;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public byte[] getFile() {
-        return file;
-    }
-
-    public void setFile(byte[] file) {
-        this.file = file;
     }
 
     public String getAttachName() {
@@ -88,27 +65,11 @@ public class AttachmentDomain {
         this.attachName = attachName;
     }
 
-    public Integer getOwnerType() {
-        return ownerType;
+    public String getgUsername() {
+        return gUsername;
     }
 
-    public void setOwnerType(Integer ownerType) {
-        this.ownerType = ownerType;
-    }
-
-    public Integer getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public Integer getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(Integer fileType) {
-        this.fileType = fileType;
+    public void setgUsername(String gUsername) {
+        this.gUsername = gUsername;
     }
 }

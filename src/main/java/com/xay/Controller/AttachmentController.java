@@ -4,40 +4,40 @@ package com.xay.Controller;
  * @author ZhangTianren
  * @version v0.1 2017/5/9.
  */
+import com.xay.Domain.AttachmentDomain;
 import com.xay.Domain.BaseResult;
 import com.xay.Service.AttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@Controller
+@RestController
 public class AttachmentController {
-    private static final Logger logger = LoggerFactory.getLogger(AttachmentController.class);
-
     @Autowired
     private AttachmentService attachmentService;
 
     //文件上传相关代码
-    @RequestMapping(value = "upload")
+    @RequestMapping(value = "/upload")
     @ResponseBody
-    public String upload(@RequestParam("test") MultipartFile file) {
+    public String  upload(@RequestParam("file") MultipartFile file, @RequestParam("gUsername") String username) {
         if (file.isEmpty()) {
             return "文件为空";
         }
         // 获取文件名
         String fileName = file.getOriginalFilename();
-        logger.info("上传的文件名为：" + fileName);
+        if (fileName.split(".").length == 1){
+            return "文件格式有误";
+        }
         // 获取文件的后缀名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        logger.info("上传的后缀名为：" + suffixName);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日HH时mm分ss秒");
+        String finalName = fileName.substring(0, fileName.lastIndexOf(".")) + "(" + LocalDateTime.now().format(dateTimeFormatter) + ")" + suffixName;
         // 文件上传后的路径
         String filePath = "C:\\Users\\Administrator\\Desktop\\files\\";
         File dest = new File(filePath + fileName);
@@ -47,10 +47,10 @@ public class AttachmentController {
         }
         try {
             file.transferTo(dest);
-            return "上传成功";
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            File finalFile = new File(filePath + finalName);
+            dest.renameTo(finalFile);
+            return attachmentService.insertAttachment(new AttachmentDomain(finalName, username)).getMessage();
+        } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }
         return "上传失败";
@@ -58,15 +58,20 @@ public class AttachmentController {
 
     //文件下载相关代码
     @RequestMapping("/download")
-    public String downloadFile(org.apache.catalina.servlet4preview.http.HttpServletRequest request, HttpServletResponse response) {
-        String fileName = "2.jpg";
+    public String downloadFile(org.apache.catalina.servlet4preview.http.HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
+        String attachId = request.getParameter("attachmentId");
+        AttachmentDomain attachmentDomain = (AttachmentDomain)getAttachmentByAttachmentId(Integer.valueOf(attachId)).getData();
+        if (attachmentDomain == null){
+            return "未找到该附件";
+        }
+        String fileName = attachmentDomain.getAttachName();
         if (fileName != null) {
-            String realPath = "C:\\Users\\Administrator\\Desktop\\files";
+            String realPath = "C:\\Users\\Administrator\\Desktop\\files\\";
             File file = new File(realPath, fileName);
             if (file.exists()) {
                 response.setContentType("application/force-download");// 设置强制下载不打开
                 response.addHeader("Content-Disposition",
-                        "attachment;fileName=" + fileName);// 设置文件名
+                        "attachment;fileName=" + URLEncoder.encode(fileName, "UTF-8"));// 设置文件名
                 byte[] buffer = new byte[1024];
                 FileInputStream fis = null;
                 BufferedInputStream bis = null;
@@ -79,7 +84,6 @@ public class AttachmentController {
                         os.write(buffer, 0, i);
                         i = bis.read(buffer);
                     }
-                    System.out.println("success");
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -105,13 +109,12 @@ public class AttachmentController {
 
     /**
      * 所有附件获取
-     * @param ownerType
-     * @param ownerId
+     * @param gUsername
      * @return
      */
     @RequestMapping(value = "/attachments", method = RequestMethod.GET)
-    public BaseResult<Object> getAttachmentAll(@RequestParam("ownerType")Integer ownerType, @RequestParam("ownerId")Integer ownerId){
-        return attachmentService.getAttachmentAll(ownerType, ownerId);
+    public BaseResult<Object> getAttachmentAll(@RequestParam("gUsername")String gUsername){
+        return attachmentService.getAttachmentAll(gUsername);
     }
 
     /**

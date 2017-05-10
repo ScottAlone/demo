@@ -20,13 +20,9 @@ public class OrderDO {
     private Timestamp deal_time;
 
     public OrderDO(OrderDomain orderDomain){
-        this.create_time = orderDomain.getCreateTime();
         this.c_username = orderDomain.getcUsername();
-        this.deal_time = orderDomain.getDealTime();
-        this.deliver_time = orderDomain.getDeliverTime();
         this.g_username = orderDomain.getgUsername();
         this.order_id = orderDomain.getOrderId();
-        this.pay_time = orderDomain.getPayTime();
         this.price = orderDomain.getPrice();
         this.status = orderDomain.getStatus();
     }

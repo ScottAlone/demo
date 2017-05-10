@@ -2,7 +2,7 @@ package com.xay.Domain;
 
 import com.xay.MySQL.DO.OrderDO;
 
-import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 /**
  * @author ZhangTianren
@@ -14,12 +14,13 @@ public class OrderDomain {
     private String gUsername;
     private Integer price;
     private String status;
-    private Timestamp createTime;
-    private Timestamp payTime;
-    private Timestamp deliverTime;
-    private Timestamp dealTime;
+    private String createTime;
+    private String payTime;
+    private String deliverTime;
+    private String dealTime;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public OrderDomain(String cUsername, String gUsername, Integer price, String status, Timestamp createTime, Timestamp payTime, Timestamp deliverTime, Timestamp dealTime) {
+    public OrderDomain(String cUsername, String gUsername, Integer price, String status, String createTime, String payTime, String deliverTime, String dealTime) {
         this.cUsername = cUsername;
         this.gUsername = gUsername;
         this.price = price;
@@ -32,10 +33,10 @@ public class OrderDomain {
         this.gUsername = orderDO.getG_username();
         this.price = orderDO.getPrice();
         this.status = orderDO.getStatus();
-        this.createTime = orderDO.getCreate_time();
-        this.payTime = orderDO.getPay_time();
-        this.deliverTime = orderDO.getDeliver_time();
-        this.dealTime = orderDO.getDeal_time();
+        this.createTime = (orderDO.getCreate_time()==null)?"null":simpleDateFormat.format(orderDO.getCreate_time());
+        this.payTime = (orderDO.getPay_time()==null)?"null":simpleDateFormat.format(orderDO.getPay_time());
+        this.deliverTime = (orderDO.getDeliver_time()==null)?"null":simpleDateFormat.format(orderDO.getDeliver_time());
+        this.dealTime = (orderDO.getDeal_time()==null)?"null":simpleDateFormat.format(orderDO.getDeal_time());
     }
 
     public OrderDomain(Integer orderId, String status) {
@@ -87,35 +88,35 @@ public class OrderDomain {
         this.status = status;
     }
 
-    public Timestamp getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Timestamp getPayTime() {
+    public String getPayTime() {
         return payTime;
     }
 
-    public void setPayTime(Timestamp payTime) {
+    public void setPayTime(String payTime) {
         this.payTime = payTime;
     }
 
-    public Timestamp getDeliverTime() {
+    public String getDeliverTime() {
         return deliverTime;
     }
 
-    public void setDeliverTime(Timestamp deliverTime) {
+    public void setDeliverTime(String deliverTime) {
         this.deliverTime = deliverTime;
     }
 
-    public Timestamp getDealTime() {
+    public String getDealTime() {
         return dealTime;
     }
 
-    public void setDealTime(Timestamp dealTime) {
+    public void setDealTime(String dealTime) {
         this.dealTime = dealTime;
     }
 }

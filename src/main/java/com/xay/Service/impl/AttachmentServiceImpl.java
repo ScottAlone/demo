@@ -10,8 +10,6 @@ import com.xay.Service.AttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 /**
  * @author ZhangTianren
  * @version v0.1 2017/5/5.
@@ -19,11 +17,24 @@ import java.time.LocalDateTime;
 @Service
 public class AttachmentServiceImpl implements AttachmentService {
     @Autowired
+    AccountMapper accountMapper;
+
+    @Autowired
     private AttachmentMapper attachmentMapper;
 
     @Override
-    public BaseResult<Object> getAttachmentAll(Integer ownerType, Integer ownerId){
-        AttachmentDO[] attachmentDOS = attachmentMapper.getAttachmentAll(ownerType, ownerId);
+    public BaseResult<Object> insertAttachment(AttachmentDomain attachmentDomain) {
+        AccountDO accountDO = accountMapper.getGuideByUsername(attachmentDomain.getgUsername());
+        if (accountDO != null){
+            attachmentMapper.insertAttachment(new AttachmentDO(attachmentDomain));
+            return new BaseResult<>();
+        }
+        return new BaseResult<>(500, "账户不存在");
+    }
+
+    @Override
+    public BaseResult<Object> getAttachmentAll(String gUsername){
+        AttachmentDO[] attachmentDOS = attachmentMapper.getAttachmentAll(gUsername);
         AttachmentDomain[] attachmentDomain = new AttachmentDomain[attachmentDOS.length];
         if (attachmentDomain.length == 0){
             return new BaseResult<>(500, "没有附件");

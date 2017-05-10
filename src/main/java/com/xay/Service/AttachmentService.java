@@ -3,22 +3,25 @@ package com.xay.Service;
 import com.xay.Domain.AttachmentDomain;
 import com.xay.Domain.BaseResult;
 
-import java.io.IOException;
-
 /**
  * @author ZhangTianren
  * @version v0.1 2017/5/5.
  */
 public interface AttachmentService {
 
+    /**
+     * 插入附件
+     * @param attachmentDomain
+     * @return
+     */
+    BaseResult<Object> insertAttachment(AttachmentDomain attachmentDomain);
 
     /**
      * 所有附件获取
-     * @param ownerType
-     * @param ownerId
+     * @param gUsername
      * @return
      */
-    BaseResult<Object> getAttachmentAll(Integer ownerType, Integer ownerId);
+    BaseResult<Object> getAttachmentAll(String gUsername);
 
     /**
      * 单个附件获取

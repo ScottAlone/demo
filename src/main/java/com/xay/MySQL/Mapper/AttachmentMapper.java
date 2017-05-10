@@ -14,25 +14,24 @@ public interface AttachmentMapper {
      * @param attachmentDO
      * @return
      */
-    @Insert("INSERT INTO attachment(attachment_name, owner_type, owner_id, file, file_type) " +
-            "VALUES(#{attachment_name}, #{owner_type}, #{owner_id}, #{file,jdbcType=BLOB}, 1)")
+    @Insert("INSERT INTO attachment(attachment_name, g_username) " +
+            "VALUES(#{attachment_name}, #{g_username})")
     int insertAttachment(AttachmentDO attachmentDO);
 
     /**
      * 所有附件获取
-     * @param owner_id
-     * @param owner_type
+     * @param g_username
      * @return
      */
-    @Select("SELECT * FROM attachment WHERE owner_type=#{owner_type} AND owner_id=#{owner_id} AND file_type=1")
-    AttachmentDO[] getAttachmentAll(@Param("owner_type")Integer owner_type, @Param("owner_id")Integer owner_id);
+    @Select("SELECT * FROM attachment WHERE g_username=#{g_username}")
+    AttachmentDO[] getAttachmentAll(@Param("g_username")String g_username);
 
     /**
      * 单个附件获取
      * @param attachment_id
      * @return
      */
-    @Select("SELECT * FROM attachment WHERE attachment_id=#{attachment_id} AND file_type=1")
+    @Select("SELECT * FROM attachment WHERE attachment_id=#{attachment_id}")
     AttachmentDO getAttachmentByAttachmentId(@Param("attachment_id")Integer attachment_id);
 
     /**
@@ -40,6 +39,6 @@ public interface AttachmentMapper {
      * @param attachment_id
      * @return
      */
-    @Delete("DELETE FROM attachment WHERE attachment_id=#{attachment_id} AND file_type=1")
+    @Delete("DELETE FROM attachment WHERE attachment_id=#{attachment_id}")
     int deleteAttachmentByAttachmentId(@Param("attachment_id")Integer attachment_id);
 }

@@ -44,8 +44,8 @@ dependencies {
     compile 'commons-dbcp:commons-dbcp:1.4'
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
-
     compile("org.springframework.boot:spring-boot-devtools")
+
 }
 
 bootRun {
