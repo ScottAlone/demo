@@ -14,8 +14,8 @@ public interface AttachmentMapper {
      * @param attachmentDO
      * @return
      */
-    @Insert("INSERT INTO attachment(attachment_name, g_username) " +
-            "VALUES(#{attachment_name}, #{g_username})")
+    @Insert("INSERT INTO attachment(attachment_name, g_username, token) " +
+            "VALUES(#{attachment_name}, #{g_username}, #{token})")
     int insertAttachment(AttachmentDO attachmentDO);
 
     /**

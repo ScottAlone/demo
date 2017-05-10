@@ -7,6 +7,7 @@ package com.xay.Controller;
 import com.xay.Domain.AttachmentDomain;
 import com.xay.Domain.BaseResult;
 import com.xay.Service.AttachmentService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,6 +42,7 @@ public class AttachmentController {
         // 文件上传后的路径
         String filePath = "C:\\Users\\Administrator\\Desktop\\files\\";
         File dest = new File(filePath + fileName);
+        String token = RandomStringUtils.randomAlphabetic(45);
         // 检测是否存在目录
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
@@ -49,7 +51,7 @@ public class AttachmentController {
             file.transferTo(dest);
             File finalFile = new File(filePath + finalName);
             dest.renameTo(finalFile);
-            return attachmentService.insertAttachment(new AttachmentDomain(finalName, username)).getMessage();
+            return attachmentService.insertAttachment(new AttachmentDomain(finalName, username, token)).getMessage();
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }
@@ -60,9 +62,13 @@ public class AttachmentController {
     @RequestMapping("/download")
     public String downloadFile(org.apache.catalina.servlet4preview.http.HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
         String attachId = request.getParameter("attachmentId");
+        String token = request.getParameter("token");
         AttachmentDomain attachmentDomain = (AttachmentDomain)getAttachmentByAttachmentId(Integer.valueOf(attachId)).getData();
         if (attachmentDomain == null){
             return "未找到该附件";
+        }
+        if (token == null || !token.equals(attachmentDomain.getToken())){
+            return "口令错误";
         }
         String fileName = attachmentDomain.getAttachName();
         if (fileName != null) {

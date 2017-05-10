@@ -28,6 +28,7 @@ function changeRegister(i) {
 }
 
 $("#loginButton").click(function () {
+    var result = $("#wrong");
     $.ajax({
         url: "/sessions/" + (loginType === 0?"guide":"customer"),
         type: 'POST',
@@ -40,9 +41,13 @@ $("#loginButton").click(function () {
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
-                alert("登陆成功！");
+                result.children("p").remove();
+                result.append($("<p style='color: green; text-align: left'></p>").text("登陆成功"));
                 window.location = "main.html";
-            }else alert("登陆失败");
+            }else {
+                result.children("p").remove();
+                result.append($("<p style='color: red; text-align: left'></p>").text("用户名或密码错误"));
+            }
         }
     });
 });

@@ -15,36 +15,40 @@ public class AttachmentDO {
     private Timestamp create_time;
     private Timestamp update_time;
     private String g_username;
+    private String token;
 
-    public AttachmentDO(Integer attachment_id, String attachment_name, Timestamp create_time, Timestamp update_time, String g_username) {
+    public AttachmentDO(Integer attachment_id, String attachment_name, Timestamp create_time, Timestamp update_time, String g_username, String token) {
         this.attachment_id = attachment_id;
         this.attachment_name = attachment_name;
         this.create_time = create_time;
         this.update_time = update_time;
         this.g_username = g_username;
+        this.token = token;
     }
 
     public AttachmentDO(AttachmentDomain attachmentDomain){
         this.attachment_id = attachmentDomain.getAttachId();
         this.attachment_name = attachmentDomain.getAttachName();
         this.g_username = attachmentDomain.getgUsername();
+        this.token = attachmentDomain.getToken();
     }
 
-    public AttachmentDO(String attachment_name, String g_username) {
+    public AttachmentDO(String attachment_name, String g_username, String token) {
         this.attachment_name = attachment_name;
         this.g_username = g_username;
+        this.token = token;
     }
 
     public AttachmentDO(){
 
     }
 
-    public void setAttachment_id(Integer attachment_id) {
-        this.attachment_id = attachment_id;
-    }
-
     public Integer getAttachment_id() {
         return attachment_id;
+    }
+
+    public void setAttachment_id(Integer attachment_id) {
+        this.attachment_id = attachment_id;
     }
 
     public String getAttachment_name() {
@@ -71,11 +75,19 @@ public class AttachmentDO {
         this.update_time = update_time;
     }
 
-    public String getgUsername() {
+    public String getG_username() {
         return g_username;
     }
 
-    public void setgUsername(String g_username) {
+    public void setG_username(String g_username) {
         this.g_username = g_username;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

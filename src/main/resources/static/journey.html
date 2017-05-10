@@ -25,7 +25,7 @@
                     <a>★<span class="nav-label">&nbsp&nbsp&nbsp PLACES</span> <span class="label label-warning pull-right">NEW</span></a>
                 </li>
                 <li class="landing_link">
-                    <a>★<span class="nav-label">&nbsp&nbsp&nbsp JOURNRY</span></a>
+                    <a>★<span class="nav-label">&nbsp&nbsp&nbsp JOURNEY</span></a>
                 </li>
                 <li class="landing_link">
                     <a>★<span class="nav-label">&nbsp&nbsp&nbsp MYSELF</span> <span class="label label-warning pull-right">LV_1</span></a>
@@ -43,23 +43,30 @@
                     </div>
                     <div class="ibox-content form-horizontal">
                         <div class="form-group"><label class="col-sm-2 control-label">Applicant Name</label>
-                            <div class="col-sm-10"><input class="form-control" placeholder="Name" type="text"> <span class="help-block m-b-none">Write the name of applicant.</span></div>
+                            <div class="col-sm-10"><input id="jName" class="form-control" placeholder="Name" type="text"> <span class="help-block m-b-none">Write the name of applicant.</span></div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Phone Number</label>
-                            <div class="col-sm-10"><input class="form-control" placeholder="Phone" type="text"></div>
+                            <div class="col-sm-6"><input id="jNum" class="form-control" placeholder="Phone" type="number"></div>
+                            <div id="wrongjNum" class="col-sm-4" style="color: red"></div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Destination</label>
-                            <div class="col-sm-10"><input class="form-control" placeholder="Cityname" type="text"></div>
+                            <div class="col-sm-10"><input id="jCity" class="form-control" placeholder="Cityname" type="text"></div>
+                            <label class="col-sm-2 control-label"></label>
+                            <div id="allCities">
+                                <div id="cities" class="col-sm-2" style="color: grey"></div>
+                                <div id="counties" class="col-sm-3" style="color: grey"></div>
+                            </div>
                         </div>
 
                         <div class="form-group"><label class="col-sm-2 control-label">Member Numbers</label>
                             <div class="col-sm-10">
                                 <div class="row">
-                                    <div class="col-md-3"><input class="form-control" placeholder="Men" type="text"></div>
-                                    <div class="col-md-3"><input class="form-control" placeholder="Wemen" type="text"></div>
-                                    <div class="col-md-3"><input class="form-control" placeholder="Children" type="text"></div>
+                                    <div class="col-md-3"><input id="jMan" class="form-control" placeholder="Men" type="number"></div>
+                                    <div class="col-md-3"><input id="jWoman" class="form-control" placeholder="Women" type="number"></div>
+                                    <div class="col-md-3"><input id="jChild" class="form-control" placeholder="Children" type="number"></div>
+                                    <div id="wrongjMan" class="col-md-3" style="color: red"></div>
                                 </div>
                                 <span class="help-block m-b-none">Write the number of participants.</span>
                             </div>
@@ -69,10 +76,10 @@
                         <div class="form-group"><label class="col-sm-2 control-label">Tour Type <br>
                             <small class="text-navy">Aim of tour</small></label>
 
-                            <div class="col-sm-10">
-                                <div><label> <input value="option1" type="checkbox"> Sightseeing tour: look at the flowers while passing on horseback -- to glance over things hurriedly. </label></div>
-                                <div><label> <input value="option2" type="checkbox"> Business tour: travel on official business </label></div>
-                                <div><label> <input value="option3" type="checkbox"> Holiday tour: go to quiet and beautiful places for a rest on holiday. </label></div>
+                            <div id="jType" class="col-sm-10">
+                                <div><label> <input name="jType" value="1" type="radio"> Sightseeing tour: look at the flowers while passing on horseback -- to glance over things hurriedly. </label></div>
+                                <div><label> <input name="jType" value="2" type="radio"> Business tour: travel on official business </label></div>
+                                <div><label> <input name="jType" value="3" type="radio"> Holiday tour: go to quiet and beautiful places for a rest on holiday. </label></div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -80,8 +87,9 @@
                         <div class="form-group"><label class="col-sm-2 control-label">Budget Span</label>
                             <div class="col-sm-10">
                                 <div class="row">
-                                    <div class="col-md-4"><input class="form-control" placeholder="Lowest" type="text"></div>
-                                    <div class="col-md-4"><input class="form-control" placeholder="Highest" type="text"></div>
+                                    <div class="col-md-4"><input id="jLow" class="form-control" placeholder="Lowest" type="number"></div>
+                                    <div class="col-md-4"><input id="jHigh" class="form-control" placeholder="Highest" type="number"></div>
+                                    <div id="wrongjLow" class="col-md-4" style="color: red"></div>
                                 </div>
                             </div>
                         </div>
@@ -90,55 +98,61 @@
                         <div class="form-group"><label class="col-sm-2 control-label">Time Span</label>
                             <div class="col-sm-10">
                                 <div class="row">
-                                    <div class="col-md-4"><input class="form-control" placeholder="YYYY-MM-DD" type="text"></div>
-                                    <div class="col-md-4"><input class="form-control" placeholder="YYYY-MM-DD" type="text"></div>
+                                    <div class="col-md-4"><input id="jStart" class="form-control" type="date"></div>
+                                    <div class="col-md-4"><input id="jEnd" class="form-control" type="date"></div>
+                                    <div id="wrongjStart" class="col-md-4" style="color: red" ></div>
                                 </div>
-                                <span class="help-block m-b-none">In the format like 2017-05-08.</span>
+                                <span class="help-block m-b-none">In the format like 2017-01-01.</span>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
 
                         <div class="form-group"><label class="col-sm-2 control-label">Tour Tags</label>
-
-                            <div class="col-sm-10"><label class="checkbox-inline">
-                                <input value="option1" id="inlineCheckbox1" type="checkbox"> religion </label> <label class="checkbox-inline">
-                                <input value="option2" id="inlineCheckbox2" type="checkbox"> mountain </label> <label class="checkbox-inline">
-                                <input value="option3" id="inlineCheckbox3" type="checkbox"> lake </label> <label class="checkbox-inline">
-                                <input value="option4" id="inlineCheckbox4" type="checkbox"> custom </label> <label class="checkbox-inline">
-                                <input value="option5" id="inlineCheckbox5" type="checkbox"> amusement park </label> <label class="checkbox-inline">
-                                <input value="option6" id="inlineCheckbox6" type="checkbox"> cuisine </label> <label class="checkbox-inline">
-                                <input value="option7" id="inlineCheckbox7" type="checkbox"> night </label> <label class="checkbox-inline">
-                                <input value="option8" id="inlineCheckbox8" type="checkbox"> quiet </label> <label class="checkbox-inline">
-                                <input value="option9" id="inlineCheckbox9" type="checkbox"> shopping </label>
+                            <div id="jTags" class="col-sm-10">
+                                <label class="checkbox-inline"><input id="inlineCheckbox1" type="checkbox"> religion </label>
+                                <label class="checkbox-inline"><input id="inlineCheckbox2" type="checkbox"> mountain </label>
+                                <label class="checkbox-inline"><input id="inlineCheckbox3" type="checkbox"> lake </label>
+                                <label class="checkbox-inline"><input id="inlineCheckbox4" type="checkbox"> custom </label>
+                                <label class="checkbox-inline"><input id="inlineCheckbox5" type="checkbox"> amusement park </label>
+                                <label class="checkbox-inline"><input id="inlineCheckbox6" type="checkbox"> cuisine </label>
+                                <label class="checkbox-inline"><input id="inlineCheckbox7" type="checkbox"> night </label>
+                                <label class="checkbox-inline"><input id="inlineCheckbox8" type="checkbox"> quiet </label>
+                                <label class="checkbox-inline"><input id="inlineCheckbox9" type="checkbox"> shopping </label>
                             </div>
                             
                         </div>
                         <div class="form-group"><label class="col-sm-2 control-label">Other Tags</label>
-                            <div class="col-sm-10"><input class="form-control" placeholder="tags1/tag2/tag3..." type="text"> <span class="help-block m-b-none">Write self-defined tags in the format like religion/mountain/lake/custom.</span>
+                            <div class="col-sm-10"><input id="jOtherTags" class="form-control" placeholder="tags1/tag2/tag3..." type="text">
+                                <span class="help-block m-b-none">Write self-defined tags in the format like religion/mountain/lake/custom.</span>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
 
                         <div class="form-group"><label class="col-sm-2 control-label">Price For Itinerary</label>
-                            <div class="col-sm-10"><input class="form-control" placeholder="About 10RMB/day." type="text"></div>
+                                <div class="col-sm-4"><input id="jPrice" class="form-control" placeholder="About 10RMB/day." type="number">
+                                    <div id="wrongjPrice" class="col-sm-4" style="color: red"></div>
+                                    <span class="help-block m-b-none">How much you would pay for the itinerary</span>
+                                </div>
                         </div>
                         <div class="hr-line-dashed"></div>
 
                         <div class="form-group"><label class="col-sm-2 control-label">Due Date For Itinerary</label>
-                            <div class="col-sm-10"><input class="form-control" placeholder="YYYY-MM-DD" type="text"> <span class="help-block m-b-none">The latest date you wish to get the outcome.</span></div>
+                            <div class="col-sm-4"><input id="jDue" class="form-control" type="date">
+                                <span class="help-block m-b-none">The latest date you wish to get the itinerary.</span>
+                            </div>
                         </div>
                         <div class="hr-line-dashed"></div>
 
                         <div class="form-group has-error"><label class="col-sm-2 control-label">Other Requirements</label>
-                            <div class="col-sm-10"><textarea class="form-control" type="textarea"></textarea></div>
+                            <div class="col-sm-10"><textarea id="jOther" class="form-control"></textarea></div>
                         </div>
 
                         <div class="hr-line-dashed"></div>
                 
                         <div class="form-group">
                             <div class="col-sm-offset-5">
-                                <button class="btn btn-white" type="submit">Cancel</button>
-                                <button class="btn btn-primary" type="submit">Submit</button>
+                                <button id="jCancel" class="btn btn-white" type="submit">Cancel</button>
+                                <button id="jSubmit" class="btn btn-primary" type="submit">Submit</button>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
