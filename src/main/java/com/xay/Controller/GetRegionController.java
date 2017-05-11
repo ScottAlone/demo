@@ -35,4 +35,14 @@ public class GetRegionController {
     public BaseResult<Object> getCounty(@RequestParam("parentId") Integer parentId){
         return getRegionService.getCounty(parentId);
     }
+
+    /**
+     * 查询城市
+     * @param cityName
+     * @return
+     */
+    @RequestMapping(value = "/getCounty/name", method = RequestMethod.GET)
+    public BaseResult<Object> getCountyByName(@RequestParam("cityName")String cityName){
+        return getRegionService.getCountyByName(cityName);
+    }
 }

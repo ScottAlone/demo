@@ -15,7 +15,7 @@ public class JourneyDO {
     private Timestamp create_time;
     private Timestamp update_time;
     private String phone_num;
-    private Integer city_id;
+    private String city_name;
     private String members;
     private Integer tour_type;
     private Integer low_price;
@@ -32,7 +32,7 @@ public class JourneyDO {
         this.journey_id = journeyDomain.getJourneyId();
         this.journey_name = journeyDomain.getJourneyName();
         this.phone_num = journeyDomain.getPhoneNum();
-        this.city_id = journeyDomain.getCityId();
+        this.city_name = journeyDomain.getCityName();
         this.members = journeyDomain.getMembers();
         this.tour_type = journeyDomain.getTourType();
         this.low_price = journeyDomain.getLowPrice();
@@ -46,13 +46,13 @@ public class JourneyDO {
         this.price = journeyDomain.getPrice();
     }
 
-    public JourneyDO(Integer journey_id, String journey_name, Timestamp create_time, Timestamp update_time, String phone_num, Integer city_id, String members, Integer tour_type, Integer low_price, Integer high_price, String start_time, String end_time, String tags, String others, String c_username) {
+    public JourneyDO(Integer journey_id, String journey_name, Timestamp create_time, Timestamp update_time, String phone_num, String city_name, String members, Integer tour_type, Integer low_price, Integer high_price, String start_time, String end_time, String tags, String others, String c_username) {
         this.journey_id = journey_id;
         this.journey_name = journey_name;
         this.create_time = create_time;
         this.update_time = update_time;
         this.phone_num = phone_num;
-        this.city_id = city_id;
+        this.city_name = city_name;
         this.members = members;
         this.tour_type = tour_type;
         this.low_price = low_price;
@@ -64,11 +64,11 @@ public class JourneyDO {
         this.c_username = c_username;
     }
 
-    public JourneyDO(Integer journey_id, String journey_name, String phone_num, Integer city_id, String members, Integer tour_type, Integer low_price, Integer high_price, String start_time, String end_time, String tags, String others, String due_date, Integer price) {
+    public JourneyDO(Integer journey_id, String journey_name, String phone_num, String city_name, String members, Integer tour_type, Integer low_price, Integer high_price, String start_time, String end_time, String tags, String others, String due_date, Integer price) {
         this.journey_id = journey_id;
         this.journey_name = journey_name;
         this.phone_num = phone_num;
-        this.city_id = city_id;
+        this.city_name = city_name;
         this.members = members;
         this.tour_type = tour_type;
         this.low_price = low_price;
@@ -129,12 +129,12 @@ public class JourneyDO {
         this.phone_num = phone_num;
     }
 
-    public Integer getCity_id() {
-        return city_id;
+    public String getCity_name() {
+        return city_name;
     }
 
-    public void setCity_id(Integer city_id) {
-        this.city_id = city_id;
+    public void setCity_name(String city_name) {
+        this.city_name = city_name;
     }
 
     public String getMembers() {

@@ -25,4 +25,12 @@ public interface GetRegionMapper {
      */
     @Select("SELECT * FROM cities WHERE parent_id=#{parent_id}")
     CityDO[] getCounty(@Param("parent_id")Integer parent_id);
+
+    /**
+     * 查询城市
+     * @param cityName
+     * @return
+     */
+    @Select("SELECT * FROM cities WHERE id=#{id}")
+    CityDO getCountyByName(@Param("city_name")String cityName);
 }

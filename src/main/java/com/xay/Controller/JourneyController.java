@@ -25,6 +25,11 @@ public class JourneyController {
         return journeyService.getJourneyByUsername(cUsername);
     }
 
+    @RequestMapping(value = "journeys/city", method = RequestMethod.GET)
+    public BaseResult<Object> getJourneyByCityName(@RequestParam("cityName") String cityName){
+        return journeyService.getJourneyByCityName(cityName);
+    }
+
     @RequestMapping(value = "journeys/id", method = RequestMethod.GET)
     public BaseResult<Object> getJourney(Integer journeyId){
         return journeyService.getJourneyByJourneyId(journeyId);

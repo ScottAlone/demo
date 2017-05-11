@@ -23,8 +23,8 @@ public interface JourneyMapper {
      * @param journeyDO
      * @return
      */
-    @Insert("INSERT INTO journey(journey_name, phone_num, city_id, members, tour_type, low_price, high_price, start_time, end_time, tags, others, c_username, due_date, price) " +
-            "VALUES(#{journey_name}, #{phone_num}, #{city_id}, #{members}, #{tour_type}, #{low_price}, #{high_price}, #{start_time}, #{end_time}, #{tags}, #{others}, #{c_username}, #{due_date}, #{price})")
+    @Insert("INSERT INTO journey(journey_name, phone_num, city_name, members, tour_type, low_price, high_price, start_time, end_time, tags, others, c_username, due_date, price) " +
+            "VALUES(#{journey_name}, #{phone_num}, #{city_name}, #{members}, #{tour_type}, #{low_price}, #{high_price}, #{start_time}, #{end_time}, #{tags}, #{others}, #{c_username}, #{due_date}, #{price})")
     int postJourney(JourneyDO journeyDO);
 
     /**
@@ -32,7 +32,7 @@ public interface JourneyMapper {
      * @param journeyDO
      * @return
      */
-    @Update("UPDATE journey SET journey_name=#{journey_name}, phone_num=#{phone_num}, city_id=#{city_id}, members=#{members}, " +
+    @Update("UPDATE journey SET journey_name=#{journey_name}, phone_num=#{phone_num}, city_name=#{city_name}, members=#{members}, " +
             "tour_type=#{tour_type}, low_price=#{low_price}, high_price=#{high_price}, start_time=#{start_time}, " +
             "end_time=#{end_time}, tags=#{tags}, others=#{others}, due_date=#{due_date}, price=#{price}, update_time=CURRENT_TIMESTAMP WHERE journey_id=#{journey_id}")
     int updateJourney(JourneyDO journeyDO);
@@ -44,4 +44,12 @@ public interface JourneyMapper {
      */
     @Select("SELECT * FROM journey WHERE journey_id=#{journey_id}")
     JourneyDO getJourneyByJourneyId(@Param("journey_id") Integer journeyId);
+
+    /**
+     * 根据地区获取行程
+     * @param cityName
+     * @return
+     */
+    @Select("SELECT * FROM journey WHERE city_name=#{city_name}")
+    JourneyDO[] getJourneyByCityName(@Param("city_name") String cityName);
 }

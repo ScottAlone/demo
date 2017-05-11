@@ -7,7 +7,7 @@ function login() {
 	document.getElementById("register").style.display = "none";
 }
 
-var loginType = 0;
+let loginType = 0;
 function changeType(i) {
 	loginType = i;
     if (i == 0) {
@@ -16,8 +16,8 @@ function changeType(i) {
     else if (i == 1) {
         $("#loginType").val = "GUIDE";
     }
-
 }
+
 $("#login").click(function () {
 	$.ajax({
 		url: "/sessions/" + (loginType === 0?"guide":"customer"),
@@ -37,8 +37,6 @@ $("#login").click(function () {
 	});
 });
 
-
-// var loginType = 0;
 function change(i) {
     loginType = i;
 }
@@ -64,6 +62,7 @@ $("#register").click(function () {
 });
 
 function query(ele) {
+    inStyle(ele);
     $.ajax({
         url: "/getCounty?parentId=" + ele.value,
         type: 'GET',
@@ -71,7 +70,7 @@ function query(ele) {
         success: function (data, statusText, xhr) {
             $("#counties").text("");
             for (let i = 0; i < data.data.length; i++) {
-                let text = "<li onclick='changeCity(this)' value=\"" + data.data[i].city_id + "\"/li>";
+                let text = "<li onclick='changeCity(this)' onmouseover='inStyle(this)' onmouseleave='outStyle(this)' value=\"" + data.data[i].city_id + "\" style='text-decoration: underline;'/li>";
                 let element = $(text).text(data.data[i].name);
                 $("#counties").append(element);
             }
@@ -80,10 +79,19 @@ function query(ele) {
         }
     });
 }
-let cityId = 0;
+
+let cityName = "";
 function changeCity(obj) {
     $("#jCity").val(obj.innerText);
-    cityId = obj.value;
+    cityName = obj.innerText;
+}
+
+function inStyle(obj) {
+    obj.style.color = "green";
+}
+
+function outStyle(obj) {
+    obj.style.color = "grey";
 }
 
 $("#jCity").click(function () {
@@ -95,7 +103,7 @@ $("#jCity").click(function () {
             cities = data.data;
             $("#cities").children("li").remove();
             for (let i = 0; i < data.data.length; i++) {
-                let text = "<li onmouseover='query(this)' value=\"" + data.data[i].city_id + "\"/li>";
+                let text = "<li onmouseover='query(this)' onmouseleave='outStyle(this)' value=\"" + data.data[i].city_id + "\" style='border: 1px solid gainsboro;'/li>";
                 let element = $(text).text(data.data[i].name);
                 $("#cities").append(element);
             }
@@ -113,81 +121,91 @@ $("#jSubmit").click(function () {
     var obj = {
         "jName": $("#jName").val(),
         "jNum": $("#jNum").val(),
-        "jCity": cityId,
-        "jMan": $("#jMan").val(),
-        "jWoman": $("#jWoman").val(),
-        "jChild": $("#jChild").val(),
+        "jCity": cityName,
+        "jMan": parseInt($("#jMan").val()),
+        "jWoman":  parseInt($("#jWoman").val()),
+        "jChild":  parseInt($("#jChild").val()),
         "jType": $("input:radio:checked").val(),
-        "jLow": $("#jLow").val(),
-        "jHigh": $("#jHigh").val(),
+        "jLow": parseInt($("#jLow").val()),
+        "jHigh": parseInt($("#jHigh").val()),
         "jStart": $("#jStart").val(),
         "jEnd": $("#jEnd").val(),
         "jTags": $("#jTags").children('label'),
         "jOtherTags": $("#jOtherTags").val(),
-        "jPrice": $("#jPrice").val(),
+        "jPrice": parseInt($("#jPrice").val()),
         "jUsername": "x",
         "jDue": $("#jDue").val(),
+        "jOther": $("#jOther").val()
     };
 
+    function notNaN(num, name) {
+        if (num >= 2147483647 || num <= 0 || isNaN(num)){
+            document.getElementById("a" + name).click();
+            $("#wrong" + name).text("Invalid data type");
+            return false;
+        }else {
+            $("#wrong" + name).text("");
+            return true;
+        }
+    }
+    
     function checkValid(obj) {
         for (let attr in obj){
             let location = $("<a id='a" + attr +"' href='#" + attr + "' style='display: none'></a>");
             $("#page-wrapper").append(location);
-            // alert(attr + ":" + obj[attr] + "--" + String(obj[attr] == undefined || obj[attr] == ""));
-            if (obj[attr] == undefined || obj[attr] == ""){
-                $("#" + attr).attr("placeholder", "Required Area");
+            if (obj[attr] === undefined || obj[attr] === ""){
                 document.getElementById("a" + attr).click();
-                $("#wrong" + attr).text("Invalid data type")
+                $("#" + attr).attr("placeholder", "Required Area");
                 return false;
-            }else $("#wrong" + attr).text("")
+            }
         }
-        if (parseInt(obj.jLow) >= parseInt(obj.jHigh)){
+
+        if (cityName === ""){
+            document.getElementById("ajCity").click();
+            $("#jCity").attr("placeholder", "Please select a destination");
+            return false;
+        }
+
+        if (!(notNaN(obj.jNum, "jNum") && notNaN(obj.jMan, "jMan") && notNaN(obj.jWoman, "jWoman") &&
+                notNaN(obj.jChild, "jChild") && notNaN(obj.jLow, "jLow") && notNaN(obj.jHigh, "jHigh") && notNaN(obj.jPrice, "jPrice"))){
+            return false;
+        }
+
+        if (obj.jLow >= obj.jHigh){
             document.getElementById("ajLow").click();
             $("#wrongjLow").text("Low price should be lower than high price");
             return false;
         }else $("#wrongjLow").text("");
-        if (parseInt(obj.jLow) >= 2147483647 || parseInt(obj.jHigh) >= 2147483647){
-            document.getElementById("ajLow").click();
-            $("#wrongjLow").text("Budget too large");
+
+        let start = obj.jStart.split("-");
+        let end = obj.jEnd.split("-");
+        let dateStart = new Date(start[0], start[1], start[2]);
+        let dateEnd = new Date(end[0], end[1], end[2]);
+        let due = obj.jDue.split("-");
+        let dateDue = new Date(due[0], due[1], due[2]);
+
+        let now = new Date();
+        let nowYear = now.getFullYear();
+        let nowMon = now.getMonth();
+        let nowDay = now.getDate();
+        now =  new Date(nowYear, nowMon, nowDay - 1);
+        if (dateStart <= now || dateEnd <= now){
+            document.getElementById("ajStart").click();
+            $("#wrongjStart").text("Start date was past");
             return false;
-        }else if (parseInt(obj.jLow) <= 0 || parseInt(obj.jHigh) <= 0){
-            document.getElementById("ajLow").click();
-            $("#wrongjLow").text("Budget should not be negative");
-        }
+        }else $("#wrongjStart").text("");
 
-        let a = obj.jStart.split("-");
-        let b = obj.jEnd.split("-");
-        let ya = parseInt(a[0]);
-        let yb = parseInt(b[0]);
-        let ma = parseInt(a[1]);
-        let mb = parseInt(b[1]);
-        let da = parseInt(a[2]);
-        let db = parseInt(b[2]);
-
-        let flag = false;
-        if (ya <= yb) {
-            if (ma <= mb) {
-                if (da <= db) {
-                    flag = true;
-                    $("#wrongjStart").text("");
-                }
-            }
-        }
-        if (!flag){
+        if (dateStart > dateEnd){
             document.getElementById("ajStart").click();
             $("#wrongjStart").text("End date should be earlier than Start date");
             return false;
-        }
+        }else $("#wrongjStart").text("");
 
-        if (parseInt(obj.jPrice) >= 2147483647){
-            document.getElementById("ajPrice").click();
-            $("#wrongjPrice").text("Price too large");
+        if (dateDue > dateStart){
+            document.getElementById("ajDue").click();
+            $("#wrongjDue").text("Due date should be earlier than your start time");
             return false;
-        }else if (parseInt(obj.jPrice) <= 0){
-            document.getElementById("ajPrice").click();
-            $("#wrongjPrice").text("Price should not be negative");
-            return false
-        }else $("#wrongjPrice").text("");
+        }else $("#wrongjDue").text("");
 
         return true;
     }
@@ -216,7 +234,7 @@ $("#jSubmit").click(function () {
                 startTime: obj.jStart,
                 endTime: obj.jEnd,
                 tags: tags.toString(),
-                others: $("#jOther").val(),
+                others: obj.jOther,
                 cUsername: obj.jUsername,
                 dueDate: obj.jDue,
                 price: obj.jPrice

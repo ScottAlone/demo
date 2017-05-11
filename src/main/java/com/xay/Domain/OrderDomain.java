@@ -10,25 +10,27 @@ import java.text.SimpleDateFormat;
  */
 public class OrderDomain {
     private Integer orderId;
+    private Integer journeyId;
     private String cUsername;
     private String gUsername;
     private Integer price;
-    private String status;
+    private Integer status;
     private String createTime;
     private String payTime;
     private String deliverTime;
     private String dealTime;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public OrderDomain(String cUsername, String gUsername, Integer price, String status, String createTime, String payTime, String deliverTime, String dealTime) {
+    public OrderDomain(Integer journeyId, String cUsername, String gUsername, Integer price) {
+        this.journeyId = journeyId;
         this.cUsername = cUsername;
         this.gUsername = gUsername;
         this.price = price;
-        this.status = status;
     }
 
     public OrderDomain(OrderDO orderDO){
         this.orderId = orderDO.getOrder_id();
+        this.journeyId = orderDO.getJourney_id();
         this.cUsername = orderDO.getC_username();
         this.gUsername = orderDO.getG_username();
         this.price = orderDO.getPrice();
@@ -39,7 +41,7 @@ public class OrderDomain {
         this.dealTime = (orderDO.getDeal_time()==null)?"null":simpleDateFormat.format(orderDO.getDeal_time());
     }
 
-    public OrderDomain(Integer orderId, String status) {
+    public OrderDomain(Integer orderId, Integer status) {
         this.orderId = orderId;
         this.status = status;
     }
@@ -54,6 +56,14 @@ public class OrderDomain {
 
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
+    }
+
+    public Integer getJourneyId() {
+        return journeyId;
+    }
+
+    public void setJourneyId(Integer journeyId) {
+        this.journeyId = journeyId;
     }
 
     public String getcUsername() {
@@ -80,11 +90,11 @@ public class OrderDomain {
         this.price = price;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

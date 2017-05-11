@@ -25,9 +25,21 @@ public class OrderController {
         return orderService.getOrdersByGuideName(gUsername);
     }
 
+    @RequestMapping(value = "/orders/guide/status", method = RequestMethod.GET)
+    public BaseResult<Object> getOrdersByGuideNameAndStatus(@RequestParam("gUsername") String gUsername,
+                                                            @RequestParam("status") Integer status){
+        return orderService.getOrdersByGuideNameAndStatus(gUsername, status);
+    }
+
     @RequestMapping(value = "/orders/customer", method = RequestMethod.GET)
     public BaseResult<Object> getOrdersByCustomerName(@RequestParam("cUsername") String cUsername){
         return orderService.getOrdersByCustomerName(cUsername);
+    }
+
+    @RequestMapping(value = "/orders/customer/status", method = RequestMethod.GET)
+    public BaseResult<Object> getOrdersByCustomerNameAndStatus(@RequestParam("cUsername") String cUsername,
+                                                               @RequestParam("status") Integer status){
+        return orderService.getOrdersByCustomerNameAndStatus(cUsername, status);
     }
 
     @RequestMapping(value = "/orders/id", method = RequestMethod.GET)
@@ -36,17 +48,17 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/orders/pay", method = RequestMethod.PATCH)
-    public BaseResult<Object> createOrder(@RequestBody OrderDomain orderDomain){
-        return orderService.payOrder(orderDomain);
+    public BaseResult<Object> createOrder(@RequestParam("orderId")Integer orderId){
+        return orderService.payOrder(orderId);
     }
 
     @RequestMapping(value = "/orders/deliver", method = RequestMethod.PATCH)
-    public BaseResult<Object> deliverOrder(@RequestBody OrderDomain orderDomain){
-        return orderService.deliverOrder(orderDomain);
+    public BaseResult<Object> deliverOrder(@RequestParam("orderId")Integer orderId){
+        return orderService.deliverOrder(orderId);
     }
 
     @RequestMapping(value = "/orders/finish", method = RequestMethod.PATCH)
-    public BaseResult<Object> finishOrder(@RequestBody OrderDomain orderDomain){
-        return orderService.finishOrder(orderDomain);
+    public BaseResult<Object> finishOrder(@RequestParam("orderId")Integer orderId){
+        return orderService.finishOrder(orderId);
     }
 }

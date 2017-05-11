@@ -34,6 +34,19 @@ public class JourneyServiceImpl implements JourneyService{
     }
 
     @Override
+    public BaseResult<Object> getJourneyByCityName(String cityName) {
+        JourneyDO[] journeyDOS = journeyMapper.getJourneyByCityName(cityName);
+        JourneyDomain[] journeyDomains = new JourneyDomain[journeyDOS.length];
+        if (journeyDomains.length == 0){
+            return new BaseResult<>(500, "没有行程");
+        }
+        for (int i = 0; i < journeyDOS.length; i++){
+            journeyDomains[i] = new JourneyDomain(journeyDOS[i]);
+        }
+        return new BaseResult<>(journeyDomains);
+    }
+
+    @Override
     public BaseResult<Object> getJourneyByUsername(String username){
         JourneyDO[] journeyDOS = journeyMapper.getJourneyByUsername(username);
         JourneyDomain[] journeyDomains = new JourneyDomain[journeyDOS.length];

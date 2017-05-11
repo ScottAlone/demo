@@ -15,7 +15,7 @@ public class JourneyDomain implements Serializable {
     private String createTime;
     private String updateTime;
     private String phoneNum;
-    private Integer cityId;
+    private String cityName;
     private String members;
     private Integer tourType;
     private Integer lowPrice;
@@ -36,7 +36,7 @@ public class JourneyDomain implements Serializable {
         this.createTime = simpleDateFormat.format(journeyDO.getCreate_time());
         this.updateTime = simpleDateFormat.format(journeyDO.getUpdate_time());
         this.phoneNum = journeyDO.getPhone_num();
-        this.cityId = journeyDO.getCity_id();
+        this.cityName = journeyDO.getCity_name();
         this.members = journeyDO.getMembers();
         this.tourType = journeyDO.getTour_type();
         this.lowPrice = journeyDO.getLow_price();
@@ -50,10 +50,10 @@ public class JourneyDomain implements Serializable {
         this.price = journeyDO.getPrice();
     }
 
-    public JourneyDomain(String journeyName, String phoneNum, Integer cityId, String members, Integer tourType, Integer lowPrice, Integer highPrice, String startTime, String endTime, String tags, String others, String cUsername, String dueDate, Integer price) {
+    public JourneyDomain(String journeyName, String phoneNum, String cityName, String members, Integer tourType, Integer lowPrice, Integer highPrice, String startTime, String endTime, String tags, String others, String cUsername, String dueDate, Integer price) {
         this.journeyName = journeyName;
         this.phoneNum = phoneNum;
-        this.cityId = cityId;
+        this.cityName = cityName;
         this.members = members;
         this.tourType = tourType;
         this.lowPrice = lowPrice;
@@ -66,6 +66,8 @@ public class JourneyDomain implements Serializable {
         this.dueDate = dueDate;
         this.price = price;
     }
+
+
 
     public JourneyDomain(){
 
@@ -111,12 +113,12 @@ public class JourneyDomain implements Serializable {
         this.phoneNum = phoneNum;
     }
 
-    public Integer getCityId() {
-        return cityId;
+    public String getCityName() {
+        return cityName;
     }
 
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
     public String getMembers() {
@@ -205,5 +207,13 @@ public class JourneyDomain implements Serializable {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public SimpleDateFormat getSimpleDateFormat() {
+        return simpleDateFormat;
+    }
+
+    public void setSimpleDateFormat(SimpleDateFormat simpleDateFormat) {
+        this.simpleDateFormat = simpleDateFormat;
     }
 }

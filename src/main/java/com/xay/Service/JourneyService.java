@@ -23,6 +23,13 @@ public interface JourneyService {
     BaseResult<Object> getJourneyByJourneyId(Integer journeyId);
 
     /**
+     * 根据地区获取行程
+     * @param cityName
+     * @return
+     */
+    BaseResult<Object> getJourneyByCityName(String cityName);
+
+    /**
      * 更新行程
      * @param journeyDomain
      * @return

@@ -22,13 +22,16 @@
 
             <ul class="nav metismenu" id="side-menu">
                 <li class="landing_link">
-                    <a>★<span class="nav-label">&nbsp&nbsp&nbsp PLACES</span> <span class="label label-warning pull-right">NEW</span></a>
+                    <a href="main.html">★<span class="nav-label">&nbsp&nbsp&nbsp MAIN</span> <span class="label label-warning pull-right">NEW</span></a>
                 </li>
                 <li class="landing_link">
-                    <a>★<span class="nav-label">&nbsp&nbsp&nbsp JOURNEY</span></a>
+                    <a href="journey.html">★<span class="nav-label">&nbsp&nbsp&nbsp JOURNEY</span></a>
                 </li>
                 <li class="landing_link">
-                    <a>★<span class="nav-label">&nbsp&nbsp&nbsp MYSELF</span> <span class="label label-warning pull-right">LV_1</span></a>
+                    <a href="myProfile.html">★<span class="nav-label">&nbsp&nbsp&nbsp PROFILE</span> <span class="label label-warning pull-right">LV_1</span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="myOrders.html">★<span class="nav-label">&nbsp&nbsp&nbsp ORDERS</span> <span class="label label-warning pull-right">LV_1</span></a>
                 </li>
             </ul>
         </div>
@@ -52,7 +55,7 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Destination</label>
-                            <div class="col-sm-10"><input id="jCity" class="form-control" placeholder="Cityname" type="text"></div>
+                            <div class="col-sm-10"><input id="jCity" class="form-control" placeholder="Cityname" type="text" readonly></div>
                             <label class="col-sm-2 control-label"></label>
                             <div id="allCities">
                                 <div id="cities" class="col-sm-2" style="color: grey"></div>
@@ -87,8 +90,8 @@
                         <div class="form-group"><label class="col-sm-2 control-label">Budget Span</label>
                             <div class="col-sm-10">
                                 <div class="row">
-                                    <div class="col-md-4"><input id="jLow" class="form-control" placeholder="Lowest" type="number"></div>
-                                    <div class="col-md-4"><input id="jHigh" class="form-control" placeholder="Highest" type="number"></div>
+                                    <div class="col-md-3"><input id="jLow" class="form-control" placeholder="Lowest" type="number"></div>
+                                    <div class="col-md-3"><input id="jHigh" class="form-control" placeholder="Highest" type="number"></div>
                                     <div id="wrongjLow" class="col-md-4" style="color: red"></div>
                                 </div>
                             </div>
@@ -119,7 +122,6 @@
                                 <label class="checkbox-inline"><input id="inlineCheckbox8" type="checkbox"> quiet </label>
                                 <label class="checkbox-inline"><input id="inlineCheckbox9" type="checkbox"> shopping </label>
                             </div>
-                            
                         </div>
                         <div class="form-group"><label class="col-sm-2 control-label">Other Tags</label>
                             <div class="col-sm-10"><input id="jOtherTags" class="form-control" placeholder="tags1/tag2/tag3..." type="text">
@@ -140,10 +142,11 @@
                             <div class="col-sm-4"><input id="jDue" class="form-control" type="date">
                                 <span class="help-block m-b-none">The latest date you wish to get the itinerary.</span>
                             </div>
+                            <div id="wrongjDue" class="col-sm-4" style="color: red"></div>
                         </div>
                         <div class="hr-line-dashed"></div>
 
-                        <div class="form-group has-error"><label class="col-sm-2 control-label">Other Requirements</label>
+                        <div class="form-group"><label class="col-sm-2 control-label">Other Requirements</label>
                             <div class="col-sm-10"><textarea id="jOther" class="form-control"></textarea></div>
                         </div>
 

@@ -19,4 +19,11 @@ public interface GetRegionService {
      * @return
      */
     BaseResult<Object> getCounty(Integer parentId);
+
+    /**
+     * 查询城市
+     * @param cityName
+     * @return
+     */
+    BaseResult<Object> getCountyByName(String cityName);
 }
