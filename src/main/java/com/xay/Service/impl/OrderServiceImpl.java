@@ -92,10 +92,24 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
+    public BaseResult<Object> acceptOrder(Integer orderId) {
+        OrderDO orderDO = orderMapper.getOrderById(orderId);
+        if (orderDO != null){
+            if (orderDO.getStatus() >= 2){
+                return new BaseResult<>(500, "请勿重复接受");
+            }else orderMapper.acceptOrder(orderId);
+            return new BaseResult<>();
+        }
+        return new BaseResult<>(500, "订单不存在");
+    }
+
+    @Override
     public BaseResult<Object> payOrder(Integer orderId) {
         OrderDO orderDO = orderMapper.getOrderById(orderId);
         if (orderDO != null){
-            orderMapper.payOrder(orderId);
+            if (orderDO.getStatus() >= 1){
+                return new BaseResult<>(500, "请勿重复付款");
+            }else orderMapper.payOrder(orderId);
             return new BaseResult<>();
         }
         return new BaseResult<>(500, "订单不存在");
@@ -105,7 +119,9 @@ public class OrderServiceImpl implements OrderService{
     public BaseResult<Object> deliverOrder(Integer orderId) {
         OrderDO orderDO = orderMapper.getOrderById(orderId);
         if (orderDO != null){
-            orderMapper.deliverOrder(orderId);
+            if (orderDO.getStatus() >= 3){
+                return new BaseResult<>(500, "请勿重复提交");
+            }else orderMapper.deliverOrder(orderId);
             return new BaseResult<>();
         }
         return new BaseResult<>(500, "订单不存在");
@@ -115,7 +131,9 @@ public class OrderServiceImpl implements OrderService{
     public BaseResult<Object> finishOrder(Integer orderId) {
         OrderDO orderDO = orderMapper.getOrderById(orderId);
         if (orderDO != null){
-            orderMapper.finishOrder(orderId);
+            if (orderDO.getStatus() >= 4){
+                return new BaseResult<>(500, "请勿重复确认");
+            }else orderMapper.finishOrder(orderId);
             return new BaseResult<>();
         }
         return new BaseResult<>(500, "订单不存在");

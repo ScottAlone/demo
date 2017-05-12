@@ -23,6 +23,13 @@ public interface OrderService {
     BaseResult<Object> payOrder(Integer orderId);
 
     /**
+     * 接受订单
+     * @param orderId
+     * @return
+     */
+    BaseResult<Object> acceptOrder(Integer orderId);
+
+    /**
      * 交付订单
      * @param orderId
      * @return

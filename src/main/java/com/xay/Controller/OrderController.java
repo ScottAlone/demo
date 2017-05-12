@@ -48,8 +48,13 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/orders/pay", method = RequestMethod.PATCH)
-    public BaseResult<Object> createOrder(@RequestParam("orderId")Integer orderId){
+    public BaseResult<Object> payOrder(@RequestParam("orderId")Integer orderId){
         return orderService.payOrder(orderId);
+    }
+
+    @RequestMapping(value = "/orders/accept", method = RequestMethod.PATCH)
+    public BaseResult<Object> acceptOrder(@RequestParam("orderId")Integer orderId){
+        return orderService.acceptOrder(orderId);
     }
 
     @RequestMapping(value = "/orders/deliver", method = RequestMethod.PATCH)

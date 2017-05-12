@@ -92,15 +92,15 @@
                         <li><a onclick="changeRegister(0)">GUIDE</a></li>
                     </ul>
                 </div>
-                <input id="reUsername" class="form-control" placeholder="Username" value="" onblur="checkName(this);" type="text"></div>
+                <input id="reUsername" class="form-control" placeholder="Username" value="" onblur="isValid(this);" type="text"></div>
             <div class="form-group">
-                <input id="nickname" class="form-control" placeholder="Nickname" onblur="checkName(this);" type="text">
+                <input id="nickname" class="form-control" placeholder="Nickname" onblur="isValid(this);" type="text">
             </div>
             <div class="form-group">
-                <input id="rePassword" class="form-control" placeholder="Password" onblur="checkName(this);" type="password">
+                <input id="rePassword" class="form-control" placeholder="Password" onblur="isValid(this);" type="password">
             </div>
             <div class="form-group">
-                <input id="agree" type="checkbox" name="" onclick="changeAbility()" value=""/>&nbsp&nbsp Agree the terms and policy </div>
+                <input id="agree" type="checkbox" onclick="check()" value=""/>&nbsp&nbsp Agree the terms and policy </div>
 
             <button id="registerButton" disabled="disabled" type="submit" class="btn btn-primary block full-width m-b">Register</button>
 
@@ -112,36 +112,6 @@
 </div>
 
 <footer>Software Management 2017 ZTR & XAY</footer>
-<script>
-    var sub = document.getElementById("registerButton");
-    if (document.getElementById("agree").checked){
-        if(document.getElementById("reUsername").value!="" && document.getElementById("nickname").value!="" && document.getElementById("rePassword").value!="") {
-            sub.disabled = false;
-        }else {
-            sub.disabled = true;
-        }
-    } else sub.disabled = true;
-
-    function changeAbility() {
-        if(document.getElementById("reUsername").value!="" && document.getElementById("nickname").value!="" && document.getElementById("rePassword").value!="") {
-            sub.disabled = !sub.disabled;
-        }
-    }
-
-    function checkName(str){
-        if(str.value=="") {
-            str.placeholder="Required area.";
-            str.setAttribute("class", "red");
-        } else {
-            str.setAttribute("class", "form-control");
-        }
-        if(document.getElementById("reUsername").value!="" && document.getElementById("nickname").value!="" && document.getElementById("rePassword").value!="" && document.getElementById("agree").checked) {
-                sub.disabled = false;
-        } else {
-            sub.disabled = true;
-        }
-    }
-</script>
 </body>
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>

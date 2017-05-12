@@ -27,11 +27,19 @@ public interface OrderMapper {
     int payOrder(@Param("order_id")Integer order_id);
 
     /**
+     * 接受订单
+     * @param order_id
+     * @return
+     */
+    @Update("UPDATE orders SET status=2, pay_time=CURRENT_TIMESTAMP WHERE order_id=#{order_id}")
+    int acceptOrder(@Param("order_id")Integer order_id);
+
+    /**
      * 交付订单
      * @param order_id
      * @return
      */
-    @Update("UPDATE orders SET status=2, deliver_time=CURRENT_TIMESTAMP WHERE order_id=#{order_id}")
+    @Update("UPDATE orders SET status=3, deliver_time=CURRENT_TIMESTAMP WHERE order_id=#{order_id}")
     int deliverOrder(@Param("order_id")Integer order_id);
 
     /**
@@ -39,7 +47,7 @@ public interface OrderMapper {
      * @param order_id
      * @return
      */
-    @Update("UPDATE orders SET status=3, deal_time=CURRENT_TIMESTAMP WHERE order_id=#{order_id}")
+    @Update("UPDATE orders SET status=4, deal_time=CURRENT_TIMESTAMP WHERE order_id=#{order_id}")
     int finishOrder(@Param("order_id")Integer order_id);
 
     /**

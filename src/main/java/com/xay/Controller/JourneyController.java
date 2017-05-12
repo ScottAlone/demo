@@ -31,7 +31,7 @@ public class JourneyController {
     }
 
     @RequestMapping(value = "journeys/id", method = RequestMethod.GET)
-    public BaseResult<Object> getJourney(Integer journeyId){
+    public BaseResult<Object> getJourney(@RequestParam("journeyId") Integer journeyId){
         return journeyService.getJourneyByJourneyId(journeyId);
     }
 

@@ -13,11 +13,11 @@
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <div class="nav-header menu-center">
-                <img alt="image" class="profile-img" src="img/pic.jpg">
+                <img id="userImg" alt="image" class="profile-img" src="img/pic.jpg">
             </div>
             <li class="menu-center">
-                <p> username:&nbsp XXDR </p>
-                <p> role: &nbsp GUIDE</p>
+                <p id="username"></p>
+                <p id="userType"></p>
             </li>
 
             <ul class="nav metismenu" id="side-menu">
@@ -72,109 +72,7 @@
 
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="js/main.js"></script>
-<script>
-function changeToAccept(button) {
-    button.text = "ACCEPTED";
-    button.setAttribute("disabled", "disabled");
-}
+<script src="js/home.js"></script>
 
-function contains(arr, obj) {
-    var i = arr.length;
-    while (i--) {
-        if (arr[i] === obj) {
-            return true;
-        }
-    }
-    return false;
-}
-
-window.onload = function () {
-    let t1 = "Sightseeing tour";
-    let t2 = "Business tour";
-    let t3 = "Holiday tour";
-    var journeyIds = [];
-    $.ajax({
-        url: "/orders/" + "customer" + "/status?" + "cUsername=" + "x" + "&status=" + "0" ,
-        type: 'GET',
-        context: document.body,
-        success: function(data, statusText, xhr){
-            if (data.code == 200){
-                let journey = data.data;
-                for (let i = 0; i < journey.length; i++){
-                    journeyIds.push(data.data[i].journeyId)
-                }
-            }
-        }
-    });
-
-    $.ajax({
-        url: "journeys/city?cityName=" + "万洲区" ,
-        type: 'GET',
-        context: document.body,
-        success: function(data, statusText, xhr){
-            if (data.code == 200){
-                var orders = data.data;
-            }
-            for (let i = 0; i < orders.length; i++){
-                if (journeyIds.length >= 1 && contains(journeyIds, orders[i].journeyId)){
-                    let ele = $("<li class='warning-element' id=\'toa" + i + "\'></li>");
-                    let dest = $("<p></p>").text("Destination:  " + orders[i].cityName);
-                    let type = $("<p></p>").text("Type:  " + ((orders[i].tourType == 1)?t1:(orders[i].tourType == 2)?t2:t3));
-                    let tags = $("<p></p>").text("Tags:  " + orders[i].tags);
-                    let duration = $("<div class='agile-detail'></div>");
-                    let button = $("<a class='pull-right btn btn-xs btn-primary' onclick='changeToAccept(this)'></a>").text("YES");
-                    duration.text("Price:  " + orders[i].price + "RMB");
-                    ele.append(dest).append(type).append(tags).append(duration);
-                    $("#toAccept").append(ele);
-                    duration.append(button);
-                }
-            }
-        }
-    });
-
-    $.ajax({
-        url: "/orders/" + "customer" + "/status?" + "cUsername=" + "x" + "&status=" + "2" ,
-        type: 'GET',
-        context: document.body,
-        success: function(data, statusText, xhr){
-            if (data.code == 200){
-                var orders = data.data;
-            }
-            for (let i = 0; i < orders.length; i++){
-                let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
-                let dest = $("<p></p>").text("Destination:  ");
-                let type = $("<p></p>").text("Type:  ");
-                let tags = $("<p></p>").text("Tags:  ");
-                let duration = $("<div class='agile-detail'></div>");
-                duration.text("Price:  " + orders[i].price + "RMB");
-                ele.append(dest).append(type).append(tags).append(duration);
-                $("#accepted").append(ele);
-            }
-        }
-    });
-
-    $.ajax({
-        url: "/orders/" + "customer" + "/status?" + "cUsername=" + "x" + "&status=" + "3" ,
-        type: 'GET',
-        context: document.body,
-        success: function(data, statusText, xhr){
-            if (data.code == 200){
-                var orders = data.data;
-            }
-            for (let i = 0; i < orders.length; i++){
-                let ele = $("<li class='success-element' id=\'fin" + i + "\'></li>");
-                let dest = $("<p></p>").text("Destination:  ");
-                let type = $("<p></p>").text("Type:  ");
-                let tags = $("<p></p>").text("Tags:  ");
-                let duration = $("<div class='agile-detail'></div>");
-                duration.text("Price:  " + orders[i].price + "RMB");
-                ele.append(dest).append(type).append(tags).append(duration);
-                $("#finished").append(ele);
-            }
-        }
-    });
-}
-</script>
 </body>
 </html>

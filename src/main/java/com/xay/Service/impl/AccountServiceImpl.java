@@ -94,7 +94,10 @@ public class AccountServiceImpl implements AccountService{
             accountDO = accountMapper.getGuideByUsername(username);
         }else if (type == 1){
             accountDO = accountMapper.getCustomerByUsername(username);
-        }else return new BaseResult<>(500, "用户不存在");
+        }else return new BaseResult<>(500, "用户类型不存在");
+        if (accountDO == null){
+            return new BaseResult<>(500, "账户不存在");
+        }
         if (accountDO.getFile() != null){
             return new BaseResult<>(accountDO.getFile());
         }else return new BaseResult<>(500, "没有头像");
