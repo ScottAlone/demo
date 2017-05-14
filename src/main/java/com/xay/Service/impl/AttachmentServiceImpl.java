@@ -10,6 +10,8 @@ import com.xay.Service.AttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+
 /**
  * @author ZhangTianren
  * @version v0.1 2017/5/5.
@@ -22,6 +24,9 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Autowired
     private AttachmentMapper attachmentMapper;
 
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
     @Override
     public BaseResult<Object> insertAttachment(AttachmentDomain attachmentDomain) {
         AccountDO accountDO = accountMapper.getGuideByUsername(attachmentDomain.getgUsername());
@@ -29,7 +34,7 @@ public class AttachmentServiceImpl implements AttachmentService {
             attachmentMapper.insertAttachment(new AttachmentDO(attachmentDomain));
             return new BaseResult<>();
         }
-        return new BaseResult<>(500, "账户不存在");
+        return new BaseResult<>(500, "No user found");
     }
 
     @Override
@@ -37,10 +42,10 @@ public class AttachmentServiceImpl implements AttachmentService {
         AttachmentDO[] attachmentDOS = attachmentMapper.getAttachmentAll(gUsername);
         AttachmentDomain[] attachmentDomain = new AttachmentDomain[attachmentDOS.length];
         if (attachmentDomain.length == 0){
-            return new BaseResult<>(500, "没有附件");
+            return new BaseResult<>(500, "No attachment found");
         }
         for (int i = 0; i < attachmentDOS.length; i++){
-            attachmentDomain[i] = new AttachmentDomain(attachmentDOS[i]);
+            attachmentDomain[i] = new AttachmentDomain(attachmentDOS[i], simpleDateFormat.format(attachmentDOS[i].getCreate_time()), simpleDateFormat.format(attachmentDOS[i].getUpdate_time()));
         }
         return new BaseResult<>(attachmentDomain);
     }
@@ -49,9 +54,9 @@ public class AttachmentServiceImpl implements AttachmentService {
     public BaseResult<Object> getAttachmentByAttachmentId(Integer attachmentId) {
         AttachmentDO attachmentDO = attachmentMapper.getAttachmentByAttachmentId(attachmentId);
         if (attachmentDO != null){
-            return new BaseResult<>(new AttachmentDomain(attachmentDO));
+            return new BaseResult<>(new AttachmentDomain(attachmentDO, simpleDateFormat.format(attachmentDO.getCreate_time()), simpleDateFormat.format(attachmentDO.getUpdate_time())));
         }
-        return new BaseResult<>(500, "未找到该附件");
+        return new BaseResult<>(500, "No attachment found");
     }
 
     @Override
@@ -61,6 +66,6 @@ public class AttachmentServiceImpl implements AttachmentService {
             attachmentMapper.deleteAttachmentByAttachmentId(attachmentId);
             return new BaseResult<>();
         }
-        return new BaseResult<>(500, "未找到该附件");
+        return new BaseResult<>(500, "No attachment found");
     }
 }

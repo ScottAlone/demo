@@ -23,7 +23,7 @@ public interface AttachmentMapper {
      * @param g_username
      * @return
      */
-    @Select("SELECT * FROM attachment WHERE g_username=#{g_username}")
+    @Select("SELECT * FROM attachment WHERE binary g_username=#{g_username}")
     AttachmentDO[] getAttachmentAll(@Param("g_username")String g_username);
 
     /**

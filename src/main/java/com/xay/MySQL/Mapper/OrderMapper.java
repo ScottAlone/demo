@@ -55,7 +55,7 @@ public interface OrderMapper {
      * @param g_username
      * @return
      */
-    @Select("SELECT * FROM orders WHERE g_username=#{g_username}")
+    @Select("SELECT * FROM orders WHERE binary g_username=#{g_username}")
     OrderDO[] getOrdersByGuideName(@Param("g_username")String g_username);
 
     /**
@@ -64,7 +64,7 @@ public interface OrderMapper {
      * @param status
      * @return
      */
-    @Select("SELECT * FROM orders WHERE g_username=#{g_username} AND status=#{status}")
+    @Select("SELECT * FROM orders WHERE binary g_username=#{g_username} AND status=#{status}")
     OrderDO[] getOrdersByGuideNameAndStatus(@Param("g_username")String g_username, @Param("status")Integer status);
 
     /**
@@ -72,7 +72,7 @@ public interface OrderMapper {
      * @param c_username
      * @return
      */
-    @Select("SELECT * FROM orders WHERE c_username=#{c_username}")
+    @Select("SELECT * FROM orders WHERE binary c_username=#{c_username}")
     OrderDO[] getOrdersByCustomerName(@Param("c_username")String c_username);
 
     /**
@@ -81,7 +81,7 @@ public interface OrderMapper {
      * @param status
      * @return
      */
-    @Select("SELECT * FROM orders WHERE c_username=#{c_username} AND status=#{status}")
+    @Select("SELECT * FROM orders WHERE binary c_username=#{c_username} AND status=#{status}")
     OrderDO[] getOrdersByCustomerNameAndStatus(@Param("c_username")String c_username, @Param("status")Integer status);
 
     /**

@@ -13,34 +13,66 @@
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <div class="nav-header menu-center">
-                <img id="userImg" alt="image" class="profile-img" src="img/pic.jpg">
+                <img id="userImg" alt="暂无头像" class="profile-img" src="">
             </div>
-            <li class="menu-center">
-                <p id="username"></p>
+            <div class="menu-center">
+                <p id="nickname" style="font-size: 20px"></p>
                 <p id="userType"></p>
-            </li>
+            </div>
 
             <ul class="nav metismenu" id="side-menu">
                 <li class="landing_link">
-                    <a href="main.html">★<span class="nav-label">&nbsp&nbsp&nbsp MAIN</span> <span class="label label-warning pull-right">NEW</span></a>
+                    <a href="main.html">★<span class="nav-label">&nbsp&nbsp&nbsp Main</span> <span class="label label-warning pull-right"></span></a>
                 </li>
                 <li class="landing_link">
-                    <a href="journey.html">★<span class="nav-label">&nbsp&nbsp&nbsp JOURNEY</span></a>
+                    <a href="journey.html">★<span class="nav-label">&nbsp&nbsp&nbsp Journey</span></a>
                 </li>
                 <li class="landing_link">
-                    <a href="myProfile.html">★<span class="nav-label">&nbsp&nbsp&nbsp PROFILE</span> <span class="label label-warning pull-right">LV_1</span></a>
+                    <a href="myProfile.html">★<span class="nav-label">&nbsp&nbsp&nbsp Profile</span> <span class="label label-warning pull-right"></span></a>
                 </li>
                 <li class="landing_link">
-                    <a href="myOrders.html">★<span class="nav-label">&nbsp&nbsp&nbsp ORDERS</span> <span class="label label-warning pull-right">LV_1</span></a>
+                    <a href="myOrders.html">★<span class="nav-label">&nbsp&nbsp&nbsp Orders</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="attachment.html">★<span class="nav-label">&nbsp&nbsp&nbsp Attachments</span> <span class="label label-warning pull-right"></span></a>
                 </li>
             </ul>
         </div>
     </nav>
     <div id="page-wrapper" class="gray-bg" style="height: 700px">
-        <div style="height: 200px">
+        <div class="row">
+            <div class="ibox-content form-horizontal">
+                <div class="form-group"><label class="col-sm-2 control-label">Pre-View:</label>
+                    <div class="col-sm-6"><img id="preImg" class="profile-img"></div>
+                    <div class="col-sm-4"></div>
+                </div>
+                <div class="form-group"><label class="col-sm-2 control-label">Choose File:</label>
+                    <div class="col-sm-6"><input id="uploadImg" class="form-control" placeholder="Your Picture" type="file" accept="image/*" name="file"></div>
+                    <div class="col-sm-4"></div>
+                </div>
+                <div class="form-group"><label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-6"><button id="submitImg" class="btn-primary">Upload</button></div>
+                    <div class="col-sm-4"></div>
+                </div>
+                <div class="form-group"><label class="col-sm-2 control-label">Nickname:</label>
+                    <div class="col-sm-6"><input id="new_name" class="form-control" onblur="updateValid(this)" placeholder="Nickname" type="text"></div>
+                    <div class="col-sm-4"></div>
+                </div>
+                <div class="form-group"><label class="col-sm-2 control-label">Old Password:</label>
+                    <div class="col-sm-6"><input id="old_pwd" class="form-control" onblur="updateValid(this)" placeholder="Old Password" type="text"></div>
+                    <div class="col-sm-4"></div>
+                </div>
+                <div class="form-group"><label class="col-sm-2 control-label">New Password:</label>
+                    <div class="col-sm-6"><input id="new_pwd" class="form-control" onblur="updateValid(this)" placeholder="New Password" type="text"></div>
+                    <div class="col-sm-4"></div>
+                </div>
+            </div>
+            <div class="form-group"><label class="col-sm-2 control-label"></label>
+                <div class="col-sm-6"><button id="updateUser" class="btn-primary">Modify</button></div>
+                <div class="col-sm-4"></div>
+            </div>
 
         </div>
-        <iframe src="map.html" width="1100px" height="700px"></iframe>
     </div>
 </div>
 <script src="js/jquery.js"></script>

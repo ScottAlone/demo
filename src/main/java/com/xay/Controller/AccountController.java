@@ -2,6 +2,7 @@ package com.xay.Controller;
 
 import com.xay.Domain.BaseResult;
 import com.xay.Domain.AccountDomain;
+import com.xay.MySQL.DO.AccountDO;
 import com.xay.MySQL.Mapper.AccountMapper;
 import com.xay.Security.AuthenticationRequest;
 import com.xay.Service.AccountService;
@@ -11,12 +12,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author ZhangTianren
@@ -33,6 +37,33 @@ public class AccountController {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    private BaseResult<Object> login(AuthenticationRequest authenticationRequest, Integer type){
+
+        AccountDO accountDO = accountMapper.getGuideByUsername(authenticationRequest.getUsername());
+        if (accountDO == null){
+            return new BaseResult<>(500, "No user found");
+        }
+        // Perform the security
+        if (passwordEncoder.matches(authenticationRequest.getPassword(), accountDO.getPassword())){
+            final Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authenticationRequest.getUsername(),
+                            authenticationRequest.getPassword()
+                    )
+            );
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", accountDO.getName());
+            map.put("username", accountDO.getUsername());
+            map.put("type", type);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return new BaseResult<>(map);
+        }
+        return new BaseResult<>(500, "Bad username or password");
+    }
 
     /**
      * 用户注册
@@ -51,18 +82,8 @@ public class AccountController {
      * @throws AuthenticationException
      */
     @RequestMapping(value = "/sessions/customer", method = RequestMethod.POST)
-    public BaseResult<Object> authCustomer(@RequestBody AuthenticationRequest authenticationRequest) throws AuthenticationException {
-        // Perform the security
-        final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getUsername(),
-                        authenticationRequest.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        if (accountMapper.getCustomerByUsername(authenticationRequest.getUsername()) != null){
-            return new BaseResult<>();
-        }else return new BaseResult<>(500, "用户类型错误");
+    public BaseResult<Object> authCustomer(@RequestBody AuthenticationRequest authenticationRequest){
+        return login(authenticationRequest, 1);
     }
 
     /**
@@ -72,18 +93,8 @@ public class AccountController {
      * @throws AuthenticationException
      */
     @RequestMapping(value = "/sessions/guide", method = RequestMethod.POST)
-    public BaseResult<Object> authGuide(@RequestBody AuthenticationRequest authenticationRequest) throws AuthenticationException {
-        // Perform the security
-        final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getUsername(),
-                        authenticationRequest.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        if (accountMapper.getGuideByUsername(authenticationRequest.getUsername()) != null){
-            return new BaseResult<>();
-        }else return new BaseResult<>(500, "用户类型错误");
+    public BaseResult<Object> authGuide(@RequestBody AuthenticationRequest authenticationRequest){
+        return login(authenticationRequest, 0);
     }
 
     /**

@@ -8,7 +8,7 @@ function changeToLogin() {
 }
 
 function isValid(str){
-    if(str.value=="") {
+    if(str.value == "") {
         str.placeholder="Required area.";
         str.setAttribute("class", "red");
     } else {
@@ -26,20 +26,22 @@ function check() {
     }else $("#registerButton").attr("disabled", true);
 }
 
-let loginType = 0;
-let username;
-let userType;
 let home = "home.html";
 let main = "main.html";
 let journey = "journey.html";
 let order = "myOrders.html";
-let profile = "myOrder.html";
+let profile = "myProfile.html";
+let attachment = "attachment.html";
+let userType = 1;
+let username;
+let nickname;
+
 function changeLogin(i) {
-    loginType = i;
+    userType = i;
     if (i == 0){
         $("#typeButton").text("GUIDE");
     }else if(i == 1){
-        $("#typeButton").text("VISITOR");
+        $("#typeButton").text("CUSTOMER");
     }
 }
 let registerType = 0;
@@ -48,15 +50,11 @@ function changeRegister(i) {
     if (i == 0){
         $("#reTypeButton").text("GUIDE");
     }else if(i == 1){
-        $("#reTypeButton").text("VISITOR");
+        $("#reTypeButton").text("CUSTOMER");
     }
 }
 
 function getCookie(key) {
-    let test = window.location.href;
-    if (test.indexOf(home) != -1){
-        return "";
-    }
     if (document.cookie.length > 0) {
         let index = document.cookie.indexOf(key + "=");
         let endIndex;
@@ -72,10 +70,17 @@ function getCookie(key) {
 }
 
 function checkCookie() {
+    let test = window.location.href;
+    if (test.indexOf(home) != -1 || test == "http://localhost:8080/"){
+        return "";
+    }
     username = getCookie('username');
     userType = getCookie('userType');
+    nickname = getCookie('nickname');
 
-    if (username != "" && userType != ""){
+    if (username != "" && nickname !=""){
+        $("#nickname").text(nickname);
+        $("#userType").text(userType==0?"GUIDE":"CUSTOMER");
         $.ajax({
             url: "/images?username=" + username + "&type=" + userType,
             type: 'GET',
@@ -86,139 +91,330 @@ function checkCookie() {
                 }
             }
         });
-    }
-
-    if (window.location.href.indexOf(order) != -1){
-        let t1 = "Sightseeing tour";
-        let t2 = "Business tour";
-        let t3 = "Holiday tour";
-        let orders;
-        let journeyIds1 = [];
-        let journeyIds2 = [];
-        let journeyIds3 = [];
-        $.ajax({
-            url: "/orders/" + "guide" + "/status?" + "gUsername=" + "x" + "&status=" + "1" ,
-            type: 'GET',
-            context: document.body,
-            success: function(data, statusText, xhr){
-                if (data.code == 200){
-                    orders = data.data;
-                    for (let i = 0; i < orders.length; i++){
-                        journeyIds1.push(orders[i].journeyId)
-                    }
-                }
-            }
-        });
-
-        $.ajax({
-            url: "journeys/city?cityName=" + "万洲区" ,
-            type: 'GET',
-            context: document.body,
-            success: function(data, statusText, xhr){
-                if (data.code == 200){
-                    let journeys = data.data;
-                    for (let i = 0; i < journeys.length; i++){
-                        if (journeyIds1.length >= 1 && contains(journeyIds1, journeys[i].journeyId)){
-                            let ele = $("<li class='warning-element' id=\'toa" + i + "\'></li>");
-                            let dest = $("<p></p>").text("Destination:  " + journeys[i].cityName);
-                            let type = $("<p></p>").text("Type:  " + ((journeys[i].tourType == 1)?t1:(journeys[i].tourType == 2)?t2:t3));
-                            let tags = $("<p></p>").text("Tags:  " + journeys[i].tags);
-                            let time = $("<p></p>").text("Time:  " + journeys[i].startTime + "  TO  " + journeys[i].endTime);
-                            let duration = $("<div class='agile-detail'></div>");
-                            let button = $("<button value='" + orders[getIndex(orders, journeys[i].journeyId)].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToAccept(this)'></button>").text("YES");
-                            duration.text("Price:  " + journeys[i].price + "RMB");
-                            ele.append(dest).append(type).append(tags).append(time).append(duration);
-                            $("#toAccept").append(ele);
-                            duration.append(button);
-                        }
-                    }
-                }
-            }
-        });
-
-        $.ajax({
-            url: "/orders/" + "guide" + "/status?" + "gUsername=" + "x" + "&status=" + "2" ,
-            type: 'GET',
-            context: document.body,
-            success: function(data, statusText, xhr){
-                if (data.code == 200){
-                    let orders = data.data;
-                    for (let i = 0; i < orders.length; i++){
-                        journeyIds2.push(data.data[i].journeyId)
-                    }
-                    for (let i = 0; i < journeyIds2.length; i++){
-                        $.ajax({
-                            url: "journeys/id?journeyId=" + journeyIds2[i],
-                            type: 'GET',
-                            context: document.body,
-                            success: function (data, statusText, xhr) {
-                                if (data.code == 200) {
-                                    let journey = data.data;
-                                    let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
-                                    let dest = $("<p></p>").text("Destination:  " + journey.cityName);
-                                    let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
-                                    let tags = $("<p></p>").text("Tags:  " + journey.tags);
-                                    let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
-                                    let duration = $("<div class='agile-detail'></div>");
-                                    let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToFinish(this)'></button>").text("DELIVER");
-                                    duration.text("Price:  " + journey.price + "RMB");
-                                    ele.append(dest).append(type).append(tags).append(time).append(duration);
-                                    $("#accepted").append(ele);
-                                    duration.append(button);
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        });
-
-        $.ajax({
-            url: "/orders/" + "guide" + "/status?" + "gUsername=" + "x" + "&status=" + "3" ,
-            type: 'GET',
-            context: document.body,
-            success: function(data, statusText, xhr){
-                if (data.code == 200){
-                    let orders = data.data;
-                    for (let i = 0; i < orders.length; i++){
-                        journeyIds3.push(data.data[i].journeyId)
-                    }
-                    for (let i = 0; i < journeyIds3.length; i++){
-                        $.ajax({
-                            url: "journeys/id?journeyId=" + journeyIds3[i],
-                            type: 'GET',
-                            context: document.body,
-                            success: function (data, statusText, xhr) {
-                                if (data.code == 200) {
-                                    let journey = data.data;
-                                    let ele = $("<li class='success-element' id=\'fin" + i + "\'></li>");
-                                    let dest = $("<p></p>").text("Destination:  " + journey.cityName);
-                                    let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
-                                    let tags = $("<p></p>").text("Tags:  " + journey.tags);
-                                    let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
-                                    let duration = $("<div class='agile-detail'></div>");
-                                    duration.text("Price:  " + orders[i].price + "RMB");
-                                    ele.append(dest).append(type).append(tags).append(time).append(duration);
-                                    $("#finished").append(ele);
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        });
+        currentPage();
     }
 }
 
 checkCookie();
 
+function currentPage() {
+    let location = window.location.href;
+    if (location.indexOf(main) != -1){
+
+    }else if (location.indexOf(journey) != -1){
+
+    }else if (location.indexOf(order) != -1){
+        let t1 = "Sightseeing tour";
+        let t2 = "Business tour";
+        let t3 = "Holiday tour";
+        let base = "/orders/" + ((userType==0)?"guide":"customer") + "/status?" + ((userType==0)?"gUsername=":"cUsername=") + username + "&status=";
+        let orders;
+        let journeyIds1 = [];
+        let journeyIds2 = [];
+        let journeyIds3 = [];
+        if (userType == 0){
+            $.ajax({
+                url: base + "1" ,
+                type: 'GET',
+                context: document.body,
+                success: function(data, statusText, xhr){
+                    if (data.code == 200){
+                        orders = data.data;
+                        for (let i = 0; i < orders.length; i++){
+                            journeyIds1.push(orders[i].journeyId)
+                        }
+                    }
+                }
+            });
+
+            $.ajax({
+                url: "journeys/city?cityName=" + "万洲区" ,
+                type: 'GET',
+                context: document.body,
+                success: function(data, statusText, xhr){
+                    if (data.code == 200){
+                        let journeys = data.data;
+                        for (let i = 0; i < journeys.length; i++){
+                            if (journeyIds1.length >= 1 && contains(journeyIds1, journeys[i].journeyId)){
+                                let ele = $("<li class='warning-element' id=\'toa" + i + "\'></li>");
+                                let dest = $("<p></p>").text("Destination:  " + journeys[i].cityName);
+                                let type = $("<p></p>").text("Type:  " + ((journeys[i].tourType == 1)?t1:(journeys[i].tourType == 2)?t2:t3));
+                                let tags = $("<p></p>").text("Tags:  " + journeys[i].tags);
+                                let time = $("<p></p>").text("Time:  " + journeys[i].startTime + "  TO  " + journeys[i].endTime);
+                                let duration = $("<div class='agile-detail'></div>");
+                                let button = $("<button value='" + orders[getIndex(orders, journeys[i].journeyId)].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToAccept(this)'></button>").text("Accept");
+                                duration.text("Price:  " + journeys[i].price + "RMB");
+                                ele.append(dest).append(type).append(tags).append(time).append(duration);
+                                $("#toAccept").append(ele);
+                                duration.append(button);
+                            }
+                        }
+                    }
+                }
+            });
+
+            $.ajax({
+                url: base + "2" ,
+                type: 'GET',
+                context: document.body,
+                success: function(data, statusText, xhr){
+                    if (data.code == 200){
+                        let orders = data.data;
+                        for (let i = 0; i < orders.length; i++){
+                            journeyIds2.push(data.data[i].journeyId)
+                        }
+                        for (let i = 0; i < journeyIds2.length; i++){
+                            $.ajax({
+                                url: "journeys/id?journeyId=" + journeyIds2[i],
+                                type: 'GET',
+                                context: document.body,
+                                success: function (data, statusText, xhr) {
+                                    if (data.code == 200) {
+                                        let journey = data.data;
+                                        let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
+                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
+                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
+                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
+                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
+                                        let duration = $("<div class='agile-detail'></div>");
+                                        let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToDeliver(this)'></button>").text("Deliver");
+                                        duration.text("Price:  " + journey.price + "RMB");
+                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
+                                        $("#accepted").append(ele);
+                                        duration.append(button);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+            $.ajax({
+                url: base + "3" ,
+                type: 'GET',
+                context: document.body,
+                success: function(data, statusText, xhr){
+                    if (data.code == 200){
+                        let orders = data.data;
+                        for (let i = 0; i < orders.length; i++){
+                            journeyIds2.push(data.data[i].journeyId)
+                        }
+                        for (let i = 0; i < journeyIds2.length; i++){
+                            $.ajax({
+                                url: "journeys/id?journeyId=" + journeyIds2[i],
+                                type: 'GET',
+                                context: document.body,
+                                success: function (data, statusText, xhr) {
+                                    if (data.code == 200) {
+                                        let journey = data.data;
+                                        let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
+                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
+                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
+                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
+                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
+                                        let duration = $("<p></p>").text("Price:  " + journey.price + "RMB");
+                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
+                                        $("#toFinish").append(ele);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+            $.ajax({
+                url: base + "4" ,
+                type: 'GET',
+                context: document.body,
+                success: function(data, statusText, xhr){
+                    if (data.code == 200){
+                        let orders = data.data;
+                        for (let i = 0; i < orders.length; i++){
+                            journeyIds3.push(data.data[i].journeyId)
+                        }
+                        for (let i = 0; i < journeyIds3.length; i++){
+                            $.ajax({
+                                url: "journeys/id?journeyId=" + journeyIds3[i],
+                                type: 'GET',
+                                context: document.body,
+                                success: function (data, statusText, xhr) {
+                                    if (data.code == 200) {
+                                        let journey = data.data;
+                                        let ele = $("<li class='success-element' id=\'fin" + i + "\'></li>");
+                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
+                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
+                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
+                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
+                                        let duration = $("<div class='agile-detail'></div>");
+                                        duration.text("Price:  " + orders[i].price + "RMB");
+                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
+                                        $("#finished").append(ele);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        }else {
+            $.ajax({
+                url: base + "1" ,
+                type: 'GET',
+                context: document.body,
+                success: function(data, statusText, xhr){
+                    if (data.code == 200){
+                        let orders = data.data;
+                        for (let i = 0; i < orders.length; i++){
+                            journeyIds1.push(data.data[i].journeyId)
+                        }
+                        for (let i = 0; i < journeyIds1.length; i++){
+                            $.ajax({
+                                url: "journeys/id?journeyId=" + journeyIds1[i],
+                                type: 'GET',
+                                context: document.body,
+                                success: function (data, statusText, xhr) {
+                                    if (data.code == 200) {
+                                        let journey = data.data;
+                                        let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
+                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
+                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
+                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
+                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
+                                        let duration = $("<div class='agile-detail'></div>");
+                                        let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToPay(this)'></button>").text("Pay");
+                                        duration.text("Price:  " + journey.price + "RMB");
+                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
+                                        $("#toAccept").append(ele);
+                                        duration.append(button);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+            $.ajax({
+                url: base + "2" ,
+                type: 'GET',
+                context: document.body,
+                success: function(data, statusText, xhr){
+                    if (data.code == 200){
+                        let orders = data.data;
+                        for (let i = 0; i < orders.length; i++){
+                            journeyIds2.push(data.data[i].journeyId)
+                        }
+                        for (let i = 0; i < journeyIds2.length; i++){
+                            $.ajax({
+                                url: "journeys/id?journeyId=" + journeyIds2[i],
+                                type: 'GET',
+                                context: document.body,
+                                success: function (data, statusText, xhr) {
+                                    if (data.code == 200) {
+                                        let journey = data.data;
+                                        let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
+                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
+                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
+                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
+                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
+                                        let duration = $("<p></p>").text("Price:  " + journey.price + "RMB");
+                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
+                                        $("#accepted").append(ele);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+            $.ajax({
+                url: base + "3" ,
+                type: 'GET',
+                context: document.body,
+                success: function(data, statusText, xhr){
+                    if (data.code == 200){
+                        let orders = data.data;
+                        for (let i = 0; i < orders.length; i++){
+                            journeyIds3.push(data.data[i].journeyId)
+                        }
+                        for (let i = 0; i < journeyIds3.length; i++){
+                            $.ajax({
+                                url: "journeys/id?journeyId=" + journeyIds3[i],
+                                type: 'GET',
+                                context: document.body,
+                                success: function (data, statusText, xhr) {
+                                    if (data.code == 200) {
+                                        let journey = data.data;
+                                        let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
+                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
+                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
+                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
+                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
+                                        let duration = $("<p></p>").text("Price:  " + journey.price + "RMB");
+                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
+                                        $("#toFinish").append(ele);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+            $.ajax({
+                url: base + "4" ,
+                type: 'GET',
+                context: document.body,
+                success: function(data, statusText, xhr){
+                    if (data.code == 200){
+                        let orders = data.data;
+                        for (let i = 0; i < orders.length; i++){
+                            journeyIds2.push(data.data[i].journeyId)
+                        }
+                        for (let i = 0; i < journeyIds2.length; i++){
+                            $.ajax({
+                                url: "journeys/id?journeyId=" + journeyIds2[i],
+                                type: 'GET',
+                                context: document.body,
+                                success: function (data, statusText, xhr) {
+                                    if (data.code == 200) {
+                                        let journey = data.data;
+                                        let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
+                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
+                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
+                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
+                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
+                                        let duration = $("<p></p>").text("Price:  " + journey.price + "RMB");
+                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
+                                        $("#finished").append(ele);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        }
+    }else if (location.indexOf(profile) != -1){
+
+    }else if (location.indexOf(attachment) != -1){
+        if (userType == 1){
+            $("#getDiv").hide();
+            $("#upDiv").hide();
+        }else $("#downDiv").hide();
+    }
+}
+
 $("#loginButton").click(function () {
     let result = $("#wrong");
     $.ajax({
-        url: "/sessions/" + (loginType === 0?"guide":"customer"),
+        url: "/sessions/" + (userType == 0?"guide":"customer"),
         type: 'POST',
         data: JSON.stringify({
-            type: loginType,
+            type: userType,
             username: $("#username").val(),
             password: $("#password").val()
         }),
@@ -226,22 +422,26 @@ $("#loginButton").click(function () {
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
+                let account = data.data;
                 result.children("p").remove();
-                result.append($("<p style='color: green; text-align: left'></p>").text("登陆成功"));
+                result.append($("<p style='color: green; text-align: left'></p>").text("Login successfully"));
                 let expireDate = new Date();
                 expireDate.setDate(expireDate.getDate()+ 1);
-                let myCookie1 = "username=" + $("#username").val() + ";expires=" + expireDate.toUTCString() + ";path=/";
-                let myCookie2 = "userType=" + loginType + ";expires=" + expireDate.toUTCString() + ";path=/";
+                let myCookie1 = "username=" + account.username + ";expires=" + expireDate.toUTCString() + ";path=/";
+                let myCookie2 = "userType=" + account.type + ";expires=" + expireDate.toUTCString() + ";path=/";
+                let myCookie3 = "nickname=" + account.name + ";expires=" + expireDate.toUTCString() + ";path=/";
                 document.cookie = myCookie1;
                 document.cookie = myCookie2;
+                document.cookie = myCookie3;
                 window.location = "main.html";
             }else {
                 result.children("p").remove();
-                result.append($("<p style='color: red; text-align: left'></p>").text("用户名或密码错误"));
+                result.append($("<p style='color: red; text-align: left'></p>").text("Bad username or password"));
             }
         }
     });
 });
+
 $("#registerButton").click(function () {
     $.ajax({
         url: "/accounts",
@@ -256,8 +456,9 @@ $("#registerButton").click(function () {
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
-                alert("注册成功！");
-            }else alert("注册失败，" + data.message);
+                alert("Registered successfully！");
+                changeToLogin();
+            }else alert("Registered failed，" + data.message);
         }
     });
 });
@@ -354,14 +555,14 @@ $("#jSubmit").click(function () {
         for (let attr in obj){
             let location = $("<a id='a" + attr +"' href='#" + attr + "' style='display: none'></a>");
             $("#page-wrapper").append(location);
-            if (obj[attr] === undefined || obj[attr] === ""){
+            if (obj[attr] == undefined || obj[attr] == ""){
                 document.getElementById("a" + attr).click();
                 $("#" + attr).attr("placeholder", "Required Area");
                 return false;
             }
         }
 
-        if (cityName === ""){
+        if (cityName == ""){
             document.getElementById("ajCity").click();
             $("#jCity").attr("placeholder", "Please select a destination");
             return false;
@@ -452,7 +653,7 @@ $("#jSubmit").click(function () {
 });
 
 $("#jCancel").click(function () {
-    if(confirm("确定离开编辑界面？")){
+    if(confirm("Sure to leave this page?")){
         window.location = "main.html";
     }
 });
@@ -466,14 +667,14 @@ function changeToAccept(button) {
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
-                alert("接受成功");
+                alert("Accepted successfully");
             }
         }
     });
 }
 
-function changeToFinish(button) {
-    button.innerText = "FINISHED";
+function changeToDeliver(button) {
+    button.innerText = "Delivered";
     button.setAttribute("disabled", "disabled");
     $.ajax({
         url: "/orders/deliver?orderId=" + button.value,
@@ -481,16 +682,47 @@ function changeToFinish(button) {
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
-                alert("提交成功");
+                alert("Delivered successfully");
             }
         }
     });
 }
 
+function changeToPay(button) {
+    button.innerText = "Paid";
+    button.setAttribute("disabled", "disabled");
+    $.ajax({
+        url: "/orders/pay?orderId=" + button.value,
+        type: 'PATCH',
+        context: document.body,
+        success: function(data, statusText, xhr){
+            if (data.code == 200){
+                alert("Paid successfully");
+            }
+        }
+    });
+}
+
+function changeToFinish(button) {
+    button.innerText = "Finished";
+    button.setAttribute("disabled", "disabled");
+    $.ajax({
+        url: "/orders/finish?orderId=" + button.value,
+        type: 'PATCH',
+        context: document.body,
+        success: function(data, statusText, xhr){
+            if (data.code == 200){
+                alert("Finished successfully");
+            }
+        }
+    });
+}
+
+
 function contains(arr, obj) {
     let i = arr.length;
     while (i--) {
-        if (arr[i] === obj) {
+        if (arr[i] == obj) {
             return true;
         }
     }
@@ -505,3 +737,155 @@ function getIndex(arr, num) {
     }
     return -1;
 }
+
+let myFile;
+let fileName;
+let uploaded = false;
+
+function changeImg() {
+    uploaded = false;
+    let file = this.files[0];
+    fileName = file.name;
+    if (file.size/1024 >= 1024){
+        alert("Size of image should be below 1M");
+        return false;
+    }
+    if(!/image\/\w+/.test(file.type)){
+        alert("Image type only");
+        return false;
+    }
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function(e){
+        $("#preImg").attr("src", this.result);
+        myFile = this.result;
+        uploaded = true;
+    };
+    reader = null;
+}
+
+$("#uploadImg").bind('change', changeImg);
+
+$("#submitImg").click(function () {
+    if (!uploaded){
+        alert("Please choose an image");
+        return false;
+    }
+    let d = new FormData();
+    d.append("file", myFile);
+    d.append("username", username);
+    d.append("type", userType);
+    let xhr = new XMLHttpRequest();
+    xhr.open("post", "/images", true);
+    xhr.responseType = "json";
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                let response = xhr.response;
+                if (response.code == 200){
+                    alert("Upload successfully");
+                    $("#userImg").attr("src", myFile);
+                }else alert(response.message + "，Upload failed");
+            }else alert("Upload failed");
+        }
+    };
+    xhr.send(d);
+});
+
+function updateValid(str){
+    if(str.value=="") {
+        str.placeholder="Required area.";
+        str.setAttribute("class", "red");
+    } else {
+        str.setAttribute("class", "form-control");
+    }
+}
+
+if (username != undefined){
+    $("#gUsername").val(username);
+}
+
+if (nickname != undefined){
+    $("#new_name").val(nickname);
+}
+
+$("#updateUser").click(function () {
+    let new_name = $("#new_name").val();
+    let old_pwd = $("#old_pwd").val();
+    let new_pwd = $("#new_pwd").val();
+    if (new_name != "" && old_pwd != "" && new_pwd != ""){
+        $.ajax({
+            url: "/accounts",
+            type: 'PATCH',
+            data: JSON.stringify({
+                type: userType,
+                name: new_name,
+                username: username,
+                password: old_pwd,
+                newPassword: new_pwd
+            }),
+            contentType: "application/json",
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    alert("Modified successfully！");
+                    let expireDate = new Date();
+                    expireDate.setDate(expireDate.getDate()+ 1);
+                    document.cookie = "nickname=" + new_name + ";expires=" + expireDate.toUTCString() + ";path=/";
+                    $("#nickname").text(new_name);
+                }else alert(data.message);
+            }
+        });
+    }else alert("Please fill in all the forms");
+});
+
+function download(ele) {
+    let args = ele.value.split("&");
+    $("#attachmentId").val(args[0]);
+    $("#token").val(args[1]);
+    $("#downloadForm").submit();
+}
+
+function del(ele) {
+    let id = ele.value;
+    if(confirm("Sure to delete this attachment?")){
+        $.ajax({
+            url: "/attachments/id?attachmentId=" + id,
+            type: 'DELETE',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    alert("删除成功");
+                    $("#att" + id).remove();
+                }else alert(data.message);
+            }
+        });
+    }
+}
+
+$("#getAllAttach").click(function () {
+    $.ajax({
+        url: "/attachments?gUsername=" + username,
+        type: 'GET',
+        context: document.body,
+        success: function(data, statusText, xhr){
+            if (data.code == 200){
+                $("#allAttachments").children("li").remove();
+                $("#attachContainer").toggle();
+                let attachments = data.data;
+                for (let i = 0; i < attachments.length; i++){
+                    let ele = $("<li class='warning-element' id=\'" + "att" + attachments[i].attachId + "\' value=\'att" + i + "\'></li>");
+                    let id = $("<p></p>").text("ID:  " + attachments[i].attachId);
+                    let name = $("<p></p>").text("Name:  " + attachments[i].attachName);
+                    let token = $("<div class='agile-detail'></div>");
+                    let buttonDown = $("<button value='" + attachments[i].attachId + "&" + attachments[i].token + "\' class='pull-right btn btn-xs btn-primary' onclick='download(this)'></button>").text("Download");
+                    let buttonDelete = $("<button value='" + attachments[i].attachId + "\' class='pull-right btn btn-xs btn-primary' onclick='del(this)'></button>").text("Delete");
+                   token.text("Token:  " + attachments[i].token);
+                    ele.append(id).append(name).append(token);
+                    $("#allAttachments").append(ele);
+                    token.append(buttonDown).append(buttonDelete);
+                }
+            }
+        }
+    });
+});

@@ -10,6 +10,8 @@ import com.xay.Service.JourneyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+
 /**
  * @author ZhangTianren
  * @version v0.1 2017/5/8.
@@ -23,6 +25,9 @@ public class JourneyServiceImpl implements JourneyService{
     @Autowired
     private JourneyMapper journeyMapper;
 
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
     @Override
     public BaseResult<Object> postJourney(JourneyDomain journeyDomain) {
         AccountDO accountDO = accountMapper.getCustomerByUsername(journeyDomain.getcUsername());
@@ -30,7 +35,7 @@ public class JourneyServiceImpl implements JourneyService{
             journeyMapper.postJourney(new JourneyDO(journeyDomain));
             return new BaseResult<>();
         }
-        return new BaseResult<>(500, "用户不存在");
+        return new BaseResult<>(500, "No user found");
     }
 
     @Override
@@ -38,10 +43,10 @@ public class JourneyServiceImpl implements JourneyService{
         JourneyDO[] journeyDOS = journeyMapper.getJourneyByCityName(cityName);
         JourneyDomain[] journeyDomains = new JourneyDomain[journeyDOS.length];
         if (journeyDomains.length == 0){
-            return new BaseResult<>(500, "没有行程");
+            return new BaseResult<>(500, "No journey found");
         }
         for (int i = 0; i < journeyDOS.length; i++){
-            journeyDomains[i] = new JourneyDomain(journeyDOS[i]);
+            journeyDomains[i] = new JourneyDomain(journeyDOS[i], simpleDateFormat.format(journeyDOS[i].getCreate_time()), simpleDateFormat.format(journeyDOS[i].getUpdate_time()));
         }
         return new BaseResult<>(journeyDomains);
     }
@@ -51,10 +56,10 @@ public class JourneyServiceImpl implements JourneyService{
         JourneyDO[] journeyDOS = journeyMapper.getJourneyByUsername(username);
         JourneyDomain[] journeyDomains = new JourneyDomain[journeyDOS.length];
         if (journeyDomains.length == 0){
-            return new BaseResult<>(500, "没有行程");
+            return new BaseResult<>(500, "No journey found");
         }
         for (int i = 0; i < journeyDOS.length; i++){
-            journeyDomains[i] = new JourneyDomain(journeyDOS[i]);
+            journeyDomains[i] = new JourneyDomain(journeyDOS[i], simpleDateFormat.format(journeyDOS[i].getCreate_time()), simpleDateFormat.format(journeyDOS[i].getUpdate_time()));
         }
         return new BaseResult<>(journeyDomains);
     }
@@ -63,9 +68,9 @@ public class JourneyServiceImpl implements JourneyService{
     public BaseResult<Object> getJourneyByJourneyId(Integer journeyId) {
         JourneyDO journeyDO = journeyMapper.getJourneyByJourneyId(journeyId);
         if (journeyDO != null) {
-            return new BaseResult<>(new JourneyDomain(journeyDO));
+            return new BaseResult<>(new JourneyDomain(journeyDO, simpleDateFormat.format(journeyDO.getCreate_time()), simpleDateFormat.format(journeyDO.getCreate_time())));
         }
-        return new BaseResult<>(500, "行程不存在");
+        return new BaseResult<>(500, "No journey found");
     }
 
     @Override
@@ -76,6 +81,6 @@ public class JourneyServiceImpl implements JourneyService{
             journeyMapper.updateJourney(journeyDO);
             return new BaseResult<>();
         }
-        return new BaseResult<>(500, "行程不存在");
+        return new BaseResult<>(500, "No journey found");
     }
 }

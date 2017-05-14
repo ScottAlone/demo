@@ -28,12 +28,12 @@ public class AttachmentController {
     @ResponseBody
     public String  upload(@RequestParam("file") MultipartFile file, @RequestParam("gUsername") String username) {
         if (file.isEmpty()) {
-            return "文件为空";
+            return "Empty file";
         }
         // 获取文件名
         String fileName = file.getOriginalFilename();
         if (fileName.split(".").length == 1){
-            return "文件格式有误";
+            return "Unsupported file type";
         }
         // 获取文件的后缀名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
@@ -65,10 +65,10 @@ public class AttachmentController {
         String token = request.getParameter("token");
         AttachmentDomain attachmentDomain = (AttachmentDomain)getAttachmentByAttachmentId(Integer.valueOf(attachId)).getData();
         if (attachmentDomain == null){
-            return "未找到该附件";
+            return "No attachments found";
         }
         if (token == null || !token.equals(attachmentDomain.getToken())){
-            return "口令错误";
+            return "Bad token";
         }
         String fileName = attachmentDomain.getAttachName();
         if (fileName != null) {

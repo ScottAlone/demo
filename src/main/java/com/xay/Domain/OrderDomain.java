@@ -19,7 +19,6 @@ public class OrderDomain {
     private String payTime;
     private String deliverTime;
     private String dealTime;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public OrderDomain(Integer journeyId, String cUsername, String gUsername, Integer price) {
         this.journeyId = journeyId;
@@ -28,17 +27,17 @@ public class OrderDomain {
         this.price = price;
     }
 
-    public OrderDomain(OrderDO orderDO){
+    public OrderDomain(OrderDO orderDO, String createTime, String payTime, String deliverTime, String dealTime){
         this.orderId = orderDO.getOrder_id();
         this.journeyId = orderDO.getJourney_id();
         this.cUsername = orderDO.getC_username();
         this.gUsername = orderDO.getG_username();
         this.price = orderDO.getPrice();
         this.status = orderDO.getStatus();
-        this.createTime = (orderDO.getCreate_time()==null)?"null":simpleDateFormat.format(orderDO.getCreate_time());
-        this.payTime = (orderDO.getPay_time()==null)?"null":simpleDateFormat.format(orderDO.getPay_time());
-        this.deliverTime = (orderDO.getDeliver_time()==null)?"null":simpleDateFormat.format(orderDO.getDeliver_time());
-        this.dealTime = (orderDO.getDeal_time()==null)?"null":simpleDateFormat.format(orderDO.getDeal_time());
+        this.createTime = createTime;
+        this.payTime = payTime;
+        this.deliverTime = deliverTime;
+        this.dealTime = dealTime;
     }
 
     public OrderDomain(Integer orderId, Integer status) {

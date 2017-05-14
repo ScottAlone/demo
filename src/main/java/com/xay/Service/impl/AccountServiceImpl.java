@@ -24,15 +24,14 @@ public class AccountServiceImpl implements AccountService{
     public BaseResult<Object> register(AccountDomain account) {
         if (account.getType() == 0){
             if (accountMapper.getGuideByUsername(account.getUsername()) != null){
-                return new BaseResult<>(500, "用户已存在");
+                return new BaseResult<>(500, "User already exists");
             }
             accountMapper.insertGuide(new AccountDO(account));
         }else if (account.getType() == 1){
             if (accountMapper.getCustomerByUsername(account.getUsername()) != null){
-                return new BaseResult<>(500, "用户已存在");
+                return new BaseResult<>(500, "User already exists");
             }
             accountMapper.insertCustomer(new AccountDO(account));
-
         }
         return new BaseResult<>();
     }
@@ -43,21 +42,21 @@ public class AccountServiceImpl implements AccountService{
         if (account.getType() == 0){
             AccountDO accountDO = accountMapper.getGuideByUsername(account.getUsername());
             if (accountDO == null){
-                return new BaseResult<>(500, "用户不存在");
+                return new BaseResult<>(500, "No user found");
             }
             if (passwordEncoder.matches(account.getRawPassword(), accountDO.getPassword())){
                 account.setPassword(account.getRawNewPassword());
                 accountMapper.updateGuide(new AccountDO(account));
-            }else return new BaseResult<>(500, "密码错误");
+            }else return new BaseResult<>(500, "Bad password");
         }else if (account.getType() == 1){
             AccountDO accountDO = accountMapper.getCustomerByUsername(account.getUsername());
             if (accountMapper.getCustomerByUsername(account.getUsername()) == null){
-                return new BaseResult<>(500, "用户不存在");
+                return new BaseResult<>(500, "No user found");
             }
             if (passwordEncoder.matches(account.getRawPassword(), accountDO.getPassword())){
                 account.setPassword(account.getRawNewPassword());
                 accountMapper.updateCustomer(new AccountDO(account));
-            }else return new BaseResult<>(500, "密码错误");
+            }else return new BaseResult<>(500, "Bad password");
         }
         return new BaseResult<>();
     }
@@ -70,7 +69,7 @@ public class AccountServiceImpl implements AccountService{
         if (type == 0){
             accountDO = accountMapper.getGuideByUsername(username);
             if (accountDO == null){
-                return new BaseResult<>(500, "用户不存在");
+                return new BaseResult<>(500, "No user found");
             }
             if (accountDO.getFile() == null){
                 accountMapper.insertGuideImage(new AccountDO(username, accountDomain.getFile()));
@@ -78,12 +77,12 @@ public class AccountServiceImpl implements AccountService{
         }else if (type == 1){
             accountDO = accountMapper.getCustomerByUsername(username);
             if (accountDO == null){
-                return new BaseResult<>(500, "用户不存在");
+                return new BaseResult<>(500, "No user found");
             }
             if (accountDO.getFile() == null){
                 accountMapper.insertCustomerImage(new AccountDO(username, accountDomain.getFile()));
             }else accountMapper.updateCustomerImg(new AccountDO(username, accountDomain.getFile()));
-        }else return new BaseResult<>(500, "账户类型有误");
+        }else return new BaseResult<>(500, "Wrong user type");
         return new BaseResult<>();
     }
 
@@ -94,12 +93,12 @@ public class AccountServiceImpl implements AccountService{
             accountDO = accountMapper.getGuideByUsername(username);
         }else if (type == 1){
             accountDO = accountMapper.getCustomerByUsername(username);
-        }else return new BaseResult<>(500, "用户类型不存在");
+        }else return new BaseResult<>(500, "Wrong user type");
         if (accountDO == null){
-            return new BaseResult<>(500, "账户不存在");
+            return new BaseResult<>(500, "No user found");
         }
         if (accountDO.getFile() != null){
             return new BaseResult<>(accountDO.getFile());
-        }else return new BaseResult<>(500, "没有头像");
+        }else return new BaseResult<>(500, "No image found");
     }
 }

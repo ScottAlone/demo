@@ -15,7 +15,6 @@ public class AttachmentDomain {
     private String attachName;
     private String gUsername;
     private String token;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public AttachmentDomain(String attachName, String gUsername, String token) {
         this.attachName = attachName;
@@ -23,13 +22,13 @@ public class AttachmentDomain {
         this.token = token;
     }
 
-    public AttachmentDomain(AttachmentDO attachmentDO){
+    public AttachmentDomain(AttachmentDO attachmentDO, String createTime, String updateTime){
         this.attachId = attachmentDO.getAttachment_id();
         this.attachName = attachmentDO.getAttachment_name();
-        this.createTime = simpleDateFormat.format(attachmentDO.getCreate_time());
-        this.updateTime = simpleDateFormat.format(attachmentDO.getUpdate_time());
         this.gUsername = attachmentDO.getG_username();
         this.token = attachmentDO.getToken();
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public AttachmentDomain() {
@@ -82,13 +81,5 @@ public class AttachmentDomain {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public SimpleDateFormat getSimpleDateFormat() {
-        return simpleDateFormat;
-    }
-
-    public void setSimpleDateFormat(SimpleDateFormat simpleDateFormat) {
-        this.simpleDateFormat = simpleDateFormat;
     }
 }

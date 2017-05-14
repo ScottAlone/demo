@@ -12,6 +12,8 @@ import com.xay.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+
 /**
  * @author ZhangTianren
  * @version v0.1 2017/5/8.
@@ -27,13 +29,19 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private OrderMapper orderMapper;
 
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     private BaseResult<Object> DOSToDomains(OrderDO[] orderDOS){
         OrderDomain[] orderDomains = new OrderDomain[orderDOS.length];
         if (orderDomains.length == 0){
-            return new BaseResult<>(500, "没有订单");
+            return new BaseResult<>(500, "No order found");
         }
         for (int i = 0; i < orderDOS.length; i++){
-            orderDomains[i] = new OrderDomain(orderDOS[i]);
+            orderDomains[i] = new OrderDomain(orderDOS[i],
+                    (orderDOS[i].getCreate_time()==null)?"null":simpleDateFormat.format(orderDOS[i].getCreate_time()),
+                    (orderDOS[i].getPay_time()==null)?"null":simpleDateFormat.format(orderDOS[i].getPay_time()),
+                    (orderDOS[i].getDeliver_time()==null)?"null":simpleDateFormat.format(orderDOS[i].getDeliver_time()),
+                    (orderDOS[i].getDeal_time()==null)?"null":simpleDateFormat.format(orderDOS[i].getDeal_time()));
         }
         return new BaseResult<>(orderDomains);
     }
@@ -42,7 +50,7 @@ public class OrderServiceImpl implements OrderService{
     public BaseResult<Object> postOrder(OrderDomain orderDomain) {
         OrderDO orderDO = orderMapper.getOrderByJourneyId(orderDomain.getJourneyId());
         if (orderDO != null){
-            return new BaseResult<>(500, "请勿重复创建订单");
+            return new BaseResult<>(500, "Order has already been created");
         }
         AccountDO customer = accountMapper.getCustomerByUsername(orderDomain.getcUsername());
         AccountDO guide = accountMapper.getGuideByUsername(orderDomain.getgUsername());
@@ -51,11 +59,11 @@ public class OrderServiceImpl implements OrderService{
             if (journeyDO != null){
                 orderMapper.postOrder(new OrderDO(orderDomain));
                 return new BaseResult<>();
-            }else return new BaseResult<>(500, "行程不存在");
+            }else return new BaseResult<>(500, "No journey found");
         }else if (customer == null){
-            return new BaseResult<>(500, "客户不存在");
+            return new BaseResult<>(500, "No customer found");
         }
-        return new BaseResult<>(500, "导游不存在");
+        return new BaseResult<>(500, "No guide found");
     }
 
     @Override
@@ -86,9 +94,13 @@ public class OrderServiceImpl implements OrderService{
     public BaseResult<Object> getOrderById(Integer orderId) {
         OrderDO orderDO = orderMapper.getOrderById(orderId);
         if (orderDO != null){
-            return new BaseResult<>(new OrderDomain(orderDO));
+            return new BaseResult<>(new OrderDomain(orderDO,
+                    (orderDO.getCreate_time()==null)?"null":simpleDateFormat.format(orderDO.getCreate_time()),
+                    (orderDO.getPay_time()==null)?"null":simpleDateFormat.format(orderDO.getPay_time()),
+                    (orderDO.getDeliver_time()==null)?"null":simpleDateFormat.format(orderDO.getDeliver_time()),
+                    (orderDO.getDeal_time()==null)?"null":simpleDateFormat.format(orderDO.getDeal_time())));
         }
-        return new BaseResult<>(500, "订单不存在");
+        return new BaseResult<>(500, "No order found");
     }
 
     @Override
@@ -96,11 +108,11 @@ public class OrderServiceImpl implements OrderService{
         OrderDO orderDO = orderMapper.getOrderById(orderId);
         if (orderDO != null){
             if (orderDO.getStatus() >= 2){
-                return new BaseResult<>(500, "请勿重复接受");
+                return new BaseResult<>(500, "Order has already been accepted");
             }else orderMapper.acceptOrder(orderId);
             return new BaseResult<>();
         }
-        return new BaseResult<>(500, "订单不存在");
+        return new BaseResult<>(500, "No order found");
     }
 
     @Override
@@ -108,11 +120,11 @@ public class OrderServiceImpl implements OrderService{
         OrderDO orderDO = orderMapper.getOrderById(orderId);
         if (orderDO != null){
             if (orderDO.getStatus() >= 1){
-                return new BaseResult<>(500, "请勿重复付款");
+                return new BaseResult<>(500, "Order has already been paid");
             }else orderMapper.payOrder(orderId);
             return new BaseResult<>();
         }
-        return new BaseResult<>(500, "订单不存在");
+        return new BaseResult<>(500, "No order found");
     }
 
     @Override
@@ -120,11 +132,11 @@ public class OrderServiceImpl implements OrderService{
         OrderDO orderDO = orderMapper.getOrderById(orderId);
         if (orderDO != null){
             if (orderDO.getStatus() >= 3){
-                return new BaseResult<>(500, "请勿重复提交");
+                return new BaseResult<>(500, "Order has already been delivered");
             }else orderMapper.deliverOrder(orderId);
             return new BaseResult<>();
         }
-        return new BaseResult<>(500, "订单不存在");
+        return new BaseResult<>(500, "No order found");
     }
 
     @Override
@@ -132,10 +144,10 @@ public class OrderServiceImpl implements OrderService{
         OrderDO orderDO = orderMapper.getOrderById(orderId);
         if (orderDO != null){
             if (orderDO.getStatus() >= 4){
-                return new BaseResult<>(500, "请勿重复确认");
+                return new BaseResult<>(500, "Order has already finished");
             }else orderMapper.finishOrder(orderId);
             return new BaseResult<>();
         }
-        return new BaseResult<>(500, "订单不存在");
+        return new BaseResult<>(500, "No order found");
     }
 }

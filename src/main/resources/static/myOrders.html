@@ -13,55 +13,68 @@
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <div class="nav-header menu-center">
-                <img id="userImg" alt="image" class="profile-img" src="img/pic.jpg">
+                <img id="userImg" alt="暂无头像" class="profile-img" src="">
             </div>
-            <li class="menu-center">
-                <p id="username"></p>
+            <div class="menu-center">
+                <p id="nickname" style="font-size: 20px"></p>
                 <p id="userType"></p>
-            </li>
+            </div>
 
             <ul class="nav metismenu" id="side-menu">
                 <li class="landing_link">
-                    <a href="main.html">★<span class="nav-label">&nbsp&nbsp&nbsp MAIN</span> <span class="label label-warning pull-right">NEW</span></a>
+                    <a href="main.html">★<span class="nav-label">&nbsp&nbsp&nbsp Main</span> <span class="label label-warning pull-right"></span></a>
                 </li>
                 <li class="landing_link">
-                    <a href="journey.html">★<span class="nav-label">&nbsp&nbsp&nbsp JOURNEY</span></a>
+                    <a href="journey.html">★<span class="nav-label">&nbsp&nbsp&nbsp Journey</span></a>
                 </li>
                 <li class="landing_link">
-                    <a href="myProfile.html">★<span class="nav-label">&nbsp&nbsp&nbsp PROFILE</span> <span class="label label-warning pull-right">LV_1</span></a>
+                    <a href="myProfile.html">★<span class="nav-label">&nbsp&nbsp&nbsp Profile</span> <span class="label label-warning pull-right"></span></a>
                 </li>
                 <li class="landing_link">
-                    <a href="myOrders.html">★<span class="nav-label">&nbsp&nbsp&nbsp ORDERS</span> <span class="label label-warning pull-right">LV_1</span></a>
+                    <a href="myOrders.html">★<span class="nav-label">&nbsp&nbsp&nbsp Orders</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="attachment.html">★<span class="nav-label">&nbsp&nbsp&nbsp Attachments</span> <span class="label label-warning pull-right"></span></a>
                 </li>
             </ul>
         </div>
     </nav>
     <div id="page-wrapper" class="white-bg" style="min-height: 700px">
         <div class="roll">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="ibox">
                     <div class="ibox-content">
-                        <h3 style="text-align: center">FUTURE</h3>
+                        <h3 id="orders1" style="text-align: center">To Be Accepted</h3>
                         <ul class="sortable-list agile-list ui-sortable" id="toAccept" style="max-height: 600px; overflow-y: auto">
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h3 style="text-align: center">UNDERWAY</h3>
+                    <h3 id="orders2" style="text-align: center">To Be Delivered</h3>
                     <ul class="sortable-list agile-list ui-sortable" id="accepted" style="max-height: 600px; overflow-y: auto">
                     </ul>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h3 style="text-align: center">FINISHED</h3>
+                    <h3 id="orders3" style="text-align: center">To Be Finished</h3>
+                    <ul class="sortable-list agile-list ui-sortable" id="toFinish" style="max-height: 600px; overflow-y: auto">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h3 id="orders4" style="text-align: center">Finished</h3>
                     <ul class="sortable-list agile-list ui-sortable" id="finished" style="max-height: 600px; overflow-y: auto">
                     </ul>
                 </div>
@@ -69,10 +82,8 @@
         </div>
     </div>
 </div>
-
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/home.js"></script>
-
 </body>
 </html>

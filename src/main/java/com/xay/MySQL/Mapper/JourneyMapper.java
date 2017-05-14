@@ -15,7 +15,7 @@ public interface JourneyMapper {
      * @param c_username
      * @return
      */
-    @Select("SELECT * FROM journey WHERE c_username=#{c_username}")
+    @Select("SELECT * FROM journey WHERE binary c_username=#{c_username}")
     JourneyDO[] getJourneyByUsername(@Param("c_username")String c_username);
 
     /**

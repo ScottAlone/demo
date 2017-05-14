@@ -1,162 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="js/jquery.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Itinerary</title>
 </head>
-<body>
-    <label for="up">头像：</label> <input id="up" type="file" accept="image/*" name="file" />
-    <!--<label for="upAttach">附件：</label> <input id="upAttach" type="file" name="file" />-->
-    <button id="submit">提交</button>
-    <button id="delete">删除</button>
-    <button id="getImg">获取头像</button>
-    <button id="getAllAttach">获取所有附件</button>
-    <button id="getAttachById">获取附件</button>
-    <div id="result"></div>
-    <button id="down">下载</button>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        文件：<input type="file" name="file"/>
-        用户名：<input type="text" name="gUsername"/>
-        <input type="submit" />
-    </form>
-    <button id="downAttach">下载</button>
-    <form action="/download" method="POST" enctype="multipart/form-data">
-        文件编号：<input type="text" name="attachmentId"/>
-        token：<input type="text" name="token"/>
-        <input type="submit" />
-    </form>
+<link href="styles/bootstrap.css" rel="stylesheet">
+<link href="styles/common.css" rel="stylesheet">
+<link href="styles/animate.css" rel="stylesheet">
+<link href="styles/style.css" rel="stylesheet">
+<body class="pace-done">
+<div id="app-wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <div class="nav-header menu-center">
+                <img id="userImg" alt="暂无头像" class="profile-img" src="">
+            </div>
+            <div class="menu-center">
+                <p id="nickname" style="font-size: 20px"></p>
+                <p id="userType"></p>
+            </div>
+            <ul class="nav metismenu" id="side-menu">
+                <li class="landing_link">
+                    <a href="main.html">★<span class="nav-label">&nbsp&nbsp&nbsp Main</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="journey.html">★<span class="nav-label">&nbsp&nbsp&nbsp Journey</span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="myProfile.html">★<span class="nav-label">&nbsp&nbsp&nbsp Profile</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="myOrders.html">★<span class="nav-label">&nbsp&nbsp&nbsp Orders</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="attachment.html">★<span class="nav-label">&nbsp&nbsp&nbsp Attachments</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="page-wrapper" class="gray-bg" style="height: 700px">
+        <div class="row">
+            <div class="ibox-content form-horizontal">
+                <div class="form-group" id="getDiv">
+                    <div class="col-sm-6"><button id="getAllAttach" class="btn-primary">Get all attachments</button></div>
+                    <div class="col-sm-4"></div>
+                    <div id="attachContainer" class="ibox" style="display: none">
+                        <div class="ibox-content">
+                            <h3 style="text-align: center"></h3>
+                            <ul class="col-sm-6 sortable-list agile-list ui-sortable" id="allAttachments" style="max-height: 600px; overflow-y: auto">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="upDiv">
+                    <div class="col-sm-6">
+                        <form action="/upload" method="POST" enctype="multipart/form-data">
+                            <input type="file" name="file"/>
+                            <label class="col-sm-12 control-label"></label>
+                            <input type="hidden" name="gUsername" id="gUsername"/>
+                            <input type="submit" class="btn-primary" value="upload"/>
+                        </form>
+                    </div>
+                    <div class="col-sm-4"></div>
+                </div>
+                <div class="form-group" id="downDiv">
+                    <div class="col-sm-6">
+                        <form id="downloadForm" action="/download" method="POST" enctype="multipart/form-data">
+                            File ID：<input id="attachmentId" type="number" name="attachmentId" required/><br>
+                            <label class="col-sm-12 control-label"></label>
+                            token：<input id="token" type="text" name="token" required/><br>
+                            <label class="col-sm-12 control-label"></label>
+                            <input type="submit" class="btn-primary" value="download"/>
+                        </form>
+                        <div class="col-sm-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/home.js"></script>
 </body>
-<script>
-    let myFile;
-    let fileName;
-    let uploaded = false;
-    function readFile(){
-        uploaded = false;
-        let file = this.files[0];
-        fileName = file.name;
-        if (file.size/1024 >= 1024){
-            alert("文件大小应在1M以内");
-            return false;
-        }
-//        if(!/image\/\w+/.test(file.type)){
-//            alert("文件必须为图片！");
-//            return false;
-//        }
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function(e){
-            result.innerHTML = '<img src="'+ this.result +'" alt=""/>';
-            myFile = this.result;
-            uploaded = true;
-        };
-    }
-
-    let input = document.getElementById("up");
-    input.addEventListener('change', readFile, false);
-
-    let result = document.getElementById("result");
-
-    $("#submit").click(function () {
-        if (!uploaded){
-            alert("未正确上传");
-            return false;
-        }
-        let d = new FormData();
-        d.append("file", myFile);
-        d.append("username", "x");
-        d.append("type", 0);
-        let xhr = new XMLHttpRequest();
-        xhr.open("post", "/images", true);
-        xhr.responseType = "json";
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    let response = xhr.response;
-                    if (response.code == 200){
-                        alert("上传成功");
-                    }else alert(response.message + "，上传失败");
-                }else alert("上传失败");
-            }
-        };
-        xhr.send(d);
-    });
-
-    $("#delete").click(function () {
-        $.ajax({
-            url: "/attachments/id?attachmentId=" + 22,
-            type: 'DELETE',
-            context: document.body,
-            success: function(data, statusText, xhr){
-                if (data.code == 200){
-                    alert("删除成功");
-                }else alert(data.message);
-            }
-        });
-    });
-
-    $("#getImg").click(function () {
-        $.ajax({
-            url: "/images?ownerType=" + 0 + "&ownerId=" + 12,
-            type: 'GET',
-            context: document.body,
-            success: function(data, statusText, xhr){
-                if (data.code == 200){
-                    alert(data.data);
-                }else alert(data.message);
-            }
-        });
-    });
-
-    $("#getAllAttach").click(function () {
-        $.ajax({
-            url: "/attachments?gUsername=x",
-            type: 'GET',
-            context: document.body,
-            success: function(data, statusText, xhr){
-                if (data.code == 200){
-                    alert(data.data.length);
-                }else alert(data.message);
-            }
-        });
-    });
-
-    $("#getAttachById").click(function () {
-        $.ajax({
-            url: "/attachments/id?attachmentId=" + 23,
-            type: 'GET',
-            context: document.body,
-            success: function(data, statusText, xhr){
-                if (data.code == 200){
-                    alert(data.data);
-                }else alert(data.message);
-            }
-        });
-    });
-
-    $("#down").click(function () {
-        $.ajax({
-            url: "/attachments/id?attachmentId=" + 46,
-            type: 'GET',
-            context: document.body,
-            contentType: "application/json; charset=utf-8",
-            success: function(data, statusText, xhr){
-                if (data.code == 200){
-                    let fileName = data.data.attachName;
-                    let index = fileName.lastIndexOf(".");
-                    let fileType = fileName.substr(index + 1, fileName.length);
-                    let file = new Blob([window.atob(data.data.file)], {"type": "*\/" + fileType});
-                    result.innerHTML = '<img src="data:image/jpg;base64,'+ data.data.file +'" alt=""/>';
-
-                    let aLink = document.createElement('a');
-                    let evt = document.createEvent("HTMLEvents");
-                    evt.initEvent("click", false, false);
-                    aLink.download = fileName;
-                    aLink.href = URL.createObjectURL(file);
-                    aLink.dispatchEvent(evt);
-                }else alert(data.message);
-            },
-        });
-    });
-</script>
 </html>

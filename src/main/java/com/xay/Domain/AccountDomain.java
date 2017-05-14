@@ -1,5 +1,6 @@
 package com.xay.Domain;
 
+import com.xay.MySQL.DO.AccountDO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serializable;

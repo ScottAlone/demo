@@ -30,7 +30,7 @@ public interface AccountMapper {
      * @param accountDO
      * @return
      */
-    @Update("UPDATE customers SET name=#{name}, password=#{password}, update_time=CURRENT_TIMESTAMP WHERE username=#{username}")
+    @Update("UPDATE customers SET name=#{name}, password=#{password}, update_time=CURRENT_TIMESTAMP WHERE binary username=#{username}")
     int updateCustomer(AccountDO accountDO);
 
     /**
@@ -38,7 +38,7 @@ public interface AccountMapper {
      * @param accountDO
      * @return
      */
-    @Update("UPDATE guides SET name=#{name}, password=#{password}, update_time=CURRENT_TIMESTAMP WHERE username=#{username}")
+    @Update("UPDATE guides SET name=#{name}, password=#{password}, update_time=CURRENT_TIMESTAMP WHERE binary username=#{username}")
     int updateGuide(AccountDO accountDO);
 
     /**
@@ -46,7 +46,7 @@ public interface AccountMapper {
      * @param userName
      * @return
      */
-    @Select("SELECT * FROM guides WHERE username=#{username}")
+    @Select("SELECT * FROM guides WHERE binary username=#{username}")
     AccountDO getGuideByUsername(@Param("username") String userName);
 
     /**
@@ -54,7 +54,7 @@ public interface AccountMapper {
      * @param userName
      * @return
      */
-    @Select("SELECT * FROM customers WHERE username=#{username}")
+    @Select("SELECT * FROM customers WHERE binary username=#{username}")
     AccountDO getCustomerByUsername(@Param("username") String userName);
 
     /**
@@ -62,7 +62,7 @@ public interface AccountMapper {
      * @param accountDO
      * @return
      */
-    @Update("UPDATE guides SET file=#{file,jdbcType=BLOB} WHERE username=#{username}")
+    @Update("UPDATE guides SET file=#{file,jdbcType=BLOB} WHERE binary username=#{username}")
     int insertGuideImage(AccountDO accountDO);
 
     /**
@@ -70,7 +70,7 @@ public interface AccountMapper {
      * @param accountDO
      * @return
      */
-    @Update("UPDATE customers SET file=#{file,jdbcType=BLOB} WHERE username=#{username}")
+    @Update("UPDATE customers SET file=#{file,jdbcType=BLOB} WHERE binary username=#{username}")
     int insertCustomerImage(AccountDO accountDO);
 
     /**
@@ -78,7 +78,7 @@ public interface AccountMapper {
      * @param accountDO
      * @return
      */
-    @Update("UPDATE guides SET file=#{file,jdbcType=BLOB}, update_time=CURRENT_TIMESTAMP WHERE username=#{username}")
+    @Update("UPDATE guides SET file=#{file,jdbcType=BLOB}, update_time=CURRENT_TIMESTAMP WHERE binary username=#{username}")
     int updateGuideImg(AccountDO accountDO);
 
     /**
@@ -86,6 +86,6 @@ public interface AccountMapper {
      * @param accountDO
      * @return
      */
-    @Update("UPDATE customers SET file=#{file,jdbcType=BLOB}, update_time=CURRENT_TIMESTAMP WHERE username=#{username}")
+    @Update("UPDATE customers SET file=#{file,jdbcType=BLOB}, update_time=CURRENT_TIMESTAMP WHERE binary username=#{username}")
     int updateCustomerImg(AccountDO accountDO);
 }

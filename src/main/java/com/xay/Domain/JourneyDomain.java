@@ -27,14 +27,13 @@ public class JourneyDomain implements Serializable {
     private String cUsername;
     private String dueDate;
     private Integer price;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
-    public JourneyDomain(JourneyDO journeyDO){
+    public JourneyDomain(JourneyDO journeyDO, String createTime, String updateTime){
         this.journeyId = journeyDO.getJourney_id();
         this.journeyName = journeyDO.getJourney_name();
-        this.createTime = simpleDateFormat.format(journeyDO.getCreate_time());
-        this.updateTime = simpleDateFormat.format(journeyDO.getUpdate_time());
+        this.createTime = createTime;
+        this.updateTime = updateTime;
         this.phoneNum = journeyDO.getPhone_num();
         this.cityName = journeyDO.getCity_name();
         this.members = journeyDO.getMembers();
@@ -207,13 +206,5 @@ public class JourneyDomain implements Serializable {
 
     public void setPrice(Integer price) {
         this.price = price;
-    }
-
-    public SimpleDateFormat getSimpleDateFormat() {
-        return simpleDateFormat;
-    }
-
-    public void setSimpleDateFormat(SimpleDateFormat simpleDateFormat) {
-        this.simpleDateFormat = simpleDateFormat;
     }
 }
