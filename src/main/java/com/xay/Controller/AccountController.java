@@ -43,7 +43,11 @@ public class AccountController {
 
     private BaseResult<Object> login(AuthenticationRequest authenticationRequest, Integer type){
 
-        AccountDO accountDO = accountMapper.getGuideByUsername(authenticationRequest.getUsername());
+        AccountDO accountDO;
+        if (type == 0){
+            accountDO = accountMapper.getGuideByUsername(authenticationRequest.getUsername());
+        }else accountDO = accountMapper.getCustomerByUsername(authenticationRequest.getUsername());
+
         if (accountDO == null){
             return new BaseResult<>(500, "No user found");
         }

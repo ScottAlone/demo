@@ -74,11 +74,19 @@ public class JourneyServiceImpl implements JourneyService{
     }
 
     @Override
-    public BaseResult<Object> updateJourney(JourneyDomain journeyDomain) {
-        JourneyDO journeyDO = journeyMapper.getJourneyByJourneyId(journeyDomain.getJourneyId());
+    public BaseResult<Object> selectJourney(Integer journeyId) {
+        JourneyDO journeyDO = journeyMapper.getJourneyByJourneyId(journeyId);
         if (journeyDO != null){
-            journeyDO = new JourneyDO(journeyDomain);
-            journeyMapper.updateJourney(journeyDO);
+            journeyMapper.selectJourney(journeyId);
+            return new BaseResult<>();
+        }
+        return new BaseResult<>(500, "No journey found");
+    }
+    @Override
+    public BaseResult<Object> payJourney(Integer journeyId) {
+        JourneyDO journeyDO = journeyMapper.getJourneyByJourneyId(journeyId);
+        if (journeyDO != null){
+            journeyMapper.payJourney(journeyId);
             return new BaseResult<>();
         }
         return new BaseResult<>(500, "No journey found");

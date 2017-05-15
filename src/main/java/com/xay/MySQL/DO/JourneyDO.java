@@ -27,6 +27,7 @@ public class JourneyDO {
     private String c_username;
     private String due_date;
     private Integer price;
+    private Integer paid;
 
     public JourneyDO(JourneyDomain journeyDomain){
         this.journey_id = journeyDomain.getJourneyId();
@@ -44,9 +45,10 @@ public class JourneyDO {
         this.c_username = journeyDomain.getcUsername();
         this.due_date = journeyDomain.getDueDate();
         this.price = journeyDomain.getPrice();
+        this.paid = journeyDomain.getPaid();
     }
 
-    public JourneyDO(Integer journey_id, String journey_name, Timestamp create_time, Timestamp update_time, String phone_num, String city_name, String members, Integer tour_type, Integer low_price, Integer high_price, String start_time, String end_time, String tags, String others, String c_username) {
+    public JourneyDO(Integer journey_id, String journey_name, Timestamp create_time, Timestamp update_time, String phone_num, String city_name, String members, Integer tour_type, Integer low_price, Integer high_price, String start_time, String end_time, String tags, String others, String c_username, Integer paid, Integer price, String due_date) {
         this.journey_id = journey_id;
         this.journey_name = journey_name;
         this.create_time = create_time;
@@ -59,31 +61,14 @@ public class JourneyDO {
         this.high_price = high_price;
         this.start_time = start_time;
         this.end_time = end_time;
+        this.due_date = due_date;
         this.tags = tags;
         this.others = others;
         this.c_username = c_username;
-    }
-
-    public JourneyDO(Integer journey_id, String journey_name, String phone_num, String city_name, String members, Integer tour_type, Integer low_price, Integer high_price, String start_time, String end_time, String tags, String others, String due_date, Integer price) {
-        this.journey_id = journey_id;
-        this.journey_name = journey_name;
-        this.phone_num = phone_num;
-        this.city_name = city_name;
-        this.members = members;
-        this.tour_type = tour_type;
-        this.low_price = low_price;
-        this.high_price = high_price;
-        this.start_time = start_time;
-        this.end_time = end_time;
-        this.tags = tags;
-        this.others = others;
-        this.due_date = due_date;
         this.price = price;
+        this.paid = paid;
     }
 
-    public JourneyDO(Integer journey_id){
-        this.journey_id = journey_id;
-    }
 
     public JourneyDO(){
 
@@ -223,5 +208,13 @@ public class JourneyDO {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Integer getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Integer paid) {
+        this.paid = paid;
     }
 }

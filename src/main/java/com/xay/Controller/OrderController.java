@@ -47,6 +47,11 @@ public class OrderController {
         return orderService.getOrderById(orderId);
     }
 
+    @RequestMapping(value = "/orders/journeyId", method = RequestMethod.GET)
+    public BaseResult<Object> getOrderByJourneyId(@RequestParam("journeyId")Integer journeyId){
+        return orderService.getOrderByJourneyId(journeyId);
+    }
+
     @RequestMapping(value = "/orders/pay", method = RequestMethod.PATCH)
     public BaseResult<Object> payOrder(@RequestParam("orderId")Integer orderId){
         return orderService.payOrder(orderId);

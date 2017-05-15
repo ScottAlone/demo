@@ -42,6 +42,13 @@
     <div id="page-wrapper" class="gray-bg" style="height: 700px">
         <div class="row">
             <div class="ibox-content form-horizontal">
+                <div class="col-sm-12">
+                    <div class="col-sm-5">
+                        <h3 style="text-align: center">Change Avatar</h3>
+                        <div class="hr-line-dashed"></div>
+                    </div>
+                    <label class="col-sm-7 control-label"></label>
+                </div>
                 <div class="form-group"><label class="col-sm-2 control-label">Pre-View:</label>
                     <div class="col-sm-6"><img id="preImg" class="profile-img"></div>
                     <div class="col-sm-4"></div>
@@ -54,24 +61,31 @@
                     <div class="col-sm-6"><button id="submitImg" class="btn-primary">Upload</button></div>
                     <div class="col-sm-4"></div>
                 </div>
+                <div class="hr-line-dashed"></div>
+                <div class="col-sm-12">
+                    <div class="col-sm-5">
+                        <h3 style="text-align: center">Change Info</h3>
+                        <div class="hr-line-dashed"></div>
+                    </div>
+                    <label class="col-sm-7 control-label"></label>
+                </div>
                 <div class="form-group"><label class="col-sm-2 control-label">Nickname:</label>
                     <div class="col-sm-6"><input id="new_name" class="form-control" onblur="updateValid(this)" placeholder="Nickname" type="text"></div>
                     <div class="col-sm-4"></div>
                 </div>
                 <div class="form-group"><label class="col-sm-2 control-label">Old Password:</label>
-                    <div class="col-sm-6"><input id="old_pwd" class="form-control" onblur="updateValid(this)" placeholder="Old Password" type="text"></div>
+                    <div class="col-sm-6"><input id="old_pwd" class="form-control" onblur="updateValid(this)" placeholder="Old Password" type="password"></div>
                     <div class="col-sm-4"></div>
                 </div>
                 <div class="form-group"><label class="col-sm-2 control-label">New Password:</label>
-                    <div class="col-sm-6"><input id="new_pwd" class="form-control" onblur="updateValid(this)" placeholder="New Password" type="text"></div>
+                    <div class="col-sm-6"><input id="new_pwd" class="form-control" onblur="updateValid(this)" placeholder="New Password" type="password"></div>
+                    <div class="col-sm-4"></div>
+                </div>
+                <div class="form-group"><label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-6"><button id="updateUser" class="btn-primary">Modify</button></div>
                     <div class="col-sm-4"></div>
                 </div>
             </div>
-            <div class="form-group"><label class="col-sm-2 control-label"></label>
-                <div class="col-sm-6"><button id="updateUser" class="btn-primary">Modify</button></div>
-                <div class="col-sm-4"></div>
-            </div>
-
         </div>
     </div>
 </div>

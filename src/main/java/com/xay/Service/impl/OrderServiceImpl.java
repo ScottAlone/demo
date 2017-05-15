@@ -104,6 +104,19 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
+    public BaseResult<Object> getOrderByJourneyId(Integer journeyId) {
+        OrderDO orderDO = orderMapper.getOrderByJourneyId(journeyId);
+        if (orderDO != null){
+            return new BaseResult<>(new OrderDomain(orderDO,
+                    (orderDO.getCreate_time()==null)?"null":simpleDateFormat.format(orderDO.getCreate_time()),
+                    (orderDO.getPay_time()==null)?"null":simpleDateFormat.format(orderDO.getPay_time()),
+                    (orderDO.getDeliver_time()==null)?"null":simpleDateFormat.format(orderDO.getDeliver_time()),
+                    (orderDO.getDeal_time()==null)?"null":simpleDateFormat.format(orderDO.getDeal_time())));
+        }
+        return new BaseResult<>(500, "No order found");
+    }
+
+    @Override
     public BaseResult<Object> acceptOrder(Integer orderId) {
         OrderDO orderDO = orderMapper.getOrderById(orderId);
         if (orderDO != null){
