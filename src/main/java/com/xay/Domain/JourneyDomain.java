@@ -27,6 +27,7 @@ public class JourneyDomain implements Serializable {
     private String cUsername;
     private String dueDate;
     private Integer price;
+    private Integer paid;
 
 
     public JourneyDomain(JourneyDO journeyDO, String createTime, String updateTime){
@@ -42,6 +43,7 @@ public class JourneyDomain implements Serializable {
         this.highPrice = journeyDO.getHigh_price();
         this.startTime = journeyDO.getStart_time();
         this.endTime = journeyDO.getEnd_time();
+        this.paid = journeyDO.getPaid();
         this.tags = journeyDO.getTags();
         this.others = journeyDO.getOthers();
         this.cUsername = journeyDO.getC_username();
@@ -65,8 +67,6 @@ public class JourneyDomain implements Serializable {
         this.dueDate = dueDate;
         this.price = price;
     }
-
-
 
     public JourneyDomain(){
 
@@ -206,5 +206,13 @@ public class JourneyDomain implements Serializable {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Integer getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Integer paid) {
+        this.paid = paid;
     }
 }

@@ -28,14 +28,20 @@ public interface JourneyMapper {
     int postJourney(JourneyDO journeyDO);
 
     /**
-     * 修改行程
-     * @param journeyDO
+     * 选择导游
+     * @param journeyId
      * @return
      */
-    @Update("UPDATE journey SET journey_name=#{journey_name}, phone_num=#{phone_num}, city_name=#{city_name}, members=#{members}, " +
-            "tour_type=#{tour_type}, low_price=#{low_price}, high_price=#{high_price}, start_time=#{start_time}, " +
-            "end_time=#{end_time}, tags=#{tags}, others=#{others}, due_date=#{due_date}, price=#{price}, update_time=CURRENT_TIMESTAMP WHERE journey_id=#{journey_id}")
-    int updateJourney(JourneyDO journeyDO);
+    @Update("UPDATE journey SET paid=0, update_time=CURRENT_TIMESTAMP WHERE journey_id=#{journey_id}")
+    int selectJourney(@Param("journey_id") Integer journeyId);
+
+    /**
+     * 支付行程
+     * @param journeyId
+     * @return
+     */
+    @Update("UPDATE journey SET paid=1, update_time=CURRENT_TIMESTAMP WHERE journey_id=#{journey_id}")
+    int payJourney(@Param("journey_id") Integer journeyId);
 
     /**
      * 获取单个行程

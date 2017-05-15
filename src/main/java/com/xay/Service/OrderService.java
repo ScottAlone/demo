@@ -77,4 +77,11 @@ public interface OrderService {
      * @return
      */
     BaseResult<Object> getOrderById(Integer orderId);
+
+    /**
+     * 根据行程id获取订单
+     * @param journeyId
+     * @return
+     */
+    BaseResult<Object> getOrderByJourneyId(Integer journeyId);
 }

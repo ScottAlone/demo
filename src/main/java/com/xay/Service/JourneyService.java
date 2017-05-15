@@ -30,11 +30,18 @@ public interface JourneyService {
     BaseResult<Object> getJourneyByCityName(String cityName);
 
     /**
-     * 更新行程
-     * @param journeyDomain
+     * 选择导游
+     * @param journeyId
      * @return
      */
-    BaseResult<Object> updateJourney(JourneyDomain journeyDomain);
+    BaseResult<Object> selectJourney(Integer journeyId);
+
+    /**
+     * 支付行程
+     * @param journeyId
+     * @return
+     */
+    BaseResult<Object> payJourney(Integer journeyId);
 
     /**
      * 根据用户名获取所有行程

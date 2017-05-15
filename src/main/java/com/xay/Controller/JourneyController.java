@@ -35,8 +35,13 @@ public class JourneyController {
         return journeyService.getJourneyByJourneyId(journeyId);
     }
 
-    @RequestMapping(value = "journeys/id", method = RequestMethod.PATCH)
-    public BaseResult<Object> updateJourney(@RequestBody JourneyDomain journeyDomain){
-        return journeyService.updateJourney(journeyDomain);
+    @RequestMapping(value = "journeys/select", method = RequestMethod.PATCH)
+    public BaseResult<Object> selectJourney(@RequestParam("journeyId") Integer journeyId){
+        return journeyService.selectJourney(journeyId);
+    }
+
+    @RequestMapping(value = "journeys/pay", method = RequestMethod.PATCH)
+    public BaseResult<Object> payJourney(@RequestParam("journeyId") Integer journeyId){
+        return journeyService.payJourney(journeyId);
     }
 }

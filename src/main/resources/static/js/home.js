@@ -32,6 +32,9 @@ let journey = "journey.html";
 let order = "myOrders.html";
 let profile = "myProfile.html";
 let attachment = "attachment.html";
+let t1 = "Sightseeing tour";
+let t2 = "Business tour";
+let t3 = "Holiday tour";
 let userType = 1;
 let username;
 let nickname;
@@ -44,7 +47,7 @@ function changeLogin(i) {
         $("#typeButton").text("CUSTOMER");
     }
 }
-let registerType = 0;
+let registerType = 1;
 function changeRegister(i) {
     registerType = i;
     if (i == 0){
@@ -102,302 +105,209 @@ function currentPage() {
     if (location.indexOf(main) != -1){
 
     }else if (location.indexOf(journey) != -1){
-
+        $("#journeys1").children("li").remove();
+        $("#journeys2").children("li").remove();
+        $("#journeys3").children("li").remove();
+        $.ajax({
+            url: "journeys?username=" + username,
+            type: 'GET',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    let journeys = data.data;
+                    for (let i = 0; i < journeys.length; i++){
+                        let journey = journeys[i];
+                        let ele = $("<li class='info-element' id=\'j" + i + "\'></li>");
+                        let name = $("<p></p>").text("Journey Name:  " + journey.journeyName);
+                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
+                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
+                        let member = $("<p></p>").text("Members:  " + journey.members);
+                        let budget = $("<p></p>").text("LowPrice:  " + journey.lowPrice + " ~ " + journey.highPrice);
+                        let duration = $("<p></p>").text("Duration:  " + journey.startTime + " TO " + journey.endTime);
+                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
+                        let others = $("<p></p>").text("Others:  " + journey.others);
+                        let price = $("<p></p>").text("Price:  " + journey.price);
+                        let dueDate = $("<p></p>").text("DueDate:  " + journey.dueDate);
+                        let create = $("<div class='agile-detail'></div>").text("Create:  " + journey.createTime);
+                        let button;
+                        if (journey.paid == 0){
+                            button = $("<button value='" + journey.journeyId + "&" + journey.price + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToPay(this)'></button>").text("Pay");
+                        }else if (journey.paid == -1){
+                            button = $("<button value='" + journey.journeyId + "&" + journey.price + "\' class='pull-right btn btn-xs btn-primary' onclick='selectGuide(this)'></button>").text("Select");
+                        }
+                        ele.append(name).append(dest).append(type).append(member).append(budget).append(duration)
+                            .append(tags).append(others).append(dueDate).append(price).append(create);
+                        if (journey.paid == 0){
+                            $("#journeys3").append(ele);
+                            create.append(button);
+                        }else if (journey.paid == -1){
+                            $("#journeys2").append(ele);
+                            create.append(button);
+                        }else $("#journeys1").append(ele);
+                    }
+                }
+            }
+        });
     }else if (location.indexOf(order) != -1){
-        let t1 = "Sightseeing tour";
-        let t2 = "Business tour";
-        let t3 = "Holiday tour";
         let base = "/orders/" + ((userType==0)?"guide":"customer") + "/status?" + ((userType==0)?"gUsername=":"cUsername=") + username + "&status=";
         let orders;
         let journeyIds1 = [];
         let journeyIds2 = [];
         let journeyIds3 = [];
-        if (userType == 0){
-            $.ajax({
-                url: base + "1" ,
-                type: 'GET',
-                context: document.body,
-                success: function(data, statusText, xhr){
-                    if (data.code == 200){
-                        orders = data.data;
-                        for (let i = 0; i < orders.length; i++){
-                            journeyIds1.push(orders[i].journeyId)
-                        }
+        $("#toAccept").children("li").remove();
+        $("#toDeliver").children("li").remove();
+        $("#toFinish").children("li").remove();
+        $("#finished").children("li").remove();
+        $.ajax({
+            url: base + "1" ,
+            type: 'GET',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    let orders = data.data;
+                    for (let i = 0; i < orders.length; i++){
+                        journeyIds1.push(data.data[i].journeyId)
                     }
-                }
-            });
-
-            $.ajax({
-                url: "journeys/city?cityName=" + "万洲区" ,
-                type: 'GET',
-                context: document.body,
-                success: function(data, statusText, xhr){
-                    if (data.code == 200){
-                        let journeys = data.data;
-                        for (let i = 0; i < journeys.length; i++){
-                            if (journeyIds1.length >= 1 && contains(journeyIds1, journeys[i].journeyId)){
-                                let ele = $("<li class='warning-element' id=\'toa" + i + "\'></li>");
-                                let dest = $("<p></p>").text("Destination:  " + journeys[i].cityName);
-                                let type = $("<p></p>").text("Type:  " + ((journeys[i].tourType == 1)?t1:(journeys[i].tourType == 2)?t2:t3));
-                                let tags = $("<p></p>").text("Tags:  " + journeys[i].tags);
-                                let time = $("<p></p>").text("Time:  " + journeys[i].startTime + "  TO  " + journeys[i].endTime);
-                                let duration = $("<div class='agile-detail'></div>");
-                                let button = $("<button value='" + orders[getIndex(orders, journeys[i].journeyId)].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToAccept(this)'></button>").text("Accept");
-                                duration.text("Price:  " + journeys[i].price + "RMB");
-                                ele.append(dest).append(type).append(tags).append(time).append(duration);
-                                $("#toAccept").append(ele);
-                                duration.append(button);
+                    for (let i = 0; i < journeyIds1.length; i++){
+                        $.ajax({
+                            url: "journeys/id?journeyId=" + journeyIds1[i],
+                            type: 'GET',
+                            context: document.body,
+                            success: function (data, statusText, xhr) {
+                                if (data.code == 200) {
+                                    let journey = data.data;
+                                    let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
+                                    let dest = $("<p></p>").text("Destination:  " + journey.cityName);
+                                    let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
+                                    let tags = $("<p></p>").text("Tags:  " + journey.tags);
+                                    let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
+                                    let duration = $("<div class='agile-detail'></div>");
+                                    let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToAccept(this)'></button>").text("Accept");
+                                    duration.text("Price:  " + journey.price + "RMB");
+                                    ele.append(dest).append(type).append(tags).append(time).append(duration);
+                                    $("#toAccept").append(ele);
+                                    if (userType == 0){
+                                        duration.append(button);
+                                    }
+                                }
                             }
-                        }
+                        });
                     }
                 }
-            });
+            }
+        });
 
-            $.ajax({
-                url: base + "2" ,
-                type: 'GET',
-                context: document.body,
-                success: function(data, statusText, xhr){
-                    if (data.code == 200){
-                        let orders = data.data;
-                        for (let i = 0; i < orders.length; i++){
-                            journeyIds2.push(data.data[i].journeyId)
-                        }
-                        for (let i = 0; i < journeyIds2.length; i++){
-                            $.ajax({
-                                url: "journeys/id?journeyId=" + journeyIds2[i],
-                                type: 'GET',
-                                context: document.body,
-                                success: function (data, statusText, xhr) {
-                                    if (data.code == 200) {
-                                        let journey = data.data;
-                                        let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
-                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
-                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
-                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
-                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
-                                        let duration = $("<div class='agile-detail'></div>");
-                                        let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToDeliver(this)'></button>").text("Deliver");
-                                        duration.text("Price:  " + journey.price + "RMB");
-                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
-                                        $("#accepted").append(ele);
+        $.ajax({
+            url: base + "2" ,
+            type: 'GET',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    let orders = data.data;
+                    for (let i = 0; i < orders.length; i++){
+                        journeyIds2.push(data.data[i].journeyId)
+                    }
+                    for (let i = 0; i < journeyIds2.length; i++){
+                        $.ajax({
+                            url: "journeys/id?journeyId=" + journeyIds2[i],
+                            type: 'GET',
+                            context: document.body,
+                            success: function (data, statusText, xhr) {
+                                if (data.code == 200) {
+                                    let journey = data.data;
+                                    let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
+                                    let dest = $("<p></p>").text("Destination:  " + journey.cityName);
+                                    let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
+                                    let tags = $("<p></p>").text("Tags:  " + journey.tags);
+                                    let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
+                                    let duration = $("<div class='agile-detail'></div>");
+                                    let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToDeliver(this)'></button>").text("Deliver");
+                                    duration.text("Price:  " + journey.price + "RMB");
+                                    ele.append(dest).append(type).append(tags).append(time).append(duration);
+                                    $("#toDeliver").append(ele);
+                                    if (userType == 0){
                                         duration.append(button);
                                     }
                                 }
-                            });
-                        }
+                            }
+                        });
                     }
                 }
-            });
+            }
+        });
 
-            $.ajax({
-                url: base + "3" ,
-                type: 'GET',
-                context: document.body,
-                success: function(data, statusText, xhr){
-                    if (data.code == 200){
-                        let orders = data.data;
-                        for (let i = 0; i < orders.length; i++){
-                            journeyIds2.push(data.data[i].journeyId)
-                        }
-                        for (let i = 0; i < journeyIds2.length; i++){
-                            $.ajax({
-                                url: "journeys/id?journeyId=" + journeyIds2[i],
-                                type: 'GET',
-                                context: document.body,
-                                success: function (data, statusText, xhr) {
-                                    if (data.code == 200) {
-                                        let journey = data.data;
-                                        let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
-                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
-                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
-                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
-                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
-                                        let duration = $("<p></p>").text("Price:  " + journey.price + "RMB");
-                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
-                                        $("#toFinish").append(ele);
-                                    }
-                                }
-                            });
-                        }
+        $.ajax({
+            url: base + "3" ,
+            type: 'GET',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    let orders = data.data;
+                    for (let i = 0; i < orders.length; i++){
+                        journeyIds2.push(data.data[i].journeyId)
                     }
-                }
-            });
-
-            $.ajax({
-                url: base + "4" ,
-                type: 'GET',
-                context: document.body,
-                success: function(data, statusText, xhr){
-                    if (data.code == 200){
-                        let orders = data.data;
-                        for (let i = 0; i < orders.length; i++){
-                            journeyIds3.push(data.data[i].journeyId)
-                        }
-                        for (let i = 0; i < journeyIds3.length; i++){
-                            $.ajax({
-                                url: "journeys/id?journeyId=" + journeyIds3[i],
-                                type: 'GET',
-                                context: document.body,
-                                success: function (data, statusText, xhr) {
-                                    if (data.code == 200) {
-                                        let journey = data.data;
-                                        let ele = $("<li class='success-element' id=\'fin" + i + "\'></li>");
-                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
-                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
-                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
-                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
-                                        let duration = $("<div class='agile-detail'></div>");
-                                        duration.text("Price:  " + orders[i].price + "RMB");
-                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
-                                        $("#finished").append(ele);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-        }else {
-            $.ajax({
-                url: base + "1" ,
-                type: 'GET',
-                context: document.body,
-                success: function(data, statusText, xhr){
-                    if (data.code == 200){
-                        let orders = data.data;
-                        for (let i = 0; i < orders.length; i++){
-                            journeyIds1.push(data.data[i].journeyId)
-                        }
-                        for (let i = 0; i < journeyIds1.length; i++){
-                            $.ajax({
-                                url: "journeys/id?journeyId=" + journeyIds1[i],
-                                type: 'GET',
-                                context: document.body,
-                                success: function (data, statusText, xhr) {
-                                    if (data.code == 200) {
-                                        let journey = data.data;
-                                        let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
-                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
-                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
-                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
-                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
-                                        let duration = $("<div class='agile-detail'></div>");
-                                        let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToPay(this)'></button>").text("Pay");
-                                        duration.text("Price:  " + journey.price + "RMB");
-                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
-                                        $("#toAccept").append(ele);
+                    for (let i = 0; i < journeyIds2.length; i++){
+                        $.ajax({
+                            url: "journeys/id?journeyId=" + journeyIds2[i],
+                            type: 'GET',
+                            context: document.body,
+                            success: function (data, statusText, xhr) {
+                                if (data.code == 200) {
+                                    let journey = data.data;
+                                    let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
+                                    let dest = $("<p></p>").text("Destination:  " + journey.cityName);
+                                    let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
+                                    let tags = $("<p></p>").text("Tags:  " + journey.tags);
+                                    let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
+                                    let duration = $("<div class='agile-detail'></div>");
+                                    let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToFinish(this)'></button>").text("Finish");
+                                    duration.text("Price:  " + journey.price + "RMB");
+                                    ele.append(dest).append(type).append(tags).append(time).append(duration);
+                                    $("#toFinish").append(ele);
+                                    if (userType == 1){
                                         duration.append(button);
                                     }
                                 }
-                            });
-                        }
+                            }
+                        });
                     }
                 }
-            });
+            }
+        });
 
-            $.ajax({
-                url: base + "2" ,
-                type: 'GET',
-                context: document.body,
-                success: function(data, statusText, xhr){
-                    if (data.code == 200){
-                        let orders = data.data;
-                        for (let i = 0; i < orders.length; i++){
-                            journeyIds2.push(data.data[i].journeyId)
-                        }
-                        for (let i = 0; i < journeyIds2.length; i++){
-                            $.ajax({
-                                url: "journeys/id?journeyId=" + journeyIds2[i],
-                                type: 'GET',
-                                context: document.body,
-                                success: function (data, statusText, xhr) {
-                                    if (data.code == 200) {
-                                        let journey = data.data;
-                                        let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
-                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
-                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
-                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
-                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
-                                        let duration = $("<p></p>").text("Price:  " + journey.price + "RMB");
-                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
-                                        $("#accepted").append(ele);
-                                    }
+        $.ajax({
+            url: base + "4" ,
+            type: 'GET',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    let orders = data.data;
+                    for (let i = 0; i < orders.length; i++){
+                        journeyIds3.push(data.data[i].journeyId)
+                    }
+                    for (let i = 0; i < journeyIds3.length; i++){
+                        $.ajax({
+                            url: "journeys/id?journeyId=" + journeyIds3[i],
+                            type: 'GET',
+                            context: document.body,
+                            success: function (data, statusText, xhr) {
+                                if (data.code == 200) {
+                                    let journey = data.data;
+                                    let ele = $("<li class='success-element' id=\'fin" + i + "\'></li>");
+                                    let dest = $("<p></p>").text("Destination:  " + journey.cityName);
+                                    let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
+                                    let tags = $("<p></p>").text("Tags:  " + journey.tags);
+                                    let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
+                                    let duration = $("<p></p>").text("Price:  " + orders[i].price + "RMB");
+                                    ele.append(dest).append(type).append(tags).append(time).append(duration);
+                                    $("#finished").append(ele);
                                 }
-                            });
-                        }
+                            }
+                        });
                     }
                 }
-            });
-
-            $.ajax({
-                url: base + "3" ,
-                type: 'GET',
-                context: document.body,
-                success: function(data, statusText, xhr){
-                    if (data.code == 200){
-                        let orders = data.data;
-                        for (let i = 0; i < orders.length; i++){
-                            journeyIds3.push(data.data[i].journeyId)
-                        }
-                        for (let i = 0; i < journeyIds3.length; i++){
-                            $.ajax({
-                                url: "journeys/id?journeyId=" + journeyIds3[i],
-                                type: 'GET',
-                                context: document.body,
-                                success: function (data, statusText, xhr) {
-                                    if (data.code == 200) {
-                                        let journey = data.data;
-                                        let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
-                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
-                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
-                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
-                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
-                                        let duration = $("<p></p>").text("Price:  " + journey.price + "RMB");
-                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
-                                        $("#toFinish").append(ele);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-
-            $.ajax({
-                url: base + "4" ,
-                type: 'GET',
-                context: document.body,
-                success: function(data, statusText, xhr){
-                    if (data.code == 200){
-                        let orders = data.data;
-                        for (let i = 0; i < orders.length; i++){
-                            journeyIds2.push(data.data[i].journeyId)
-                        }
-                        for (let i = 0; i < journeyIds2.length; i++){
-                            $.ajax({
-                                url: "journeys/id?journeyId=" + journeyIds2[i],
-                                type: 'GET',
-                                context: document.body,
-                                success: function (data, statusText, xhr) {
-                                    if (data.code == 200) {
-                                        let journey = data.data;
-                                        let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
-                                        let dest = $("<p></p>").text("Destination:  " + journey.cityName);
-                                        let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
-                                        let tags = $("<p></p>").text("Tags:  " + journey.tags);
-                                        let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
-                                        let duration = $("<p></p>").text("Price:  " + journey.price + "RMB");
-                                        ele.append(dest).append(type).append(tags).append(time).append(duration);
-                                        $("#finished").append(ele);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-        }
+            }
+        });
     }else if (location.indexOf(profile) != -1){
 
     }else if (location.indexOf(attachment) != -1){
@@ -535,7 +445,7 @@ $("#jSubmit").click(function () {
         "jTags": $("#jTags").children('label'),
         "jOtherTags": $("#jOtherTags").val(),
         "jPrice": parseInt($("#jPrice").val()),
-        "jUsername": "x",
+        "jUsername": username,
         "jDue": $("#jDue").val(),
         "jOther": $("#jOther").val()
     };
@@ -568,8 +478,8 @@ $("#jSubmit").click(function () {
             return false;
         }
 
-        if (!(notNaN(obj.jNum, "jNum") && notNaN(obj.jMan, "jMan") && notNaN(obj.jWoman, "jWoman") &&
-            notNaN(obj.jChild, "jChild") && notNaN(obj.jLow, "jLow") && notNaN(obj.jHigh, "jHigh") && notNaN(obj.jPrice, "jPrice"))){
+        if (!(notNaN(obj.jMan, "jMan") && notNaN(obj.jWoman, "jWoman") && notNaN(obj.jChild, "jChild") &&
+            notNaN(obj.jLow, "jLow") && notNaN(obj.jHigh, "jHigh") && notNaN(obj.jPrice, "jPrice"))){
             return false;
         }
 
@@ -645,7 +555,7 @@ $("#jSubmit").click(function () {
             context: document.body,
             success: function(data, statusText, xhr){
                 if (data.code == 200){
-                    alert("提交成功！");
+                    alert("Submit successfully");
                 }else alert(data.message);
             }
         });
@@ -673,6 +583,16 @@ function changeToAccept(button) {
     });
 }
 
+$("#toggleForm").click(function () {
+    $("#journeysDiv").hide();
+    $("#journeyForm").show();
+});
+
+$("#toggleJourneys").click(function () {
+    $("#journeyForm").hide();
+    $("#journeysDiv").show();
+});
+
 function changeToDeliver(button) {
     button.innerText = "Delivered";
     button.setAttribute("disabled", "disabled");
@@ -688,24 +608,85 @@ function changeToDeliver(button) {
     });
 }
 
-function changeToPay(button) {
-    button.innerText = "Paid";
-    button.setAttribute("disabled", "disabled");
+function selectGuide(button) {
+    let args = button.value.split("&");
     $.ajax({
-        url: "/orders/pay?orderId=" + button.value,
-        type: 'PATCH',
+        url: "/orders",
+        type: 'POST',
+        data: JSON.stringify({
+            journeyId: args[0],
+            cUsername: username,
+            gUsername: "xx",
+            price: args[1]
+        }),
+        contentType: "application/json",
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
-                alert("Paid successfully");
-            }
+                alert("Order created successfully");
+                button.innerText = "Selected";
+                button.setAttribute("disabled", "disabled")
+            }else alert(data.message);
+        }
+    });
+
+    $.ajax({
+        url: "/journeys/select?journeyId=" + args[0],
+        type: 'PATCH',
+        data: JSON.stringify({
+            journeyId: args[0],
+        }),
+        contentType: "application/json",
+        context: document.body,
+        success: function(data, statusText, xhr){
+            if (data.code == 200){
+                button.innerText = "Selected";
+                button.setAttribute("disabled", "disabled");
+            }else alert(data.message);
+        }
+    });
+}
+
+function changeToPay(button) {
+    let args = button.value.split("&");
+    $.ajax({
+        url: "/orders/journeyId?journeyId=" + args[0],
+        type: 'GET',
+        contentType: "application/json",
+        context: document.body,
+        success: function(data, statusText, xhr){
+            if (data.code == 200){
+                $.ajax({
+                    url: "/orders/pay?orderId=" + data.data.orderId,
+                    type: 'PATCH',
+                    contentType: "application/json",
+                    context: document.body,
+                    success: function(data, statusText, xhr){
+                        if (data.code == 200){
+                            alert("Order paid successfully");
+                            button.innerText = "Paid";
+                            button.setAttribute("disabled", "disabled");
+                        }else alert(data.message);
+                    }
+                });
+
+                $.ajax({
+                    url: "/journeys/pay?journeyId=" + args[0],
+                    type: 'PATCH',
+                    context: document.body,
+                    success: function(data, statusText, xhr){
+                        if (data.code == 200){
+                            button.innerText = "Paid";
+                            button.setAttribute("disabled", "disabled");
+                        }else alert("Error occurred");
+                    }
+                });
+            }else alert(data.message);
         }
     });
 }
 
 function changeToFinish(button) {
-    button.innerText = "Finished";
-    button.setAttribute("disabled", "disabled");
     $.ajax({
         url: "/orders/finish?orderId=" + button.value,
         type: 'PATCH',
@@ -713,30 +694,20 @@ function changeToFinish(button) {
         success: function(data, statusText, xhr){
             if (data.code == 200){
                 alert("Finished successfully");
+                button.innerText = "Finished";
+                button.setAttribute("disabled", "disabled");
             }
         }
     });
 }
 
+$("#freshJourney").click(function () {
+    currentPage();
+});
 
-function contains(arr, obj) {
-    let i = arr.length;
-    while (i--) {
-        if (arr[i] == obj) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function getIndex(arr, num) {
-    for (let i = 0; i < arr.length; i++){
-        if (arr[i].journeyId == num){
-            return i;
-        }
-    }
-    return -1;
-}
+$("#freshOrders").click(function () {
+    currentPage();
+});
 
 let myFile;
 let fileName;
