@@ -484,7 +484,7 @@ $("#jSubmit").click(function () {
     };
 
     function notNaN(num, name) {
-        if (num >= 2147483647 || num <= 0 || isNaN(num)){
+        if (num >= 2147483647 || num < 0 || isNaN(num)){
             document.getElementById("a" + name).click();
             $("#wrong" + name).text("Invalid data type");
             return false;
@@ -498,7 +498,7 @@ $("#jSubmit").click(function () {
         for (let attr in obj){
             let location = $("<a id='a" + attr +"' href='#" + attr + "' style='display: none'></a>");
             $("#page-wrapper").append(location);
-            if (obj[attr] == undefined || obj[attr] == ""){
+            if (obj[attr] == undefined || obj[attr] === ""){
                 document.getElementById("a" + attr).click();
                 $("#" + attr).attr("placeholder", "Required Area");
                 return false;
@@ -589,6 +589,11 @@ $("#jSubmit").click(function () {
             success: function(data, statusText, xhr){
                 if (data.code == 200){
                     alert("Submit successfully");
+                    currentPage();
+                    $("#toggleJourneys").attr("class", "btn btn-primary");
+                    $("#toggleForm").attr("class", "btn btn-white");
+                    $("#journeyForm").hide();
+                    $("#journeysDiv").show();
                 }else alert(data.message);
             }
         });
@@ -646,42 +651,40 @@ function changeToDeliver(button) {
 }
 
 function selectGuide(button) {
-    let args = button.value.split("&");
-    $.ajax({
-        url: "/orders",
-        type: 'POST',
-        data: JSON.stringify({
-            journeyId: args[0],
-            cUsername: username,
-            gUsername: "aaa",
-            price: args[1]
-        }),
-        contentType: "application/json",
-        context: document.body,
-        success: function(data, statusText, xhr){
-            if (data.code == 200){
-                alert("Order created successfully");
-                button.innerText = "Selected";
-                button.setAttribute("disabled", "disabled")
-            }else alert(data.message);
-        }
-    });
-
-    $.ajax({
-        url: "/journeys/select?journeyId=" + args[0],
-        type: 'PATCH',
-        data: JSON.stringify({
-            journeyId: args[0],
-        }),
-        contentType: "application/json",
-        context: document.body,
-        success: function(data, statusText, xhr){
-            if (data.code == 200){
-                button.innerText = "Selected";
-                button.setAttribute("disabled", "disabled");
-            }else alert(data.message);
-        }
-    });
+    $("#example").modal();
+    // let args = button.value.split("&");
+    // $.ajax({
+    //     url: "/orders",
+    //     type: 'POST',
+    //     data: JSON.stringify({
+    //         journeyId: args[0],
+    //         cUsername: username,
+    //         gUsername: "aaa",
+    //         price: args[1]
+    //     }),
+    //     contentType: "application/json",
+    //     context: document.body,
+    //     success: function(data, statusText, xhr){
+    //         if (data.code == 200){
+    //             alert("Order created successfully");
+    //             button.innerText = "Selected";
+    //             button.setAttribute("disabled", "disabled");
+    //             $.ajax({
+    //                 url: "/journeys/select?journeyId=" + args[0],
+    //                 type: 'PATCH',
+    //                 data: JSON.stringify({
+    //                     journeyId: args[0],
+    //                 }),
+    //                 contentType: "application/json",
+    //                 context: document.body,
+    //                 success: function(data, statusText, xhr){
+    //                     if (data.code == 200){
+    //                     }else alert(data.message);
+    //                 }
+    //             });
+    //         }else alert(data.message);
+    //     }
+    // });
 }
 
 function changeToPay(button) {

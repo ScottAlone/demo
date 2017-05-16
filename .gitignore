@@ -17,6 +17,7 @@
 *.iws
 *.iml
 *.ipr
+*.properties
 
 ### NetBeans ###
 nbproject/private/
@@ -27,3 +28,5 @@ nbdist/
 .nb-gradle/
 src/main/resources/static/files/
 src/main/webapp/
+src/main/resources/static/font-awesome/
+src/main/resources/static/styles/font/
