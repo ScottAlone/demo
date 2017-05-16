@@ -131,7 +131,7 @@ function currentPage() {
                         let create = $("<div class='agile-detail'></div>").text("Create:  " + journey.createTime);
                         let button;
                         if (journey.paid == 0){
-                            button = $("<button value='" + journey.journeyId + "&" + journey.price + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToPay(this)'></button>").text("Pay");
+                            button = $("<button value='" + journey.journeyId + "&" + journey.price + "\' class='pull-right btn btn-xs btn-primary' onclick='payPanel(this)'></button>").text("Pay");
                         }else if (journey.paid == -1){
                             button = $("<button value='" + journey.journeyId + "&" + journey.price + "&" + journey.cityName + "\' class='pull-right btn btn-xs btn-primary' onclick='selectGuide(this)'></button>").text("Select");
                         }
@@ -650,6 +650,13 @@ function changeToDeliver(button) {
     });
 }
 
+let gUsername;
+function trcolor(tr, gname) {
+    $(tr).css("background-color", "#1cc09f");
+    $(tr).css("color", "white");
+    gUsername = gname;
+}
+
 function show_modal() {
     $('#myModal').modal('show');
     $.ajax({
@@ -658,12 +665,24 @@ function show_modal() {
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
-                $("#guides").children("li").remove();
+                $("#guides").children("tr").remove();
                 let guides = data.data;
                 for (let i = 0; i < guides.length; i++){
-                    let ele = $("<li></li>").text(guides[i].username + "\t" + guides[i].stars);
-                    ele.css("color", "blue");
+                    let ele = $("<tr id='tr" + i + "\' onclick='trcolor(this, " + guides[i].username + ")'></tr>");
+                    // ele.css("color", "blue");
                     $("#guides").append(ele)
+                    let img = $("<td class='client-avatar'><img alt='image' src='data:image/jpg;base64," + guides[i].file + "\'> </td>");
+                    let name = $("<td style='font-weight:bolder;' id='td" + i + "\'>" + guides[i].username + "</td>");
+                    let stars = "★";
+                    while(guides[i].stars - 1 > 0) {
+                        stars += "★";
+                    }
+                    let score = $("<td>" + stars + "</td>");
+                    let phone = $("<td>" + guides[i].phoneNum + "</td>");
+                    $("#tr" + i).append(img).append(name).append(score).append(phone);
+
+
+
                 }
             }
         }
@@ -673,48 +692,59 @@ $(function () {
     $('#myModal').modal('hide');
 });
 
+
+function show_paymodal() {
+    $('#myPayModal').modal('show');
+}
+
+
 let args;
 $("#confirmSelect").click(function () {
-    let guide = $("#guideName").val();
 
-    // $.ajax({
-    //     url: "/orders",
-    //     type: 'POST',
-    //     data: JSON.stringify({
-    //         journeyId: args[0],
-    //         cUsername: username,
-    //         gUsername: guide,
-    //         price: args[1]
-    //     }),
-    //     contentType: "application/json",
-    //     context: document.body,
-    //     success: function(data, statusText, xhr){
-    //         if (data.code == 200){
-    //             alert("Order created successfully");
-    //             button.innerText = "Selected";
-    //             button.setAttribute("disabled", "disabled");
-    //             $.ajax({
-    //                 url: "/journeys/select?journeyId=" + args[0],
-    //                 type: 'PATCH',
-    //                 data: JSON.stringify({
-    //                     journeyId: args[0],
-    //                 }),
-    //                 contentType: "application/json",
-    //                 context: document.body,
-    //                 success: function(data, statusText, xhr){
-    //                     if (data.code == 200){
-    //                     }else alert(data.message);
-    //                 }
-    //             });
-    //         }else alert(data.message);
-    //     }
-    // });
+    $.ajax({
+        url: "/orders",
+        type: 'POST',
+        data: JSON.stringify({
+            journeyId: args[0],
+            cUsername: username,
+            gUsername: gUsername,
+            price: args[1]
+        }),
+        contentType: "application/json",
+        context: document.body,
+        success: function(data, statusText, xhr){
+            if (data.code == 200){
+                alert("Order created successfully");
+                button.innerText = "Selected";
+                button.setAttribute("disabled", "disabled");
+                $.ajax({
+                    url: "/journeys/select?journeyId=" + args[0],
+                    type: 'PATCH',
+                    data: JSON.stringify({
+                        journeyId: args[0],
+                    }),
+                    contentType: "application/json",
+                    context: document.body,
+                    success: function(data, statusText, xhr){
+                        if (data.code == 200){
+                        }else alert(data.message);
+                    }
+                });
+            }else alert(data.message);
+        }
+    });
     $('#myModal').modal('hide');
 });
 
 function selectGuide(button) {
     args = button.value.split("&");
     show_modal();
+}
+let payargs;
+function payPanel(button) {
+    payargs = button.value.split("&");
+    show_paymodal();
+
 }
 
 function changeToPay(button) {
