@@ -32,3 +32,12 @@
   width:100%;
   font-size:14px;
 }
+.attachcenter {
+  position: absolute;
+  left: 10%;
+  top: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: #000000;
+  text-align: center;
+}

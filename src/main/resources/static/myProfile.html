@@ -13,7 +13,7 @@
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <div class="nav-header menu-center">
-                <img id="userImg" alt="暂无头像" class="profile-img" src="">
+                <img id="userImg" alt="" class="profile-img" src="">
             </div>
             <div class="menu-center">
                 <p id="nickname" style="font-size: 20px"></p>
@@ -39,54 +39,61 @@
             </ul>
         </div>
     </nav>
-    <div id="page-wrapper" class="gray-bg" style="height: 700px">
+    <div id="page-wrapper" class="gray-bg" style="height: 200px">
+
         <div class="row">
-            <div class="ibox-content form-horizontal">
-                <div class="col-sm-12">
-                    <div class="col-sm-5">
-                        <h3 style="text-align: center">Change Avatar</h3>
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Change Info <small>Change your nickname or password.</small></h5>
+                    </div>
+                    <div class="ibox-content form-horizontal">
+                        <div class="form-group"><label class="col-sm-2 control-label">Nickname:</label>
+                            <div class="col-sm-6"><input id="new_name" class="form-control" onblur="updateValid(this)" placeholder="Nickname" type="text"></div>
+                            <div class="col-sm-4"></div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-2 control-label">Old Password:</label>
+                            <div class="col-sm-6"><input id="old_pwd" class="form-control" onblur="updateValid(this)" placeholder="Old Password" type="password"></div>
+                            <div class="col-sm-4"></div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-2 control-label">New Password:</label>
+                            <div class="col-sm-6"><input id="new_pwd" class="form-control" onblur="updateValid(this)" placeholder="New Password" type="password"></div>
+                            <div class="col-sm-4"></div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-2 control-label"></label>
+                            <button id="updateUser" class="btn btn-primary" type="submit">Modify</button>
+                            <div class="col-sm-4"></div>
+                        </div>
                         <div class="hr-line-dashed"></div>
                     </div>
-                    <label class="col-sm-7 control-label"></label>
-                </div>
-                <div class="form-group"><label class="col-sm-2 control-label">Pre-View:</label>
-                    <div class="col-sm-6"><img id="preImg" class="profile-img"></div>
-                    <div class="col-sm-4"></div>
-                </div>
-                <div class="form-group"><label class="col-sm-2 control-label">Choose File:</label>
-                    <div class="col-sm-6"><input id="uploadImg" class="form-control" placeholder="Your Picture" type="file" accept="image/*" name="file"></div>
-                    <div class="col-sm-4"></div>
-                </div>
-                <div class="form-group"><label class="col-sm-2 control-label"></label>
-                    <div class="col-sm-6"><button id="submitImg" class="btn-primary">Upload</button></div>
-                    <div class="col-sm-4"></div>
-                </div>
-                <div class="hr-line-dashed"></div>
-                <div class="col-sm-12">
-                    <div class="col-sm-5">
-                        <h3 style="text-align: center">Change Info</h3>
-                        <div class="hr-line-dashed"></div>
-                    </div>
-                    <label class="col-sm-7 control-label"></label>
-                </div>
-                <div class="form-group"><label class="col-sm-2 control-label">Nickname:</label>
-                    <div class="col-sm-6"><input id="new_name" class="form-control" onblur="updateValid(this)" placeholder="Nickname" type="text"></div>
-                    <div class="col-sm-4"></div>
-                </div>
-                <div class="form-group"><label class="col-sm-2 control-label">Old Password:</label>
-                    <div class="col-sm-6"><input id="old_pwd" class="form-control" onblur="updateValid(this)" placeholder="Old Password" type="password"></div>
-                    <div class="col-sm-4"></div>
-                </div>
-                <div class="form-group"><label class="col-sm-2 control-label">New Password:</label>
-                    <div class="col-sm-6"><input id="new_pwd" class="form-control" onblur="updateValid(this)" placeholder="New Password" type="password"></div>
-                    <div class="col-sm-4"></div>
-                </div>
-                <div class="form-group"><label class="col-sm-2 control-label"></label>
-                    <div class="col-sm-6"><button id="updateUser" class="btn-primary">Modify</button></div>
-                    <div class="col-sm-4"></div>
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Change Avatar <small>Choose a new picture to demonstrate your characteristic.</small></h5>
+                    </div>
+                    <div class="ibox-content form-horizontal">
+                        <div class="form-group"><label class="col-sm-2 control-label">Pre-View:</label>
+                            <div class="col-sm-6"><img id="preImg" class="profile-img"></div>
+                            <div class="col-sm-4"></div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-2 control-label">Choose File:</label>
+                            <div class="input-group col-sm-4"><input id="uploadImg" placeholder="Your Picture" type="file" accept="image/*" name="file">
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-2 control-label"></label>
+                            <button id="submitImg" type="button" class="btn btn-primary">Upload</button></span>
+                            <div class="col-sm-4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 <script src="js/jquery.js"></script>

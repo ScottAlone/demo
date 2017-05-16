@@ -91,7 +91,7 @@ function checkCookie() {
             success: function(data, statusText, xhr){
                 if (data.code == 200){
                     $("#userImg").attr("src", "data:image/jpg;base64," + data.data);
-                }
+                }else $("#userImg").attr("src", "img/examples/2.jpg");
             }
         });
         currentPage();
@@ -309,8 +309,41 @@ function currentPage() {
             }
         });
     }else if (location.indexOf(profile) != -1){
-
+        $.ajax({
+            url: "/images?username=" + username + "&type=" + userType,
+            type: 'GET',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    $("#preImg").attr("src", "data:image/jpg;base64," + data.data);
+                }else $("#preImg").attr("src", "img/examples/2.jpg");
+            }
+        });
     }else if (location.indexOf(attachment) != -1){
+        $.ajax({
+            url: "/attachments?gUsername=" + username,
+            type: 'GET',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    $("#allAttachments").children("li").remove();
+                    $("#attachContainer").toggle();
+                    let attachments = data.data;
+                    for (let i = 0; i < attachments.length; i++){
+                        let ele = $("<li class='warning-element' id=\'" + "att" + attachments[i].attachId + "\' value=\'att" + i + "\'></li>");
+                        let id = $("<p></p>").text("ID:  " + attachments[i].attachId);
+                        let name = $("<p></p>").text("Name:  " + attachments[i].attachName);
+                        let token = $("<div class='agile-detail'></div>");
+                        let buttonDown = $("<button value='" + attachments[i].attachId + "&" + attachments[i].token + "\' class='pull-right btn btn-xs btn-primary' onclick='download(this)'></button>").text("Download");
+                        let buttonDelete = $("<button value='" + attachments[i].attachId + "\' class='pull-right btn btn-xs btn-primary' onclick='del(this)'></button>").text("Delete");
+                        token.text("Token:  " + attachments[i].token);
+                        ele.append(id).append(name).append(token);
+                        $("#allAttachments").append(ele);
+                        token.append(buttonDown).append(buttonDelete);
+                    }
+                }
+            }
+        });
         if (userType == 1){
             $("#getDiv").hide();
             $("#upDiv").hide();
@@ -584,11 +617,15 @@ function changeToAccept(button) {
 }
 
 $("#toggleForm").click(function () {
+    $("#toggleJourneys").attr("class", "btn btn-white");
+    $("#toggleForm").attr("class", "btn btn-primary");
     $("#journeysDiv").hide();
     $("#journeyForm").show();
 });
 
 $("#toggleJourneys").click(function () {
+    $("#toggleJourneys").attr("class", "btn btn-primary");
+    $("#toggleForm").attr("class", "btn btn-white");
     $("#journeyForm").hide();
     $("#journeysDiv").show();
 });
@@ -616,7 +653,7 @@ function selectGuide(button) {
         data: JSON.stringify({
             journeyId: args[0],
             cUsername: username,
-            gUsername: "xx",
+            gUsername: "aaa",
             price: args[1]
         }),
         contentType: "application/json",

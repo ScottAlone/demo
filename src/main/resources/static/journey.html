@@ -13,7 +13,7 @@
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <div class="nav-header menu-center">
-                <img id="userImg" alt="暂无头像" class="profile-img" src="">
+                <img id="userImg" alt="" class="profile-img" src="">
             </div>
             <div class="menu-center">
                 <p id="nickname" style="font-size: 20px"></p>
@@ -41,14 +41,14 @@
     </nav>
     <div id="page-wrapper" class="gray-bg" style="min-height: 700px">
         <button id="toggleForm" class="btn btn-primary" type="submit">New Journey</button>
-        <button id="toggleJourneys" class="btn btn-primary" type="submit">My Journeys</button>
+        <button id="toggleJourneys" class="btn btn-white" type="submit">My Journeys</button>
         <div class="col-sm-12" id="journeysDiv" style="display: none">
             <div class="col-sm-12">
                 <button id="freshJourney" class="btn btn-primary pull-right" type="submit">Fresh</button>
             </div>
             <div class="col-lg-4" id="journeysDiv1">
                 <div class="ibox">
-                    <div class="ibox-content">
+                    <div class="ibox-content" style="height: 600px;">
                         <h3 style="text-align: center">My Journeys</h3>
                         <ul class="sortable-list agile-list ui-sortable" id="journeys1" style="max-height: 550px; overflow-y: auto">
                         </ul>
@@ -57,7 +57,7 @@
             </div>
             <div class="col-lg-4" id="journeysDiv2">
                 <div class="ibox">
-                    <div class="ibox-content">
+                    <div class="ibox-content" style="height: 600px;">
                         <h3 style="text-align: center">To be selected</h3>
                         <ul class="sortable-list agile-list ui-sortable" id="journeys2" style="max-height: 550px; overflow-y: auto">
                         </ul>
@@ -66,7 +66,7 @@
             </div>
             <div class="col-lg-4" id="journeysDiv3">
                 <div class="ibox">
-                    <div class="ibox-content">
+                    <div class="ibox-content" style="height: 600px;">
                         <h3 style="text-align: center">To be paid</h3>
                         <ul class="sortable-list agile-list ui-sortable" id="journeys3" style="max-height: 550px; overflow-y: auto">
                         </ul>
@@ -82,11 +82,11 @@
                     </div>
                     <div class="ibox-content form-horizontal">
                         <div class="form-group"><label class="col-sm-2 control-label">Applicant Name</label>
-                            <div class="col-sm-10"><input id="jName" class="form-control" placeholder="Name" type="text"> <span class="help-block m-b-none">Write the name of applicant.</span></div>
+                            <div class="col-sm-6"><input id="jName" class="form-control" placeholder="Name" type="text"> <span class="help-block m-b-none">Write the name of applicant.</span></div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Phone Number</label>
-                            <div class="col-sm-6"><input id="jNum" class="form-control" placeholder="Phone" type="number"></div>
+                            <div class="col-sm-6"><input id="jNum" class="form-control" placeholder="Phone" type="text"></div>
                             <div id="wrongjNum" class="col-sm-4" style="color: red"></div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -102,9 +102,9 @@
                         <div class="form-group"><label class="col-sm-2 control-label">Member Numbers</label>
                             <div class="col-sm-10">
                                 <div class="row">
-                                    <div class="col-md-3"><input id="jMan" class="form-control" placeholder="Men" type="number"></div>
-                                    <div class="col-md-3"><input id="jWoman" class="form-control" placeholder="Women" type="number"></div>
-                                    <div class="col-md-3"><input id="jChild" class="form-control" placeholder="Children" type="number"></div>
+                                    <div class="col-md-3"><input id="jMan" class="form-control" placeholder="Men" type="text"></div>
+                                    <div class="col-md-3"><input id="jWoman" class="form-control" placeholder="Women" type="text"></div>
+                                    <div class="col-md-3"><input id="jChild" class="form-control" placeholder="Children" type="text"></div>
                                     <div id="wrongjMan" class="col-md-3" style="color: red"></div>
                                 </div>
                                 <span class="help-block m-b-none">Write the number of participants.</span>
@@ -126,8 +126,8 @@
                         <div class="form-group"><label class="col-sm-2 control-label">Budget Span</label>
                             <div class="col-sm-10">
                                 <div class="row">
-                                    <div class="col-md-3"><input id="jLow" class="form-control" placeholder="Lowest" type="number"></div>
-                                    <div class="col-md-3"><input id="jHigh" class="form-control" placeholder="Highest" type="number"></div>
+                                    <div class="col-md-3"><input id="jLow" class="form-control" placeholder="Lowest" type="text"></div>
+                                    <div class="col-md-3"><input id="jHigh" class="form-control" placeholder="Highest" type="text"></div>
                                     <div id="wrongjLow" class="col-md-4" style="color: red"></div>
                                 </div>
                             </div>
@@ -137,8 +137,8 @@
                         <div class="form-group"><label class="col-sm-2 control-label">Time Span</label>
                             <div class="col-sm-10">
                                 <div class="row">
-                                    <div class="col-md-4"><input id="jStart" class="form-control" type="date"></div>
-                                    <div class="col-md-4"><input id="jEnd" class="form-control" type="date"></div>
+                                    <div class="col-md-4"><input id="jStart" class="form-control" type="text"></div>
+                                    <div class="col-md-4"><input id="jEnd" class="form-control" type="text"></div>
                                     <div id="wrongjStart" class="col-md-4" style="color: red" ></div>
                                 </div>
                                 <span class="help-block m-b-none">In the format like 2017-01-01.</span>
@@ -160,14 +160,14 @@
                             </div>
                         </div>
                         <div class="form-group"><label class="col-sm-2 control-label">Other Tags</label>
-                            <div class="col-sm-10"><input id="jOtherTags" class="form-control" placeholder="tags1/tag2/tag3..." type="text">
+                            <div class="col-sm-6"><input id="jOtherTags" class="form-control" placeholder="tags1/tag2/tag3..." type="text">
                                 <span class="help-block m-b-none">Write self-defined tags in the format like religion/mountain/lake/custom.</span>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
 
                         <div class="form-group"><label class="col-sm-2 control-label">Price For Itinerary</label>
-                                <div class="col-sm-4"><input id="jPrice" class="form-control" placeholder="About 10RMB/day." type="number">
+                                <div class="col-sm-4"><input id="jPrice" class="form-control" placeholder="About 10RMB/day." type="text">
                                     <div id="wrongjPrice" class="col-sm-4" style="color: red"></div>
                                     <span class="help-block m-b-none">How much you would pay for the itinerary</span>
                                 </div>
@@ -175,7 +175,7 @@
                         <div class="hr-line-dashed"></div>
 
                         <div class="form-group"><label class="col-sm-2 control-label">Due Date For Itinerary</label>
-                            <div class="col-sm-4"><input id="jDue" class="form-control" type="date">
+                            <div class="col-sm-4"><input id="jDue" class="form-control" type="text">
                                 <span class="help-block m-b-none">The latest date you wish to get the itinerary.</span>
                             </div>
                             <div id="wrongjDue" class="col-sm-4" style="color: red"></div>
