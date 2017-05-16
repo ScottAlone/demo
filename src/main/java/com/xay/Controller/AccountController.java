@@ -2,6 +2,7 @@ package com.xay.Controller;
 
 import com.xay.Domain.BaseResult;
 import com.xay.Domain.AccountDomain;
+import com.xay.Domain.GuideDomain;
 import com.xay.MySQL.DO.AccountDO;
 import com.xay.MySQL.Mapper.AccountMapper;
 import com.xay.Security.AuthenticationRequest;
@@ -154,5 +155,25 @@ public class AccountController {
     @RequestMapping(value = "/guides", method = RequestMethod.GET)
     public BaseResult<Object> getGuides(@RequestParam("cityName")String cityName){
         return accountService.getGuides(cityName);
+    }
+
+    /**
+     * 修改地区和联系方式
+     * @param guideDomain
+     * @return
+     */
+    @RequestMapping(value = "/updateGuide", method = RequestMethod.PATCH)
+    public BaseResult<Object> updateGuideInfo(@RequestBody GuideDomain guideDomain){
+        return accountService.updateGuideInfo(guideDomain);
+    }
+
+    /**
+     * 支付并评分
+     * @param guideDomain
+     * @return
+     */
+    @RequestMapping(value = "/payGuide", method = RequestMethod.POST)
+    public BaseResult<Object> payGuide(@RequestBody GuideDomain guideDomain){
+        return accountService.payGuide(guideDomain);
     }
 }

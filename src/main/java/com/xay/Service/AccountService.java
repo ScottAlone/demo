@@ -2,6 +2,7 @@ package com.xay.Service;
 
 import com.xay.Domain.BaseResult;
 import com.xay.Domain.AccountDomain;
+import com.xay.Domain.GuideDomain;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -48,4 +49,18 @@ public interface AccountService {
      * @return
      */
     BaseResult<Object> getGuides(String cityName);
+
+    /**
+     * 修改地区和联系方式
+     * @param guideDomain
+     * @return
+     */
+    BaseResult<Object> updateGuideInfo(GuideDomain guideDomain);
+
+    /**
+     * 支付并评分
+     * @param guideDomain
+     * @return
+     */
+    BaseResult<Object> payGuide(GuideDomain guideDomain);
 }
