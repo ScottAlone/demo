@@ -131,9 +131,9 @@ function currentPage() {
                         let create = $("<div class='agile-detail'></div>").text("Create:  " + journey.createTime);
                         let button;
                         if (journey.paid == 0){
-                            button = $("<button value='" + journey.journeyId + "&" + journey.price + "\' class='pull-right btn btn-xs btn-primary' onclick='payPanel(this)'></button>").text("Pay");
+                            button = $("<button id='pay" + journey.journeyId + "\' value='" + journey.journeyId + "&" + journey.price + "\' class='pull-right btn btn-xs btn-primary' onclick='payPanel(this)'></button>").text("Pay");
                         }else if (journey.paid == -1){
-                            button = $("<button value='" + journey.journeyId + "&" + journey.price + "&" + journey.cityName + "\' class='pull-right btn btn-xs btn-primary' onclick='selectGuide(this)'></button>").text("Select");
+                            button = $("<button id='select" + journey.journeyId + "\' value='" + journey.journeyId + "&" + journey.price + "&" + journey.cityName + "\' class='pull-right btn btn-xs btn-primary' onclick='selectGuide(this)'></button>").text("Select");
                         }
                         ele.append(name).append(dest).append(type).append(member).append(budget).append(duration)
                             .append(tags).append(others).append(dueDate).append(price).append(create);
@@ -650,7 +650,7 @@ function changeToDeliver(button) {
     });
 }
 
-let gUsername;
+let gUsername = "";
 function trcolor(tr, gname) {
     $(tr).css("background-color", "#1cc09f");
     $(tr).css("color", "white");
@@ -660,7 +660,7 @@ function trcolor(tr, gname) {
 function show_modal() {
     $('#myModal').modal('show');
     $.ajax({
-        url: "/guides?cityName=" + args[2],
+        url: "/guides?cityName=" + selectArgs[2],
         type: 'GET',
         context: document.body,
         success: function(data, statusText, xhr){
@@ -668,9 +668,8 @@ function show_modal() {
                 $("#guides").children("tr").remove();
                 let guides = data.data;
                 for (let i = 0; i < guides.length; i++){
-                    let ele = $("<tr id='tr" + i + "\' onclick='trcolor(this, " + guides[i].username + ")'></tr>");
-                    // ele.css("color", "blue");
-                    $("#guides").append(ele)
+                    let ele = $("<tr id='tr" + i + "\' onclick=\"trcolor(this, \'" + guides[i].username + "\')\"></tr>");
+                    $("#guides").append(ele);
                     let img = $("<td class='client-avatar'><img alt='image' src='data:image/jpg;base64," + guides[i].file + "\'> </td>");
                     let name = $("<td style='font-weight:bolder;' id='td" + i + "\'>" + guides[i].username + "</td>");
                     let stars = "★";
@@ -680,9 +679,6 @@ function show_modal() {
                     let score = $("<td>" + stars + "</td>");
                     let phone = $("<td>" + guides[i].phoneNum + "</td>");
                     $("#tr" + i).append(img).append(name).append(score).append(phone);
-
-
-
                 }
             }
         }
@@ -692,65 +688,67 @@ $(function () {
     $('#myModal').modal('hide');
 });
 
-
 function show_paymodal() {
     $('#myPayModal').modal('show');
 }
 
+let selectArgs;
+function selectGuide(button) {
+    selectArgs = button.value.split("&");
+    show_modal();
+}
 
-let args;
+let payArgs;
+function payPanel(button) {
+    payArgs = button.value.split("&");
+    show_paymodal();
+}
+
 $("#confirmSelect").click(function () {
-
-    $.ajax({
-        url: "/orders",
-        type: 'POST',
-        data: JSON.stringify({
-            journeyId: args[0],
-            cUsername: username,
-            gUsername: gUsername,
-            price: args[1]
-        }),
-        contentType: "application/json",
-        context: document.body,
-        success: function(data, statusText, xhr){
-            if (data.code == 200){
-                alert("Order created successfully");
-                button.innerText = "Selected";
-                button.setAttribute("disabled", "disabled");
-                $.ajax({
-                    url: "/journeys/select?journeyId=" + args[0],
-                    type: 'PATCH',
-                    data: JSON.stringify({
-                        journeyId: args[0],
-                    }),
-                    contentType: "application/json",
-                    context: document.body,
-                    success: function(data, statusText, xhr){
-                        if (data.code == 200){
-                        }else alert(data.message);
-                    }
-                });
-            }else alert(data.message);
-        }
-    });
+    if (gUsername == ""){
+        alert("No guide selected");
+        return;
+    }else {
+        $.ajax({
+            url: "/orders",
+            type: 'POST',
+            data: JSON.stringify({
+                journeyId: selectArgs[0],
+                cUsername: username,
+                gUsername: gUsername,
+                price: selectArgs[1]
+            }),
+            contentType: "application/json",
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    alert("Order created successfully");
+                    $.ajax({
+                        url: "/journeys/select?journeyId=" + selectArgs[0],
+                        type: 'PATCH',
+                        data: JSON.stringify({
+                            journeyId: selectArgs[0],
+                        }),
+                        contentType: "application/json",
+                        context: document.body,
+                        success: function(data, statusText, xhr){
+                            if (data.code == 200){
+                                $("#select" + selectArgs[0]).text("Selected");
+                                $("#select" + selectArgs[0]).attr("disabled", "disable");
+                            }else alert(data.message);
+                        }
+                    });
+                }else alert(data.message);
+            }
+        });
+    }
+    gUsername = "";
     $('#myModal').modal('hide');
 });
 
-function selectGuide(button) {
-    args = button.value.split("&");
-    show_modal();
-}
-let payargs;
-function payPanel(button) {
-    payargs = button.value.split("&");
-    show_paymodal();
-
-}
-
-function changeToPay(button) {
-    let args = button.value.split("&");
+$("#confirmPay").click(function () {
     $.ajax({
-        url: "/orders/journeyId?journeyId=" + args[0],
+        url: "/orders/journeyId?journeyId=" + payArgs[0],
         type: 'GET',
         contentType: "application/json",
         context: document.body,
@@ -764,27 +762,25 @@ function changeToPay(button) {
                     success: function(data, statusText, xhr){
                         if (data.code == 200){
                             alert("Order paid successfully");
-                            button.innerText = "Paid";
-                            button.setAttribute("disabled", "disabled");
+                            $.ajax({
+                                url: "/journeys/pay?journeyId=" + payArgs[0],
+                                type: 'PATCH',
+                                context: document.body,
+                                success: function(data, statusText, xhr){
+                                    if (data.code == 200){
+                                        $("#pay" + payArgs[0]).text("Paid");
+                                        $("#pay" + payArgs[0]).attr("disabled", "disabled");
+                                    }else alert("Error occurred");
+                                }
+                            });
                         }else alert(data.message);
-                    }
-                });
-
-                $.ajax({
-                    url: "/journeys/pay?journeyId=" + args[0],
-                    type: 'PATCH',
-                    context: document.body,
-                    success: function(data, statusText, xhr){
-                        if (data.code == 200){
-                            button.innerText = "Paid";
-                            button.setAttribute("disabled", "disabled");
-                        }else alert("Error occurred");
                     }
                 });
             }else alert(data.message);
         }
     });
-}
+    $('#myPayModal').modal('hide');
+});
 
 function changeToFinish(button) {
     $.ajax({
@@ -911,9 +907,9 @@ $("#updateUser").click(function () {
 });
 
 function download(ele) {
-    let args = ele.value.split("&");
-    $("#attachmentId").val(args[0]);
-    $("#token").val(args[1]);
+    let downArgs = ele.value.split("&");
+    $("#attachmentId").val(downArgs[0]);
+    $("#token").val(downArgs[1]);
     $("#downloadForm").submit();
 }
 
