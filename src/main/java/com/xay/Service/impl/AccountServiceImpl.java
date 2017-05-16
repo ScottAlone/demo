@@ -2,6 +2,7 @@ package com.xay.Service.impl;
 
 import com.xay.Domain.BaseResult;
 import com.xay.Domain.AccountDomain;
+import com.xay.Domain.GuideDomain;
 import com.xay.MySQL.DO.AccountDO;
 import com.xay.MySQL.DO.GuideDO;
 import com.xay.MySQL.Mapper.AccountMapper;
@@ -106,9 +107,38 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public BaseResult<Object> getGuides(String guideName) {
         GuideDO[] guideDOS = accountMapper.getGuides(guideName);
+        GuideDomain[] guideDomains = new GuideDomain[guideDOS.length];
         if (guideDOS.length != 0){
-            return new BaseResult<> (guideDOS);
+            for (int i = 0; i < guideDomains.length; i++){
+                guideDomains[i] = new GuideDomain(guideDOS[i]);
+            }
+            return new BaseResult<> (guideDomains);
         }
         return new BaseResult<>(500, "No guides found");
+    }
+
+    @Override
+    public BaseResult<Object> updateGuideInfo(GuideDomain guideDomain) {
+        GuideDO guideDO = accountMapper.getGuideByName(guideDomain.getUsername());
+        if (guideDO != null){
+            accountMapper.updateGuideInfo(new GuideDO(guideDomain));
+            return new BaseResult<>();
+        }
+        return new BaseResult<>(500, "No guide found");
+    }
+
+    @Override
+    public BaseResult<Object> payGuide(GuideDomain guideDomain) {
+        GuideDO guideDO = accountMapper.getGuideByName(guideDomain.getUsername());
+        if (guideDO != null){
+            int served = guideDO.getServed();
+            float balance = guideDO.getBalance() + guideDomain.getBalance();
+            float stars = guideDO.getStars();
+            stars = ((stars * served) + guideDomain.getStars())/(served + 1);
+            served++;
+            accountMapper.payGuide(new GuideDO(guideDomain.getUsername(), stars, balance, served));
+            return new BaseResult<>();
+        }
+        return new BaseResult<>(500, "No guide found");
     }
 }

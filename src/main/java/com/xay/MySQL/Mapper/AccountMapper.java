@@ -91,10 +91,34 @@ public interface AccountMapper {
     int updateCustomerImg(AccountDO accountDO);
 
     /**
-     * 获取导游信息
+     * 根据地区获取导游信息
      * @param cityName
      * @return
      */
-    @Select("SELECT username, stars FROM guides WHERE city_name=#{cityName}")
+    @Select("SELECT file, username, stars, phone_num FROM guides WHERE city_name=#{cityName}")
     GuideDO[] getGuides(@Param("cityName") String cityName);
+
+    /**
+     * 获取导游信息
+     * @param gUsername
+     * @return
+     */
+    @Select("SELECT username, stars, balance, served FROM guides WHERE username=#{gUsername}")
+    GuideDO getGuideByName(@Param("gUsername") String gUsername);
+
+    /**
+     * 支付并评分
+     * @param guideDO
+     * @return
+     */
+    @Update("UPDATE guide SET stars=#{stars}, balance=#{balance}, served=#{served} WHERE username=#{username}")
+    GuideDO payGuide(GuideDO guideDO);
+
+    /**
+     * 修改地区和联系方式
+     * @param guideDO
+     * @return
+     */
+    @Update("UPDATE guide SET city_name=#{city_name}, phone_num=#{phone_num} WHERE username=#{username}")
+    GuideDO updateGuideInfo(GuideDO guideDO);
 }
