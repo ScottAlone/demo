@@ -3,6 +3,7 @@ package com.xay.Service.impl;
 import com.xay.Domain.BaseResult;
 import com.xay.Domain.AccountDomain;
 import com.xay.MySQL.DO.AccountDO;
+import com.xay.MySQL.DO.GuideDO;
 import com.xay.MySQL.Mapper.AccountMapper;
 import com.xay.Service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,5 +101,14 @@ public class AccountServiceImpl implements AccountService{
         if (accountDO.getFile() != null){
             return new BaseResult<>(accountDO.getFile());
         }else return new BaseResult<>(500, "No image found");
+    }
+
+    @Override
+    public BaseResult<Object> getGuides(String guideName) {
+        GuideDO[] guideDOS = accountMapper.getGuides(guideName);
+        if (guideDOS.length != 0){
+            return new BaseResult<> (guideDOS);
+        }
+        return new BaseResult<>(500, "No guides found");
     }
 }

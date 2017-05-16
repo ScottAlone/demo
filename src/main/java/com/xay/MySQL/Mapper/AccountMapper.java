@@ -1,6 +1,7 @@
 package com.xay.MySQL.Mapper;
 
 import com.xay.MySQL.DO.AccountDO;
+import com.xay.MySQL.DO.GuideDO;
 import org.apache.ibatis.annotations.*;
 
 /**
@@ -88,4 +89,12 @@ public interface AccountMapper {
      */
     @Update("UPDATE customers SET file=#{file,jdbcType=BLOB}, update_time=CURRENT_TIMESTAMP WHERE binary username=#{username}")
     int updateCustomerImg(AccountDO accountDO);
+
+    /**
+     * 获取导游信息
+     * @param cityName
+     * @return
+     */
+    @Select("SELECT username, stars FROM guides WHERE city_name=#{cityName}")
+    GuideDO[] getGuides(@Param("cityName") String cityName);
 }

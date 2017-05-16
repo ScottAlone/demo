@@ -133,7 +133,7 @@ function currentPage() {
                         if (journey.paid == 0){
                             button = $("<button value='" + journey.journeyId + "&" + journey.price + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToPay(this)'></button>").text("Pay");
                         }else if (journey.paid == -1){
-                            button = $("<button value='" + journey.journeyId + "&" + journey.price + "\' class='pull-right btn btn-xs btn-primary' onclick='selectGuide(this)'></button>").text("Select");
+                            button = $("<button value='" + journey.journeyId + "&" + journey.price + "&" + journey.cityName + "\' class='pull-right btn btn-xs btn-primary' onclick='selectGuide(this)'></button>").text("Select");
                         }
                         ele.append(name).append(dest).append(type).append(member).append(budget).append(duration)
                             .append(tags).append(others).append(dueDate).append(price).append(create);
@@ -650,16 +650,40 @@ function changeToDeliver(button) {
     });
 }
 
-function selectGuide(button) {
-    $("#example").modal();
-    // let args = button.value.split("&");
+function show_modal() {
+    $('#myModal').modal('show');
+    $.ajax({
+        url: "/guides?cityName=" + args[2],
+        type: 'GET',
+        context: document.body,
+        success: function(data, statusText, xhr){
+            if (data.code == 200){
+                $("#guides").children("li").remove();
+                let guides = data.data;
+                for (let i = 0; i < guides.length; i++){
+                    let ele = $("<li></li>").text(guides[i].username + "\t" + guides[i].stars);
+                    ele.css("color", "blue");
+                    $("#guides").append(ele)
+                }
+            }
+        }
+    });
+}
+$(function () {
+    $('#myModal').modal('hide');
+});
+
+let args;
+$("#confirmSelect").click(function () {
+    let guide = $("#guideName").val();
+
     // $.ajax({
     //     url: "/orders",
     //     type: 'POST',
     //     data: JSON.stringify({
     //         journeyId: args[0],
     //         cUsername: username,
-    //         gUsername: "aaa",
+    //         gUsername: guide,
     //         price: args[1]
     //     }),
     //     contentType: "application/json",
@@ -685,6 +709,12 @@ function selectGuide(button) {
     //         }else alert(data.message);
     //     }
     // });
+    $('#myModal').modal('hide');
+});
+
+function selectGuide(button) {
+    args = button.value.split("&");
+    show_modal();
 }
 
 function changeToPay(button) {

@@ -41,4 +41,11 @@ public interface AccountService {
      * @return
      */
     BaseResult<Object> getImage(String username, Integer type);
+
+    /**
+     * 导游获取
+     * @param cityName
+     * @return
+     */
+    BaseResult<Object> getGuides(String cityName);
 }

@@ -145,4 +145,14 @@ public class AccountController {
     public BaseResult<Object> getImage(@RequestParam("username")String username, @RequestParam("type")Integer type){
         return accountService.getImage(username, type);
     }
+
+    /**
+     * 导游获取
+     * @param cityName
+     * @return
+     */
+    @RequestMapping(value = "/guides", method = RequestMethod.GET)
+    public BaseResult<Object> getGuides(@RequestParam("cityName")String cityName){
+        return accountService.getGuides(cityName);
+    }
 }
