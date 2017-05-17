@@ -133,9 +133,9 @@ function currentPage() {
                         let create = $("<div class='agile-detail'></div>").text("Create:  " + journey.createTime);
                         let button;
                         if (journey.paid == 0){
-                            button = $("<button id='pay" + journey.journeyId + "\' value='" + journey.journeyId + "&" + journey.price + "\' class='pull-right btn btn-xs btn-primary' onclick='payPanel(this)'></button>").text("Pay");
+                            button = $("<button id='pay" + journey.journeyId + "\' value='" + journey.journeyId + "&" + journey.price + "\' class='pull-right btn btn-xs btn-danger' onclick='payPanel(this)'></button>").text("Pay");
                         }else if (journey.paid == -1){
-                            button = $("<button id='select" + journey.journeyId + "\' value='" + journey.journeyId + "&" + journey.price + "&" + journey.cityName + "\' class='pull-right btn btn-xs btn-primary' onclick='selectGuide(this)'></button>").text("Select");
+                            button = $("<button id='select" + journey.journeyId + "\' value='" + journey.journeyId + "&" + journey.price + "&" + journey.cityName + "\' class='pull-right btn btn-xs btn-danger' onclick='selectGuide(this)'></button>").text("Select");
                         }
                         ele.append(name).append(dest).append(type).append(member).append(budget).append(duration)
                             .append(tags).append(others).append(dueDate).append(price).append(create);
@@ -185,7 +185,7 @@ function currentPage() {
                                     let tags = $("<p></p>").text("Tags:  " + journey.tags);
                                     let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
                                     let duration = $("<div class='agile-detail'></div>");
-                                    let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToAccept(this)'></button>").text("Accept");
+                                    let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-danger' onclick='changeToAccept(this)'></button>").text("Accept");
                                     duration.text("Price:  " + journey.price + "RMB");
                                     ele.append(dest).append(type).append(tags).append(time).append(duration);
                                     $("#toAccept").append(ele);
@@ -218,13 +218,13 @@ function currentPage() {
                             success: function (data, statusText, xhr) {
                                 if (data.code == 200) {
                                     let journey = data.data;
-                                    let ele = $("<li class='info-element' value='" + journeyIds2[i] + "\' onclick='showOrder(this)' id=\'acc" + i + "\'></li>");
+                                    let ele = $("<li class='danger-element' value='" + journeyIds2[i] + "\' onclick='showOrder(this)' id=\'acc" + i + "\'></li>");
                                     let dest = $("<p></p>").text("Destination:  " + journey.cityName);
                                     let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
                                     let tags = $("<p></p>").text("Tags:  " + journey.tags);
                                     let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
                                     let duration = $("<div class='agile-detail'></div>");
-                                    let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToDeliver(this)'></button>").text("Deliver");
+                                    let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-danger' onclick='changeToDeliver(this)'></button>").text("Deliver");
                                     duration.text("Price:  " + journey.price + "RMB");
                                     ele.append(dest).append(type).append(tags).append(time).append(duration);
                                     $("#toDeliver").append(ele);
@@ -257,13 +257,13 @@ function currentPage() {
                             success: function (data, statusText, xhr) {
                                 if (data.code == 200) {
                                     let journey = data.data;
-                                    let ele = $("<li class='info-element'value='" + journeyIds3[i] + "\' onclick='showOrder(this)' id=\'acc" + i + "\'></li>");
+                                    let ele = $("<li class='warning-element' value='" + journeyIds3[i] + "\' onclick='showOrder(this)' id=\'acc" + i + "\'></li>");
                                     let dest = $("<p></p>").text("Destination:  " + journey.cityName);
                                     let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
                                     let tags = $("<p></p>").text("Tags:  " + journey.tags);
                                     let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
                                     let duration = $("<div class='agile-detail'></div>");
-                                    let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-primary' onclick='changeToFinish(this)'></button>").text("Finish");
+                                    let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-danger' onclick='changeToFinish(this)'></button>").text("Finish");
                                     duration.text("Price:  " + journey.price + "RMB");
                                     ele.append(dest).append(type).append(tags).append(time).append(duration);
                                     $("#toFinish").append(ele);
@@ -354,8 +354,8 @@ function currentPage() {
                         let id = $("<p></p>").text("ID:  " + attachments[i].attachId);
                         let name = $("<p></p>").text("Name:  " + attachments[i].attachName);
                         let token = $("<div class='agile-detail'></div>");
-                        let buttonDown = $("<button value='" + attachments[i].attachId + "&" + attachments[i].token + "\' class='pull-right btn btn-xs btn-primary' onclick='download(this)'></button>").text("Download");
-                        let buttonDelete = $("<button value='" + attachments[i].attachId + "\' class='pull-right btn btn-xs btn-primary' onclick='del(this)'></button>").text("Delete");
+                        let buttonDown = $("<button value='" + attachments[i].attachId + "&" + attachments[i].token + "\' class='pull-right btn btn-xs btn-danger' onclick='download(this)'></button>").text("Download");
+                        let buttonDelete = $("<button value='" + attachments[i].attachId + "\' class='pull-right btn btn-xs btn-white' onclick='del(this)'></button>").text("Delete");
                         token.text("Token:  " + attachments[i].token);
                         ele.append(id).append(name).append(token);
                         $("#allAttachments").append(ele);
@@ -619,7 +619,7 @@ $("#jSubmit").click(function () {
                 if (data.code == 200){
                     alert("Submit successfully");
                     currentPage();
-                    $("#toggleJourneys").attr("class", "btn btn-primary");
+                    $("#toggleJourneys").attr("class", "btn btn-danger");
                     $("#toggleForm").attr("class", "btn btn-white");
                     $("#journeyForm").hide();
                     $("#journeysDiv").show();
@@ -653,19 +653,20 @@ function changeToAccept(button) {
 
 $("#toggleForm").click(function () {
     $("#toggleJourneys").attr("class", "btn btn-white");
-    $("#toggleForm").attr("class", "btn btn-primary");
+    $("#toggleForm").attr("class", "btn btn-danger");
     $("#journeysDiv").hide();
     $("#journeyForm").show();
 });
 
 $("#toggleJourneys").click(function () {
-    $("#toggleJourneys").attr("class", "btn btn-primary");
+    $("#toggleJourneys").attr("class", "btn btn-danger");
     $("#toggleForm").attr("class", "btn btn-white");
     $("#journeyForm").hide();
     $("#journeysDiv").show();
 });
 
 function showOrder(ele) {
+    $('#OrderModal').modal('show');
     let journeyId = ele.value;
     $.ajax({
         url: "/journeys/id?journeyId=" + ele.value,
@@ -683,14 +684,76 @@ function showOrder(ele) {
                 let jHigh = journey.highPrice;
                 let jStart = journey.startTime;
                 let jEnd = journey.endTime;
-                let tags = journey.tags;
+                let jTags = journey.tags;
                 let jOther = journey.others;
                 let jDue = journey.dueDate;
                 let jPrice = journey.price;
+
+                $("#journeys").children("tr").remove();
+                let tr1 = $("<tr></tr>");
+                let ele1 = $("<td style='font-weight:bolder;'>Applicant Name</td>");
+                let name = $("<td style='font-weight:bolder;'>" + jName + "</td>");
+                let tr2 = $("<tr></tr>");
+                let ele2 = $("<td style='font-weight:bolder;'>Phone Number</td>");
+                let num = $("<td style='font-weight:bolder;'>" + jNum + "</td>");
+                let tr3 = $("<tr></tr>");
+                let ele3 = $("<td style='font-weight:bolder;'>Destination</td>");
+                let city = $("<td style='font-weight:bolder;'>" + jCity + "</td>");
+                let tr4 = $("<tr></tr>");
+                let ele4 = $("<td style='font-weight:bolder;'>Member Numbers</td>");
+                let member = $("<td style='font-weight:bolder;'>" + jMember + "</td>");
+                let tr5 = $("<tr></tr>");
+                let ele5 = $("<td style='font-weight:bolder;'>Tour Type</td>");
+                let type = $("<td style='font-weight:bolder;'>" + jType + "</td>");
+                let tr6 = $("<tr></tr>");
+                let ele6 = $("<td style='font-weight:bolder;'>Budget Span</td>");
+                let budget = $("<td style='font-weight:bolder;'>" + jLow + "-" + jHigh + "</td>");
+                let tr7 = $("<tr></tr>");
+                let ele7 = $("<td style='font-weight:bolder;'>Time Span</td>");
+                let time = $("<td style='font-weight:bolder;'>" + jStart + "-" + jEnd + "</td>");
+                let tr8 = $("<tr></tr>");
+                let ele8 = $("<td style='font-weight:bolder;'>Tags</td>");
+                let tag = $("<td style='font-weight:bolder;'>" + jTags + "</td>");
+                let tr9 = $("<tr></tr>");
+                let ele9 = $("<td style='font-weight:bolder;'>Price For Itinerary</td>");
+                let price = $("<td style='font-weight:bolder;'>" + jPrice + "</td>");
+                let tr10 = $("<tr></tr>");
+                let ele10 = $("<td style='font-weight:bolder;'>Due Date</td>");
+                let due = $("<td style='font-weight:bolder;'>" + jDue + "</td>");
+                let tr11 = $("<tr></tr>");
+                let ele11 = $("<td style='font-weight:bolder;'>Other Requirements</td>");
+                let other = $("<td style='font-weight:bolder;'>" + jOther + "</td>");
+
+                $("#journeys").append(tr1).append(tr2).append(tr3).append(tr4).append(tr5).append(tr6).append(tr7).append(tr8).append(tr9).append(tr10).append(tr11);
+                tr1.append(ele1).append(name);
+                tr2.append(ele2).append(num);
+                tr3.append(ele3).append(city);
+                tr4.append(ele4).append(member);
+                tr5.append(ele5).append(type);
+                tr6.append(ele6).append(budget);
+                tr7.append(ele7).append(time);
+                tr8.append(ele8).append(tag);
+                tr9.append(ele9).append(price);
+                tr10.append(ele10).append(due);
+                tr11.append(ele11).append(other);
             }
         }
     });
 }
+
+$("#toggleUnfinish").click(function() {
+    $("#toggleUnfinish").attr("class", "btn btn-danger");
+    $("#toggleFinish").attr("class", "btn btn-white");
+    $("#unfinished").show();
+    $("#toFinished").hide();
+});
+
+$("#toggleFinish").click(function() {
+    $("#toggleUnfinish").attr("class", "btn btn-white");
+    $("#toggleFinish").attr("class", "btn btn-danger");
+    $("#unfinished").hide();
+    $("#toFinished").show();
+});
 
 $("#updateInfo").click(function () {
     let num = $("#phoneNumber").val();
@@ -769,8 +832,12 @@ $(function () {
     $('#myModal').modal('hide');
 });
 
+let price;
+let journeyID;
 function show_paymodal() {
     $('#myPayModal').modal('show');
+    $("#price").text(price);
+    $("#jID").text(journeyID);
 }
 
 let selectArgs;
@@ -780,8 +847,11 @@ function selectGuide(button) {
 }
 
 let payArgs;
+
 function payPanel(button) {
     payArgs = button.value.split("&");
+    price = payArgs[1];
+    journeyID = payArgs[0];
     show_paymodal();
 }
 
@@ -1041,8 +1111,8 @@ $("#getAllAttach").click(function () {
                     let id = $("<p></p>").text("ID:  " + attachments[i].attachId);
                     let name = $("<p></p>").text("Name:  " + attachments[i].attachName);
                     let token = $("<div class='agile-detail'></div>");
-                    let buttonDown = $("<button value='" + attachments[i].attachId + "&" + attachments[i].token + "\' class='pull-right btn btn-xs btn-primary' onclick='download(this)'></button>").text("Download");
-                    let buttonDelete = $("<button value='" + attachments[i].attachId + "\' class='pull-right btn btn-xs btn-primary' onclick='del(this)'></button>").text("Delete");
+                    let buttonDown = $("<button value='" + attachments[i].attachId + "&" + attachments[i].token + "\' class='pull-right btn btn-xs btn-danger' onclick='download(this)'></button>").text("Download");
+                    let buttonDelete = $("<button value='" + attachments[i].attachId + "\' class='pull-right btn btn-xs btn-danger' onclick='del(this)'></button>").text("Delete");
                    token.text("Token:  " + attachments[i].token);
                     ele.append(id).append(name).append(token);
                     $("#allAttachments").append(ele);

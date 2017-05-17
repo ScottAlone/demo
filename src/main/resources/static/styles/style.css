@@ -2904,7 +2904,7 @@ body {
 	/*background-color:#2f4050;*/
 	background-color:#0B2C3E;
 	font-size:17px;
-	color:#CBB285;
+	color:#8D6538;
 	overflow-x:hidden
 }
 html,body {
@@ -4703,7 +4703,7 @@ table.issue-tracker tbody tr td {
 	border-left:3px solid #1c84c6
 }
 .agile-list li.success-element {
-	border-left:3px solid #FD6662
+	border-left:3px solid #1ab394
 }
 .agile-detail {
 	margin-top:5px;
