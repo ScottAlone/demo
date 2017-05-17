@@ -40,7 +40,6 @@
         </div>
     </nav>
     <div id="page-wrapper" class="gray-bg" style="height: 200px">
-
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
@@ -69,7 +68,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
@@ -86,14 +84,40 @@
                             </div>
                         </div>
                         <div class="form-group"><label class="col-sm-2 control-label"></label>
-                            <button id="submitImg" type="button" class="btn btn-danger">Upload</button></span>
+                            <button id="submitImg" type="button" class="btn btn-danger">Upload</button>
                             <div class="col-sm-4"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        <div class="row" id="guidePro" style="display: none">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Change Others <small>Change your serve place or phone number.</small></h5>
+                    </div>
+                    <div class="ibox-content form-horizontal">
+                        <div class="form-group"><label class="col-sm-2 control-label">Serving Place</label>
+                            <div class="col-sm-10"><input id="jCity" class="form-control" placeholder="Cityname" type="text" readonly></div>
+                            <label class="col-sm-2 control-label"></label>
+                            <div id="allCities">
+                                <div id="cities" class="col-sm-2" style="color: grey"></div>
+                                <div id="counties" class="col-sm-3" style="color: grey"></div>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-2 control-label">Phone Number</label>
+                            <div class="col-sm-10"><input id="phoneNumber" class="form-control" placeholder="Phone Number" type="text" required></div>
+                            <label class="col-sm-2 control-label"></label>
+                        </div>
+                        <div class="form-group"><label class="col-sm-2 control-label"></label>
+                            <button id="updateInfo" type="button" class="btn btn-primary">Update</button>
+                            <div class="col-sm-4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script src="js/jquery.js"></script>

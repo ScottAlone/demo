@@ -51,6 +51,13 @@ public interface AccountService {
     BaseResult<Object> getGuides(String cityName);
 
     /**
+     * 导游信息获取
+     * @param gUsername
+     * @return
+     */
+    BaseResult<Object> getGuideByName(String gUsername);
+
+    /**
      * 修改地区和联系方式
      * @param guideDomain
      * @return

@@ -118,6 +118,15 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    public BaseResult<Object> getGuideByName(String gUsername) {
+        GuideDO guideDO = accountMapper.getGuideByName(gUsername);
+        if (guideDO != null){
+            return new BaseResult<>(new GuideDomain(guideDO));
+        }
+        return new BaseResult<>(500, "No guide found");
+    }
+
+    @Override
     public BaseResult<Object> updateGuideInfo(GuideDomain guideDomain) {
         GuideDO guideDO = accountMapper.getGuideByName(guideDomain.getUsername());
         if (guideDO != null){

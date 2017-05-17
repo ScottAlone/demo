@@ -42,7 +42,7 @@ public class AttachmentController {
         // 文件上传后的路径
         String filePath = "C:\\Users\\Administrator\\Desktop\\files\\";
         File dest = new File(filePath + fileName);
-        String token = RandomStringUtils.randomAlphabetic(45);
+        String token = RandomStringUtils.randomAlphabetic(36);
         // 检测是否存在目录
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();

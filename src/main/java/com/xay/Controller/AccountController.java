@@ -158,6 +158,16 @@ public class AccountController {
     }
 
     /**
+     * 导游信息获取
+     * @param gUsername
+     * @return
+     */
+    @RequestMapping(value = "/guides/guide", method = RequestMethod.GET)
+    public BaseResult<Object> getGuideByName(@RequestParam("gUsername")String gUsername){
+        return accountService.getGuideByName(gUsername);
+    }
+
+    /**
      * 修改地区和联系方式
      * @param guideDomain
      * @return
@@ -172,7 +182,7 @@ public class AccountController {
      * @param guideDomain
      * @return
      */
-    @RequestMapping(value = "/payGuide", method = RequestMethod.POST)
+    @RequestMapping(value = "/payGuide", method = RequestMethod.PATCH)
     public BaseResult<Object> payGuide(@RequestBody GuideDomain guideDomain){
         return accountService.payGuide(guideDomain);
     }

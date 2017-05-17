@@ -29,6 +29,15 @@ public class GuideDO{
         this.served = served;
     }
 
+    public GuideDO(String username, float stars, float balance, String phone_num, String city_name, Integer served) {
+        this.username = username;
+        this.stars = stars;
+        this.balance = balance;
+        this.phone_num = phone_num;
+        this.city_name = city_name;
+        this.served = served;
+    }
+
     public GuideDO(GuideDomain guideDomain){
         this.username = guideDomain.getUsername();
         this.phone_num = guideDomain.getPhoneNum();

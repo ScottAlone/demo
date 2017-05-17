@@ -20,11 +20,13 @@ public class GuideDomain {
         this.phoneNum = guideDO.getPhone_num();
         this.balance = guideDO.getBalance();
         this.stars = guideDO.getStars();
+        this.cityName = guideDO.getCity_name();
     }
 
-    public GuideDomain(String username, float stars){
+    public GuideDomain(String username, float stars, float balance){
         this.username = username;
         this.stars = stars;
+        this.balance = balance;
     }
 
     public GuideDomain(String username, String phoneNum, String cityName){

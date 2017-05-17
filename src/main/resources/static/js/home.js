@@ -72,6 +72,8 @@ function getCookie(key) {
     }else window.location = "home.html"
 }
 
+let newCityName;
+
 function checkCookie() {
     let test = window.location.href;
     if (test.indexOf(home) != -1 || test == "http://localhost:8080/"){
@@ -154,6 +156,7 @@ function currentPage() {
         let journeyIds1 = [];
         let journeyIds2 = [];
         let journeyIds3 = [];
+        let journeyIds4 = [];
         $("#toAccept").children("li").remove();
         $("#toDeliver").children("li").remove();
         $("#toFinish").children("li").remove();
@@ -176,7 +179,7 @@ function currentPage() {
                             success: function (data, statusText, xhr) {
                                 if (data.code == 200) {
                                     let journey = data.data;
-                                    let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
+                                    let ele = $("<li class='info-element' value='" + journeyIds1[i] + "\' onclick='showOrder(this)' id=\'acc" + i + "\'></li>");
                                     let dest = $("<p></p>").text("Destination:  " + journey.cityName);
                                     let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
                                     let tags = $("<p></p>").text("Tags:  " + journey.tags);
@@ -215,7 +218,7 @@ function currentPage() {
                             success: function (data, statusText, xhr) {
                                 if (data.code == 200) {
                                     let journey = data.data;
-                                    let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
+                                    let ele = $("<li class='info-element' value='" + journeyIds2[i] + "\' onclick='showOrder(this)' id=\'acc" + i + "\'></li>");
                                     let dest = $("<p></p>").text("Destination:  " + journey.cityName);
                                     let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
                                     let tags = $("<p></p>").text("Tags:  " + journey.tags);
@@ -244,17 +247,17 @@ function currentPage() {
                 if (data.code == 200){
                     let orders = data.data;
                     for (let i = 0; i < orders.length; i++){
-                        journeyIds2.push(data.data[i].journeyId)
+                        journeyIds3.push(data.data[i].journeyId)
                     }
-                    for (let i = 0; i < journeyIds2.length; i++){
+                    for (let i = 0; i < journeyIds3.length; i++){
                         $.ajax({
-                            url: "journeys/id?journeyId=" + journeyIds2[i],
+                            url: "journeys/id?journeyId=" + journeyIds3[i],
                             type: 'GET',
                             context: document.body,
                             success: function (data, statusText, xhr) {
                                 if (data.code == 200) {
                                     let journey = data.data;
-                                    let ele = $("<li class='info-element' id=\'acc" + i + "\'></li>");
+                                    let ele = $("<li class='info-element'value='" + journeyIds3[i] + "\' onclick='showOrder(this)' id=\'acc" + i + "\'></li>");
                                     let dest = $("<p></p>").text("Destination:  " + journey.cityName);
                                     let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
                                     let tags = $("<p></p>").text("Tags:  " + journey.tags);
@@ -283,17 +286,17 @@ function currentPage() {
                 if (data.code == 200){
                     let orders = data.data;
                     for (let i = 0; i < orders.length; i++){
-                        journeyIds3.push(data.data[i].journeyId)
+                        journeyIds4.push(data.data[i].journeyId)
                     }
-                    for (let i = 0; i < journeyIds3.length; i++){
+                    for (let i = 0; i < journeyIds4.length; i++){
                         $.ajax({
-                            url: "journeys/id?journeyId=" + journeyIds3[i],
+                            url: "journeys/id?journeyId=" + journeyIds4[i],
                             type: 'GET',
                             context: document.body,
                             success: function (data, statusText, xhr) {
                                 if (data.code == 200) {
                                     let journey = data.data;
-                                    let ele = $("<li class='success-element' id=\'fin" + i + "\'></li>");
+                                    let ele = $("<li class='success-element' value='" + journeyIds4[i] + "\' onclick='showOrder(this)' id=\'fin" + i + "\'></li>");
                                     let dest = $("<p></p>").text("Destination:  " + journey.cityName);
                                     let type = $("<p></p>").text("Type:  " + ((journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3));
                                     let tags = $("<p></p>").text("Tags:  " + journey.tags);
@@ -319,6 +322,23 @@ function currentPage() {
                 }else $("#preImg").attr("src", "img/examples/2.jpg");
             }
         });
+
+        $.ajax({
+            url: "/guides/guide?gUsername=" + username,
+            type: 'GET',
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    if (userType == 0){
+                        $("#guidePro").show();
+                        $("#phoneNumber").val(data.data.phoneNum);
+                        $("#jCity").val(data.data.cityName);
+                        newCityName = data.data.cityName;
+                    }
+                }
+            }
+        });
+
     }else if (location.indexOf(attachment) != -1){
         $.ajax({
             url: "/attachments?gUsername=" + username,
@@ -428,7 +448,12 @@ function query(ele) {
 let cityName = "";
 function changeCity(obj) {
     $("#jCity").val(obj.innerText);
-    cityName = obj.innerText;
+    let loc = window.location.href;
+    if (loc.indexOf(journey) != -1){
+        cityName = obj.innerText;
+    }else if (loc.indexOf(profile) != -1){
+        newCityName = obj.innerText;
+    }
 }
 
 function inStyle(obj) {
@@ -439,17 +464,17 @@ function outStyle(obj) {
     obj.style.color = "grey";
 }
 
-$("#jCity").click(function () {
+function selectCity() {
     $.ajax({
         url: "/getCity",
         type: 'GET',
         context: document.body,
         success: function(data, statusText, xhr){
-            cities = data.data;
+            let cities = data.data;
             $("#cities").children("li").remove();
-            for (let i = 0; i < data.data.length; i++) {
-                let text = "<li onmouseover='query(this)' onmouseleave='outStyle(this)' value=\"" + data.data[i].city_id + "\" style='border: 1px solid gainsboro;'/li>";
-                let element = $(text).text(data.data[i].name);
+            for (let i = 0; i < cities.length; i++) {
+                let text = "<li onmouseover='query(this)' onmouseleave='outStyle(this)' value=\"" + cities[i].city_id + "\" style='border: 1px solid gainsboro;'/li>";
+                let element = $(text).text(cities[i].name);
                 $("#cities").append(element);
             }
             $("#cities").css("max-height", "200px");
@@ -460,6 +485,10 @@ $("#jCity").click(function () {
         $("#counties").children("li").remove();
         $("#cities").children("li").remove();
     });
+}
+
+$("#jCity").click(function () {
+    selectCity();
 });
 
 $("#jSubmit").click(function () {
@@ -594,6 +623,7 @@ $("#jSubmit").click(function () {
                     $("#toggleForm").attr("class", "btn btn-white");
                     $("#journeyForm").hide();
                     $("#journeysDiv").show();
+                    cityName = "";
                 }else alert(data.message);
             }
         });
@@ -633,6 +663,57 @@ $("#toggleJourneys").click(function () {
     $("#toggleForm").attr("class", "btn btn-white");
     $("#journeyForm").hide();
     $("#journeysDiv").show();
+});
+
+function showOrder(ele) {
+    let journeyId = ele.value;
+    $.ajax({
+        url: "/journeys/id?journeyId=" + ele.value,
+        type: 'GET',
+        context: document.body,
+        success: function(data, statusText, xhr){
+            if (data.code == 200){
+                let journey = data.data;
+                let jName= journey.journeyName;
+                let jNum = journey.phoneNum;
+                let jCity = journey.cityName;
+                let jMember = journey.members;
+                let jType = (journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3;
+                let jLow = journey.lowPrice;
+                let jHigh = journey.highPrice;
+                let jStart = journey.startTime;
+                let jEnd = journey.endTime;
+                let tags = journey.tags;
+                let jOther = journey.others;
+                let jDue = journey.dueDate;
+                let jPrice = journey.price;
+            }
+        }
+    });
+}
+
+$("#updateInfo").click(function () {
+    let num = $("#phoneNumber").val();
+    if (newCityName == "" || num == ""){
+        alert("Please fill in all the forms");
+    }else {
+        $.ajax({
+            url: "/updateGuide",
+            type: 'PATCH',
+            data: JSON.stringify({
+                username: username,
+                phoneNum: num,
+                cityName: newCityName,
+            }),
+            contentType: "application/json",
+            context: document.body,
+            success: function(data, statusText, xhr){
+                if (data.code == 200){
+                    alert("Update successfully");
+                }
+            }
+        });
+    }
 });
 
 function changeToDeliver(button) {
@@ -789,9 +870,24 @@ function changeToFinish(button) {
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
-                alert("Finished successfully");
-                button.innerText = "Finished";
-                button.setAttribute("disabled", "disabled");
+                $.ajax({
+                    url: "/payGuide",
+                    type: 'PATCH',
+                    data: JSON.stringify({
+                        username: "xx",
+                        stars: 2,
+                        balance: 1
+                    }),
+                    contentType: "application/json",
+                    context: document.body,
+                    success: function(data, statusText, xhr){
+                        if (data.code == 200){
+                            alert("Finished successfully");
+                            button.innerText = "Finished";
+                            button.setAttribute("disabled", "disabled");
+                        }
+                    }
+                });
             }
         }
     });

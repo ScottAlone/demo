@@ -103,7 +103,7 @@ public interface AccountMapper {
      * @param gUsername
      * @return
      */
-    @Select("SELECT username, stars, balance, served FROM guides WHERE username=#{gUsername}")
+    @Select("SELECT username, stars, balance, served, phone_num, city_name FROM guides WHERE username=#{gUsername}")
     GuideDO getGuideByName(@Param("gUsername") String gUsername);
 
     /**
@@ -111,14 +111,14 @@ public interface AccountMapper {
      * @param guideDO
      * @return
      */
-    @Update("UPDATE guide SET stars=#{stars}, balance=#{balance}, served=#{served} WHERE username=#{username}")
-    GuideDO payGuide(GuideDO guideDO);
+    @Update("UPDATE guides SET stars=#{stars}, balance=#{balance}, served=#{served} WHERE username=#{username}")
+    int payGuide(GuideDO guideDO);
 
     /**
      * 修改地区和联系方式
      * @param guideDO
      * @return
      */
-    @Update("UPDATE guide SET city_name=#{city_name}, phone_num=#{phone_num} WHERE username=#{username}")
-    GuideDO updateGuideInfo(GuideDO guideDO);
+    @Update("UPDATE guides SET city_name=#{city_name}, phone_num=#{phone_num} WHERE username=#{username}")
+    int updateGuideInfo(GuideDO guideDO);
 }
