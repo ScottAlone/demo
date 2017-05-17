@@ -16,6 +16,9 @@
   height:100px;
   border-radius:100px;
 }
+.pic-round {
+ border-radius:500px;
+}
 .menu-center {
     text-align: center;
     color: white;
