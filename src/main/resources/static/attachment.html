@@ -40,7 +40,7 @@
     </nav>
     <div id="page-wrapper" class="gray-bg" style="height: 700px">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-6" id="getDiv">
 
                 <div class="ibox">
                     <div class="ibox-content" style="height: 600px">
@@ -73,12 +73,12 @@
                     <!--</div>-->
                 <!--</div>-->
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6" id="upDiv">
                 <div class="ibox" >
                     <div class="ibox-content" style="height: 600px">
                         <h3>Upload Attachments</h3>
 
-                        <div class="form-group" id="upDiv">
+                        <div class="form-group">
                             <div class="col-sm-6">
                                 <form action="/upload" method="POST" enctype="multipart/form-data">
 
@@ -103,7 +103,7 @@
                         <div class="ibox-title">
                             <h5>Download Attachments</h5>
                         </div>
-                        <div class="ibox-content">
+                        <div class="ibox-content" style="height: 600px">
                             <form class="form-horizontal" id="downloadForm" action="/download" method="POST" enctype="multipart/form-data">
 
 
@@ -125,7 +125,7 @@
 
                                 <div class="form-group">
                                     <div class="col-lg-offset-2 col-lg-10">
-                                        <button class="btn btn-sm btn-white" type="submit">Sign in</button>
+                                        <button class="btn btn-sm btn-primary" type="submit">Download</button>
                                     </div>
                                 </div>
                             </form>
