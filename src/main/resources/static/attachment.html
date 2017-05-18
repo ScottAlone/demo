@@ -38,113 +38,65 @@
             </ul>
         </div>
     </nav>
+
     <div id="page-wrapper" class="gray-bg" style="height: 700px">
         <div class="row">
             <div class="col-lg-6" id="getDiv">
-
                 <div class="ibox">
                     <div class="ibox-content" style="height: 600px">
                         <h3>All Attachments</h3>
-
-
                         <div id="attachContainer" style="display: none">
-                            <!--<h3 style="text-align: center"></h3>-->
-                            <ul class="sortable-list connectList agile-list ui-sortable" id="allAttachments" style="max-height: 600px; overflow-y: auto">
+                            <ul class="sortable-list connectList agile-list ui-sortable" id="allAttachments" style="max-height: 550px; overflow-y: auto">
                             </ul>
                         </div>
-
-
                     </div>
                 </div>
-
-
-
-
-
-
-                <!--<div class="form-group" id="getDiv">-->
-                    <!--<label style="font-size: 20px; color: #7B7B7B">All Attachments</label>-->
-                    <!--&lt;!&ndash;<div class="col-sm-6"><button id="getAllAttach" class="btn btn-white">See all attachments</button></div>&ndash;&gt;-->
-                    <!--<div class=""></div>-->
-                    <!--<div id="attachContainer" class="ibox" style="display: none">-->
-                            <!--&lt;!&ndash;<h3 style="text-align: center"></h3>&ndash;&gt;-->
-                            <!--<ul class=" sortable-list agile-list ui-sortable" id="allAttachments" style="max-height: 600px; overflow-y: auto">-->
-                            <!--</ul>-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
+
             <div class="col-lg-6" id="upDiv">
                 <div class="ibox" >
                     <div class="ibox-content" style="height: 600px">
                         <h3>Upload Attachments</h3>
-
                         <div class="form-group">
-                                <form action="/upload" method="POST" enctype="multipart/form-data">
-
-                                    <div class="input-group"><input type="file" name="file"/> <span class="input-group-btn"> <input type="submit" class="btn btn-danger" value="upload"/>
-                                            </button> </span></div>
-
-
-                                    <!--<input type="file" name="file"/>-->
-                                    <!--<label class="col-sm-12 control-label"></label>-->
-                                    <input type="hidden" name="gUsername" id="gUsername"/>
-                                    <!--<input type="submit" class="btn btn-primary" value="upload"/>-->
-                                </form>
-                            </div>
-                    </div>
-                </div>
-            </div>
-
-
-                <div class="col-lg-12" id="downDiv">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Download Attachments</h5>
-                        </div>
-                        <div class="ibox-content" style="height: 600px">
-                            <form class="form-horizontal" id="downloadForm" action="/download" method="POST" enctype="multipart/form-data">
-
-
-                                <!--File ID：<input id="attachmentId" type="text" name="attachmentId" required/><br>-->
-                                <!--<label class="col-sm-12 control-label"></label>-->
-                                <!--token：<input id="token" type="text" name="token" required/><br>-->
-                                <!--<label class="col-sm-12 control-label"></label>-->
-                                <!--<input type="submit" class="btn-primary" value="download"/>-->
-
-
-                                <div class="form-group"><label class="col-lg-2 control-label">File ID</label>
-                                    <div class="col-lg-10"><input id="attachmentId" placeholder="File ID" class="form-control" type="text" name="attachmentId" required/> <span class="help-block m-b-none">File ID here.</span>
-                                    </div>
+                            <form action="/upload" method="POST" enctype="multipart/form-data">
+                                <div class="input-group">
+                                    <input type="file" name="file"/>
+                                    <span class="input-group-btn">
+                                        <input type="submit" class="btn btn-danger" value="upload"/>
+                                    </span>
                                 </div>
-                                <div class="form-group"><label class="col-lg-2 control-label">Token</label>
-                                    <div class="col-lg-10"><input id="token" placeholder="token" class="form-control" type="text" name="token" required/> <span class="help-block m-b-none">Token here.</span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-lg-offset-2 col-lg-10">
-                                        <button class="btn btn-sm btn-danger" type="submit">Download</button>
-                                    </div>
-                                </div>
+                                <input type="hidden" name="gUsername" id="gUsername"/>
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="col-lg-12" id="downDiv">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Download Attachments</h5>
+                    </div>
+                    <div class="ibox-content" style="height: 600px">
+                        <form class="form-horizontal" id="downloadForm" action="/download" method="POST" enctype="multipart/form-data">
+                            <div class="form-group"><label class="col-lg-2 control-label">File ID</label>
+                                <div class="col-lg-10"><input id="attachmentId" placeholder="File ID" class="form-control" type="text" name="attachmentId" required/> <span class="help-block m-b-none">File ID here.</span>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="col-lg-2 control-label">Token</label>
+                                <div class="col-lg-10"><input id="token" placeholder="token" class="form-control" type="text" name="token" required/> <span class="help-block m-b-none">Token here.</span>
+                                </div>
+                            </div>
 
-                <!--<div class="form-group" id="downDiv">-->
-                    <!--<div class="col-sm-6">-->
-                        <!--<form id="downloadForm" action="/download" method="POST" enctype="multipart/form-data">-->
-                            <!--File ID：<input id="attachmentId" type="text" name="attachmentId" required/><br>-->
-                            <!--<label class="col-sm-12 control-label"></label>-->
-                            <!--token：<input id="token" type="text" name="token" required/><br>-->
-                            <!--<label class="col-sm-12 control-label"></label>-->
-                            <!--<input type="submit" class="btn-primary" value="download"/>-->
-                        <!--</form>-->
-                        <!--<div class="col-sm-4"></div>-->
-                    <!--</div>-->
-                <!--</div>-->
-
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button class="btn btn-sm btn-danger" type="submit">Download</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
